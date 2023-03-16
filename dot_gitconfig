@@ -1,0 +1,19 @@
+[user]
+	email = selmankayrancioglu@gmail.com
+    name = Selman
+
+[commit]
+    verbose = true
+
+[pull]
+	rebase = true
+
+[include]
+	path = ~/.gitconfig.d/00-aliases.gitconfig
+	path = ~/.gitconfig.d/01-ghq.gitconfig
+    path = ~/.gitconfig.d/02-github.gitconfig
+    path = ~/.gitconfig.d/03-dsf.gitconfig
+[alias]
+	dsf = diff --color
+[push]
+	autoSetupRemote = true

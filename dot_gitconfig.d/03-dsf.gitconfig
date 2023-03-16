@@ -1,0 +1,7 @@
+[alias]
+    dsf = diff --color
+    dsfw = dsf --word-diff
+    dsfs = dsf --staged
+    dsfsw = dsf --staged --word-diff
+[pager]
+    dsf = diff-so-fancy | less --tabs=4 -RF

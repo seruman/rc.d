@@ -1,0 +1,5 @@
+mattmc3/zephyr path:plugins/zfunctions
+sindresorhus/pure                       kind:fpath
+$ZPLUGINS/seruman/completion
+zsh-users/zsh-syntax-highlighting       kind:defer
+mattmc3/zephyr path:plugins/confd

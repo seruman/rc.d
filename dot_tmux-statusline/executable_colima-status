@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+function colima-status() {
+    local color_running="${1:-green}"
+    local color_stopped="${2:-red}"
+
+        local colimalist=$(colima list | tabj)
+
+    local DEFAULT_PROFILE="default"
+    local default_profile=$(printf '%s' "${colimalist}" | jq -r ".[] | select(.PROFILE==\"${DEFAULT_PROFILE}\")")
+    local default_status=$(printf '%s' "${default_profile}" | jq -r '.STATUS')
+
+    local color="${color_stopped}"
+    if [ "${default_status}" == "Running" ]; then
+        color="${color_running}"
+    fi
+    printf "#[fg=blue] #[fg=default]colima:#[fg=${color}]${DEFAULT_PROFILE}"
+}
+
+colima-status "${@}"
