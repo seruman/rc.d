@@ -114,18 +114,19 @@ local settings = {
         staticcheck = true,
     },
     pylsp = {
-            -- formatCommand = {"black"},
-            pylsp = {
-                plugins = {
-                    pylint = { enabled = true },
-                    flakes = { enabled = false },
-                    pycodestyle = { enabled = true, ignore = { "E501", "E731" } },
-                    black = { enabled = true, line_length = 120 },
-                    isort = { enabled = true },
-                    -- TODO(selman): ruff
-                },
+        -- formatCommand = {"black"},
+        pylsp = {
+            plugins = {
+                pylint = { enabled = true },
+                flakes = { enabled = false },
+                pycodestyle = { enabled = true, ignore = { "E501", "E731" } },
+                black = { enabled = true, line_length = 120 },
+                isort = { enabled = true },
+                -- TODO(selman): ruff
             },
+        },
     },
+    -- TODO(selman): use lua_ls
     sumneko_lua = {
         Lua = {
             runtime = {
@@ -144,6 +145,7 @@ local settings = {
             },
         },
     },
+    bashls = {},
     clangd = {},
     tsserver = {},
 }
