@@ -16,7 +16,7 @@ return require("packer").startup(function(use)
     use("takac/vim-hardtime")
 
     -- Color
-    use("savq/melange")
+    use({"savq/melange", commit = "4a9858e"})
     --- Adds missing LSP colors
     use("folke/lsp-colors.nvim")
 
@@ -97,7 +97,7 @@ return require("packer").startup(function(use)
     use("AndrewRadev/splitjoin.vim")
     use("justinmk/vim-sneak")
     use("tpope/vim-surround")
-    use("ryvnf/readline.vim")
+    use({"ryvnf/readline.vim", branch =  "main"})
 
     -- Align/Format text -not code specific-
     use("godlygeek/tabular")
