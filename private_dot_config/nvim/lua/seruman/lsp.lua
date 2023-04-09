@@ -127,24 +127,24 @@ local settings = {
         },
     },
     -- TODO(selman): use lua_ls
-    sumneko_lua = {
-        Lua = {
-            runtime = {
-                version = 'LuaJIT',
-                path = { "lua/?.lua", "lua/?/init.lua", table.unpack(vim.split(package.path, ';')) },
-            },
-            diagnostics = {
-                globals = { 'vim' },
-            },
-            workspace = {
-                -- Make the server aware of Neovim runtime files
-                library = vim.api.nvim_get_runtime_file("", true),
-            },
-            telemetry = {
-                enable = false,
-            },
-        },
-    },
+    -- sumneko_lua = {
+    --     Lua = {
+    --         runtime = {
+    --             version = 'LuaJIT',
+    --             path = { "lua/?.lua", "lua/?/init.lua", table.unpack(vim.split(package.path, ';')) },
+    --         },
+    --         diagnostics = {
+    --             globals = { 'vim' },
+    --         },
+    --         workspace = {
+    --             -- Make the server aware of Neovim runtime files
+    --             library = vim.api.nvim_get_runtime_file("", true),
+    --         },
+    --         telemetry = {
+    --             enable = false,
+    --         },
+    --     },
+    -- },
     bashls = {},
     clangd = {},
     tsserver = {},
