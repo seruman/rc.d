@@ -104,10 +104,7 @@ live_config_reload: true
 # Shell
 shell:
   program: /bin/zsh
-  args:
-    - -l
-    - -c
-    - "tmux new -A -s main"
+  args: ["-l", "-c", "tmux new -A -s main"]
 
 working_directory: None
 
