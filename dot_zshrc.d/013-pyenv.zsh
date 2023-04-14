@@ -1,6 +1,12 @@
 # vi: ft=zsh
 
-export PYENV_ROOT="$HOME/.pyenv"
+if [[ -n "$(command -v pyenv)" ]]; then
+    export PYENV_ROOT="$HOME/.pyenv"
+    path=(
+        "$PYENV_ROOT/bin"
+        $path
+    )
 
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
+    eval "$(pyenv init -)"
+fi
+

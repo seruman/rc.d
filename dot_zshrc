@@ -1,5 +1,4 @@
 # vi: ft=zsh
-
 export HIST_STAMPS="yyyy-mm-dd"
 export HISTSIZE=999999999
 export SAVEHIST=$HISTSIZE
@@ -15,6 +14,7 @@ bindkey -e
 zhome=${ZDOTDIR:-$HOME}
 
 export ZSHRCD="$zhome/.zshrc.d"
+export ZFUNCDIR="$XDG_CONFIG_HOME/zsh/functions"
 
 if [[ ! $zhome/.zsh_plugins.zsh -nt $zhome/.zsh_plugins.txt ]]; then
   [[ -e $zhome/.antidote ]] \
