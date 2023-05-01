@@ -11,14 +11,41 @@ return {
 			local function setup_gopls()
 				-- Format on save.
 				-- TODO(selman): organizeImports breaks imports some how, could not figure out why.
+
+				local function goimports()
+					-- NOTE(selman): Could not get imports to work with;
+					--     vim.lsp.buf.code_action({ context = { only = { 'source.organizeImports' } }, apply = true, })
+					-- Causes dobule imports or write in the middle of existing text/import statement.
+					-- Request and apply code action manually;
+					-- copied from: https://github.com/golang/go/issues/57281
+					-- -not a related issue though-
+					local params = vim.lsp.util.make_range_params()
+					params.context = { only = { "source.organizeImports" } }
+
+					local response = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 1000)
+					for _, r in pairs(response or {}) do
+						for _, action in pairs(r.result or {}) do
+							-- textDocument/codeAction can return either Command[] or CodeAction[]. If
+							-- it is a CodeAction, it can have either an edit, a command or both.
+							-- Edits should be executed first.
+							if action.edit then
+								vim.lsp.util.apply_workspace_edit(action.edit, "UTF-8")
+							end
+							if action.command then
+								-- If the response was a Command[], then the inner "command' is a
+								-- string, if the response was a CodeAction, then the inner command is a
+								-- Command.
+								local command = type(action.command) == "table" and action.command or action
+								vim.lsp.buf.execute_command(command)
+							end
+						end
+					end
+				end
 				vim.api.nvim_create_autocmd('BufWritePre', {
 					group = vim.api.nvim_create_augroup('GoFormatOnSave', { clear = true }),
 					pattern = '*.go',
 					callback = function()
-						vim.lsp.buf.code_action({
-							context = { only = { 'source.organizeImports' } },
-							apply = true,
-						})
+						goimports()
 						vim.lsp.buf.format({ async = false })
 					end
 				})
