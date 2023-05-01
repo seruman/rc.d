@@ -51,6 +51,7 @@ vim.keymap.set("n", "<c-l>", "<cmd>set cursorline!<CR>", { desc = "Toggle cursor
 vim.keymap.set('n', 'n', 'nzzzv', { desc = "Move to next search match and center screen" })
 vim.keymap.set('n', 'N', 'Nzzzv', { desc = "Move to previous search match and center screen" })
 vim.keymap.set('n', '*', '*N', { desc = "Highlight without jumping forward" })
+vim.keymap.set("t", "<leader><esc>", "<c-\\><c-n>",{ desc = "Switch to normal mode in terminal buffer"})
 
 
 vim.cmd("inoreabbrev TODO TODO(selman):")
