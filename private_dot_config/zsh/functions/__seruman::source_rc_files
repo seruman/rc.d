@@ -1,15 +1,15 @@
 case $ZSH_EVAL_CONTEXT in
-	(*:file:*)  ;;
-	(*) return ;;
+    (*:file:*)  ;;
+    (*) return ;;
 esac
 local directory="$1" 
 if [ -d "$directory" ]
 then
-	for rcfile in "$directory"/*.{z,}sh(N)
-	do
-		case ${rcfile:t} in
-			('~'*) continue ;;
-		esac
-		source "$rcfile"
-	done
+    for rcfile in "$directory"/*.{z,}sh(N)
+    do
+        case ${rcfile:t} in
+            ('~'*) continue ;;
+        esac
+        source "$rcfile"
+    done
 fi

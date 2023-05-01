@@ -5,7 +5,7 @@ export FZF_DEFAULT_COMMAND='fd --type f --hidden --exclude .git'
 
 # Auto-completion
 # ---------------
-[[ $- == *i* ]] && source "/Users/selman/.fzf/shell/completion.zsh" 2> /dev/null
+[[ $- == *i* ]] && source "/Users/selman/.fzf/shell/completion.zsh" 2>/dev/null
 
 # Key bindings
 # ------------

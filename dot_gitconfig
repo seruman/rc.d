@@ -1,15 +1,15 @@
 [user]
-	email = selmankayrancioglu@gmail.com
+    email = selmankayrancioglu@gmail.com
     name = Selman
 
 [commit]
     verbose = true
 
 [pull]
-	rebase = true
+    rebase = true
 
 [difftool]
-	prompt = false
+    prompt = false
 
 [include]
     path = ~/.gitconfig.d/00-aliases.gitconfig
@@ -18,6 +18,6 @@
     path = ~/.gitconfig.d/03-dsf.gitconfig
     path = ~/.gitconfig.d/04-difftastic.gitconfig
 [alias]
-	dsf = diff --color
+    dsf = diff --color
 [push]
-	autoSetupRemote = true
+    autoSetupRemote = true
