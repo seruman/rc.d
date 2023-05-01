@@ -14,7 +14,6 @@ return {
 					group = vim.api.nvim_create_augroup('GoFormatOnSave', { clear = true }),
 					pattern = '*.go',
 					callback = function()
-						-- Format already sorts imports.
 						vim.lsp.buf.code_action({
 							context = { only = { 'source.organizeImports' } },
 							apply = true,
@@ -23,90 +22,96 @@ return {
 					end
 				})
 
-				local tags = "tags=" .. table.concat({
+				local tags = "-tags=" .. table.concat({
 					"integration",
 					"selman",
 					"tools",
 				}, ",")
 
 				return {
-					-- Build
-					env = { GOFLAGS = tags },
-					buildFlags = { tags },
+					gopls = {
+						-- Build
+						env = { GOFLAGS = tags },
+						buildFlags = { tags },
 
-					-- Formatting
-					gofumpt = true,
-					["local"] = table.concat({
-						"github.com/seruman",
-						vim.env.GOPLS_LOCAL,
-					}, ","),
+						-- Formatting
+						gofumpt = true,
+						["local"] = table.concat({
+							"github.com/seruman",
+							vim.env.GOPLS_LOCAL,
+						}, ","),
 
-					-- Diagnostics
-					analyses = {
-						nilness = true,
-						shadow = true,
-						unusedparams = true,
-						unusedwrite = true,
-						unusedvariable = true,
-					},
-					staticcheck = true,
+						-- Diagnostics
+						analyses = {
+							nilness = true,
+							shadow = true,
+							unusedparams = true,
+							unusedwrite = true,
+							unusedvariable = true,
+						},
+						staticcheck = true,
 
-					-- UI
-					-- Code Lenses
-					codelenses = {
-						generate = true,
-						test = true,
-						tidy = true,
-						vendor = true,
-					},
-					-- TODO(selman): Could not get this to work, how LSP
-					-- snippets work?
-					experimentalPostfixCompletions = true,
-					-- TODO(selman): Probably my colorscheme/LSP setup would
-					-- not handle this.
-					semanticTokens = true,
+						-- UI
+						-- Code Lenses
+						codelenses = {
+							generate = true,
+							test = true,
+							tidy = true,
+							vendor = true,
+						},
+						-- TODO(selman): Could not get this to work, how LSP
+						-- snippets work?
+						experimentalPostfixCompletions = true,
+						-- TODO(selman): Probably my colorscheme/LSP setup would
+						-- not handle this.
+						semanticTokens = true,
+					}
 				}
 			end
 
 			local function setup_lua_ls()
 				-- TODO(selman): Does not recognize nvim stuff.
 				return {
-					runtime = {
-						version = 'LuaJIT',
-						path = vim.split(package.path, ';'),
-					},
-					diagnostics = {
-						globals = { 'vim' },
-					},
-					workspace = {
-						-- Make the server aware of Neovim runtime files
-						library = vim.api.nvim_get_runtime_file("", true),
-					},
-					telemetry = {
-						enable = false,
+					Lua = {
+						runtime = {
+							version = 'LuaJIT',
+							path = vim.split(package.path, ';'),
+						},
+						diagnostics = {
+							globals = { 'vim' },
+						},
+						workspace = {
+							-- Make the server aware of Neovim runtime files
+							library = vim.api.nvim_get_runtime_file("", true),
+						},
+						telemetry = {
+							enable = false,
+						}
 					}
 				}
 			end
 
 			local function setup_pylsp()
 				return {
-					plugins = {
-						flake8 = { enabled = false },
-						pycodestyle = {
-							enabled = true,
-							ignore = { "E501", "E731", "W503", "E203" }
-						},
-						pylint = { enabled = false },
-						pylsp_mypy = {
-							enabled = true,
-							overrides = { "--ignore-missing-imports", true, "--disable-error-code",
-								"annotation-unchecked" }
-						},
-						-- TODO(selman): I do not remember which one of them
-						-- makes it work, got sick of dealing with it.
-						pylsp_black = { enabled = true, line_length = 120 },
-						black = { enabled = true, line_length = 120 },
-						isort = { enabled = true, profile = "black" },
+					pylsp = {
+						plugins = {
+							flake8 = { enabled = false },
+							pycodestyle = {
+								enabled = true,
+								ignore = { "E501", "E731", "W503", "E203" }
+							},
+							pylint = { enabled = false },
+							pylsp_mypy = {
+								enabled = true,
+								overrides = { "--ignore-missing-imports", true, "--disable-error-code",
+									"annotation-unchecked" }
+							},
+							-- TODO(selman): I do not remember which one of them
+							-- makes it work, got sick of dealing with it.
+							pylsp_black = { enabled = true, line_length = 120 },
+							black = { enabled = true, line_length = 120 },
+							isort = { enabled = true, profile = "black" },
+						}
 					}
 				}
 			end
