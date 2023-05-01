@@ -222,13 +222,15 @@ return {
 					)
 					vim.keymap.set(
 						'n', 'gr',
-						vim.lsp.buf.references,
+						function()
+							require("fzf-lua").lsp_references(fzfopts)
+						end,
 						opts({ desc = "LSP references" })
 					)
 					vim.keymap.set(
 						'n', '<space>f',
 						function()
-							vim.lsp.buf.format { async = true }
+							vim.lsp.buf.format()
 						end,
 						opts({ desc = "LSP format" })
 					)
