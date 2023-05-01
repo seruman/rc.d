@@ -10,6 +10,7 @@ return {
 		config = function()
 			local function setup_gopls()
 				-- Format on save.
+				-- TODO(selman): organizeImports breaks imports some how, could not figure out why.
 				vim.api.nvim_create_autocmd('BufWritePre', {
 					group = vim.api.nvim_create_augroup('GoFormatOnSave', { clear = true }),
 					pattern = '*.go',
