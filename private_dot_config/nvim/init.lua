@@ -31,6 +31,7 @@ vim.o.termguicolors = true
 vim.o.hidden = true
 vim.o.tabstop = 4
 vim.o.shiftwidth = 4
+vim.o.expandtab = true
 vim.o.number = true
 vim.o.backspace = "indent,eol,start"
 vim.o.showtabline = 2
