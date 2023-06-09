@@ -1,0 +1,23 @@
+# vi: ft=zsh
+
+if ! command -v kafkactl &> /dev/null
+then
+    return 0
+fi
+
+local contexts=$(kafkactl config get-contexts -o compact | grep -v 'default' | sort)
+local current_context=$(kafkactl config current-context)
+
+if [[ -n $current_context ]]; then
+    local current_context_colorized="$c[yellow]$current_context$c[reset]"
+    contexts=${contexts//$current_context/$current_context_colorized}
+fi
+
+local selection=$(echo $contexts | fzf --ansi --prompt="Kafkactx> ")
+if [[ -z $selection ]]; then
+    return 0
+fi
+
+kafkactl config use-context $selection
+
+
