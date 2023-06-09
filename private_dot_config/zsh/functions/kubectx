@@ -1,0 +1,5 @@
+=kubectx
+if [ -n "$TMUX" ]; then
+  tmux refresh-client -S
+fi
+
