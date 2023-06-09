@@ -71,19 +71,19 @@ window:
 # Font configuration
 font:
   normal:
-    family: JetBrainsMono Nerd Font
+    family: BerkeleyMono Nerd Font Mono
     style: Regular
 
   bold:
-    family: JetBrainsMono Nerd Font
+    family: BerkeleyMono Nerd Font Mono
     style: Bold
 
   italic:
-    family: JetBrainsMono Nerd Font
+    family: BerkeleyMono Nerd Font Mono
     style: Italic
 
   bold_italic:
-    family: JetBrainsMono Nerd Font
+    family: BerkeleyMono Nerd Font Mono
     style: Bold Italic
 
   # Point size
