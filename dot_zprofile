@@ -33,7 +33,6 @@ path=(
     # FZF
     $HOME/.fzf/bin(N)
     # Go
-    /usr/local/go/bin(N)
     $HOME/go/bin(N)
     # Rust
     $HOME/.cargo/bin:$PATH
