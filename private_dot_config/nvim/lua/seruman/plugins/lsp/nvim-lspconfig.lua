@@ -312,6 +312,15 @@ return {
 						opts({ desc = "LSP typedefs" })
 					)
 					-- TODO(selman): jump to next/previous dignostic.
+                    
+                    -- restart LSP <space>lr
+                    vim.keymap.set(
+                        'n', '<space>lr',
+                        function()
+                            vim.cmd('LspRestart')
+                        end,
+                        opts({ desc = "LSP restart" })
+                    )
 				end,
 			})
 		end
