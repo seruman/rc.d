@@ -125,6 +125,8 @@ return {
                     pylsp = {
                         plugins = {
                             flake8 = { enabled = false },
+                            yapf = { enabled = false },
+                            autopep8 = { enabled = false },
                             pycodestyle = {
                                 enabled = true,
                                 ignore = { "E501", "E731", "W503", "E203" }
@@ -139,7 +141,6 @@ return {
                             -- makes it work, got sick of dealing with it.
                             pylsp_black = { enabled = true, line_length = 120 },
                             black = { enabled = true, line_length = 120 },
-                            isort = { enabled = true, profile = "black" },
                         }
                     }
                 }
