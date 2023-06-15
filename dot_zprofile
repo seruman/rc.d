@@ -11,6 +11,25 @@ for xdgdir in XDG_{CONFIG,CACHE,DATA,STATE}_HOME XDG_RUNTIME_DIR; do
     [[ -e ${(P)xdgdir} ]] || mkdir -p ${(P)xdgdir}
 done
 
+# Ensure path arrays do not contain duplicates.
+typeset -gU path fpath cdpath mailpath
+
+path=(
+    # :home:
+    $HOME/{,s}bin(N)
+
+    # homebrew
+    /opt/{homebrew,local}/{,s}bin(N)
+
+    # Go
+    $HOME/go/bin(N)
+    # Rust
+    $HOME/.cargo/bin:$PATH
+
+    # :rest:
+    $path
+)
+
 # Setup homebrew
 if command -v brew >/dev/null 2>&1; then
     brewcache=${XDG_CACHE_HOME:=~/.cache}/zsh/homebrew.zsh
@@ -22,24 +41,6 @@ if command -v brew >/dev/null 2>&1; then
     unset brewcache
     HOMEBREW_NO_ANALYTICS=1
 fi
-
-# Ensure path arrays do not contain duplicates.
-typeset -gU path fpath cdpath mailpath
-
-path=(
-    # :home:
-    $HOME/{,s}bin(N)
-
-    # FZF
-    $HOME/.fzf/bin(N)
-    # Go
-    $HOME/go/bin(N)
-    # Rust
-    $HOME/.cargo/bin:$PATH
-
-    # :rest:
-    $path
-)
 
 export EDITOR=nvim
 export PAGER="${PAGER:-less}"
