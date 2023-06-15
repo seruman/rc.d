@@ -4,7 +4,7 @@ return {
         dependencies = {
             { "hrsh7th/nvim-cmp" },
             { "hrsh7th/cmp-nvim-lsp" },
-            { "j-hui/fidget.nvim", config = true },
+            { "j-hui/fidget.nvim",   config = true },
             { "ibhagwan/fzf-lua" },
         },
         config = function()
@@ -313,7 +313,9 @@ return {
                         end,
                         opts({ desc = "LSP typedefs" })
                     )
-                    -- TODO(selman): jump to next/previous dignostic.
+
+                    vim.keymap.set('n', ']d', function() vim.lsp.diagnostic.goto_next() end, opts({ desc = "LSP next diagnostic" }))
+                    vim.keymap.set('n', '[d', function() vim.lsp.diagnostic.goto_prev() end, opts({ desc = "LSP previous diagnostic" }))
 
                     -- restart LSP <space>lr
                     vim.keymap.set(
