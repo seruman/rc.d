@@ -139,8 +139,8 @@ return {
                             },
                             -- TODO(selman): I do not remember which one of them
                             -- makes it work, got sick of dealing with it.
-                            pylsp_black = { enabled = true, line_length = 120 },
-                            black = { enabled = true, line_length = 120 },
+                            pylsp_black = { enabled = true, line_length = 120, skip_string_normalization = true },
+                            black = { enabled = true, line_length = 120, skip_string_normalization = true },
                         }
                     }
                 }
