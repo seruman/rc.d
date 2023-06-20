@@ -25,13 +25,6 @@ return {
                 end,
                 desc = 'Split the object under cursor',
             },
-            {
-                'gT',
-                function()
-                    require('treesj').toggle()
-                end,
-                desc = 'Toggle split/join of the object under cursor',
-            }
         },
     }
 }
