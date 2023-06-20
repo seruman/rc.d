@@ -4,7 +4,8 @@ return {
         dependencies = {
             { "hrsh7th/nvim-cmp" },
             { "hrsh7th/cmp-nvim-lsp" },
-            { "j-hui/fidget.nvim",   config = true },
+            -- TODO(selman): Pin fidget.nvim as it's being rewritten.
+            { "j-hui/fidget.nvim",   tag = 'legacy', config = true },
             { "ibhagwan/fzf-lua" },
         },
         config = function()
