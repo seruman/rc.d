@@ -51,7 +51,13 @@ vim.keymap.set("n", "<c-l>", "<cmd>set cursorline!<CR>", { desc = "Toggle cursor
 vim.keymap.set('n', 'n', 'nzzzv', { desc = "Move to next search match and center screen" })
 vim.keymap.set('n', 'N', 'Nzzzv', { desc = "Move to previous search match and center screen" })
 vim.keymap.set('n', '*', '*N', { desc = "Highlight without jumping forward" })
-vim.keymap.set("t", "<leader><esc>", "<c-\\><c-n>",{ desc = "Switch to normal mode in terminal buffer"})
+vim.keymap.set("t", "<leader><esc>", "<c-\\><c-n>", { desc = "Switch to normal mode in terminal buffer" })
+
+local yank_current_filepath = function()
+    local fpath = vim.fn.expand('%');
+    vim.fn.setreg('+', fpath);
+end
+vim.keymap.set("n", "<leader><C-g>p", yank_current_filepath, { desc = "Yank current file path to unnamed register" })
 
 
 vim.cmd("inoreabbrev TODO TODO(selman):")
