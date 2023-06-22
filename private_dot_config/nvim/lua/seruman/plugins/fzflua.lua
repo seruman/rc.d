@@ -88,6 +88,33 @@ return {
                 end,
                 { desc = "Complete line (all buffers)" }
             )
+
+            vim.keymap.set("n", "<leader>ft",
+                function()
+                    local fzf = require("fzf-lua")
+                    fzf.grep({
+                        prompt = "TODO> ",
+                        search = [[TODO(\(.+?\))?:]],
+                        no_esc = true,
+                        no_header_i = true,
+                        no_header = true,
+                    })
+                end,
+                { desc = "Find TODOs" }
+            )
+
+            vim.keymap.set("n", "<leader>fn",
+                function()
+                    require("fzf-lua").grep({
+                        prompt = "NOTE> ",
+                        search = [[NOTE(\(.+?\))?:]],
+                        no_esc = true,
+                        no_header_i = true,
+                        no_header = true,
+                    })
+                end,
+                { desc = "Find NOTEs" }
+            )
         end
     },
 }
