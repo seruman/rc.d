@@ -43,6 +43,7 @@ vim.o.signcolumn = "yes"
 vim.o.splitright = true
 vim.o.splitbelow = true
 vim.o.switchbuf = table.concat({ "useopen", "usetab", "newtab" }, ",")
+vim.o.cursorline = true
 
 vim.keymap.set("n", "<leader>q", "<cmd>q<CR>", { desc = "Quit" })
 vim.keymap.set("n", "<leader>w", "<cmd>w<CR>", { desc = "Write" })
