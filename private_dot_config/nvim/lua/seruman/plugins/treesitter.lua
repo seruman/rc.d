@@ -41,6 +41,14 @@ return {
 
                 highlight = {
                     enable = true,
+                    -- Disable highlights for large files
+                    disable = function(lang, buf)
+                        local max_filesize = 100 * 1024 -- 100 KB
+                        local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+                        if ok and stats and stats.size > max_filesize then
+                            return true
+                        end
+                    end,
                     additional_vim_regex_highlighting = false,
                 },
 
@@ -49,10 +57,10 @@ return {
                 incremental_selection = {
                     enable = true,
                     keymaps = {
-                        init_selection = "<CR>",   -- maps in normal mode to init the node/scope selection with enter
-                        node_incremental = "<CR>", -- increment to the upper named parent
-                        node_decremental = "<bs>",    -- decrement to the previous node
-                        scope_incremental = "<tab>",  -- increment to the upper scope (as defined in locals.scm)
+                        init_selection = "<CR>",     -- maps in normal mode to init the node/scope selection with enter
+                        node_incremental = "<CR>",   -- increment to the upper named parent
+                        node_decremental = "<bs>",   -- decrement to the previous node
+                        scope_incremental = "<tab>", -- increment to the upper scope (as defined in locals.scm)
                     },
                 },
 
