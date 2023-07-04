@@ -147,6 +147,8 @@ return {
                 }
             end
 
+
+
             local function setup_default()
                 return {}
             end
@@ -158,6 +160,7 @@ return {
                 lua_ls = setup_lua_ls,
                 tsserver = setup_default,
                 yamlls = setup_default,
+                terraformls = setup_default,
                 -- TODO(selman):
                 -- pylsp
                 -- jdtls
