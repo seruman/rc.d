@@ -18,7 +18,6 @@
     path = ~/.gitconfig.d/03-dsf.gitconfig
     path = ~/.gitconfig.d/04-difftastic.gitconfig
     path = ~/.config/work/gitconfig
-[alias]
-    dsf = diff --color
+
 [push]
     autoSetupRemote = true
