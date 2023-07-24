@@ -59,42 +59,44 @@ return {
                 }, ",")
 
                 return {
-                    gopls = {
-                        -- Build
-                        env = { GOFLAGS = tags },
-                        buildFlags = { tags },
+                    settings = {
+                        gopls = {
+                            -- Build
+                            env = { GOFLAGS = tags },
+                            buildFlags = { tags },
 
-                        -- Formatting
-                        gofumpt = true,
-                        ["local"] = table.concat({
-                            "github.com/seruman",
-                            vim.env.GOPLS_LOCAL,
-                        }, ","),
+                            -- Formatting
+                            gofumpt = true,
+                            ["local"] = table.concat({
+                                "github.com/seruman",
+                                vim.env.GOPLS_LOCAL,
+                            }, ","),
 
-                        -- Diagnostics
-                        analyses = {
-                            nilness = true,
-                            shadow = true,
-                            unusedparams = true,
-                            unusedwrite = true,
-                            unusedvariable = true,
-                        },
-                        staticcheck = true,
+                            -- Diagnostics
+                            analyses = {
+                                nilness = true,
+                                shadow = true,
+                                unusedparams = true,
+                                unusedwrite = true,
+                                unusedvariable = true,
+                            },
+                            staticcheck = true,
 
-                        -- UI
-                        -- Code Lenses
-                        codelenses = {
-                            generate = true,
-                            test = true,
-                            tidy = true,
-                            vendor = true,
-                        },
-                        -- TODO(selman): Could not get this to work, how LSP
-                        -- snippets work?
-                        experimentalPostfixCompletions = true,
-                        -- TODO(selman): Probably my colorscheme/LSP setup would
-                        -- not handle this.
-                        semanticTokens = true,
+                            -- UI
+                            -- Code Lenses
+                            codelenses = {
+                                generate = true,
+                                test = true,
+                                tidy = true,
+                                vendor = true,
+                            },
+                            -- TODO(selman): Could not get this to work, how LSP
+                            -- snippets work?
+                            experimentalPostfixCompletions = true,
+                            -- TODO(selman): Probably my colorscheme/LSP setup would
+                            -- not handle this.
+                            semanticTokens = true,
+                        }
                     }
                 }
             end
@@ -102,20 +104,22 @@ return {
             local function setup_lua_ls()
                 -- TODO(selman): Does not recognize nvim stuff.
                 return {
-                    Lua = {
-                        runtime = {
-                            version = 'LuaJIT',
-                            path = vim.split(package.path, ';'),
-                        },
-                        diagnostics = {
-                            globals = { 'vim' },
-                        },
-                        workspace = {
-                            -- Make the server aware of Neovim runtime files
-                            library = vim.api.nvim_get_runtime_file("", true),
-                        },
-                        telemetry = {
-                            enable = false,
+                    settings = {
+                        Lua = {
+                            runtime = {
+                                version = 'LuaJIT',
+                                path = vim.split(package.path, ';'),
+                            },
+                            diagnostics = {
+                                globals = { 'vim' },
+                            },
+                            workspace = {
+                                -- Make the server aware of Neovim runtime files
+                                library = vim.api.nvim_get_runtime_file("", true),
+                            },
+                            telemetry = {
+                                enable = false,
+                            }
                         }
                     }
                 }
@@ -123,27 +127,36 @@ return {
 
             local function setup_pylsp()
                 return {
-                    pylsp = {
-                        plugins = {
-                            flake8 = { enabled = false },
-                            yapf = { enabled = false },
-                            autopep8 = { enabled = false },
-                            pycodestyle = {
-                                enabled = true,
-                                ignore = { "E501", "E731", "W503", "E203" }
-                            },
-                            pylint = { enabled = false },
-                            pylsp_mypy = {
-                                enabled = true,
-                                overrides = { "--ignore-missing-imports", true, "--disable-error-code",
-                                    "annotation-unchecked" }
-                            },
-                            -- TODO(selman): I do not remember which one of them
-                            -- makes it work, got sick of dealing with it.
-                            pylsp_black = { enabled = true, line_length = 120, skip_string_normalization = true },
-                            black = { enabled = true, line_length = 120, skip_string_normalization = true },
+                    settings = {
+                        pylsp = {
+                            plugins = {
+                                flake8 = { enabled = false },
+                                yapf = { enabled = false },
+                                autopep8 = { enabled = false },
+                                pycodestyle = {
+                                    enabled = true,
+                                    ignore = { "E501", "E731", "W503", "E203" }
+                                },
+                                pylint = { enabled = false },
+                                pylsp_mypy = {
+                                    enabled = true,
+                                    overrides = { "--ignore-missing-imports", true, "--disable-error-code",
+                                        "annotation-unchecked" }
+                                },
+                                -- TODO(selman): I do not remember which one of them
+                                -- makes it work, got sick of dealing with it.
+                                pylsp_black = { enabled = true, line_length = 120, skip_string_normalization = true },
+                                black = { enabled = true, line_length = 120, skip_string_normalization = true },
+                            }
                         }
                     }
+                }
+            end
+
+
+            local function setup_jdtls()
+                return {
+                    cmd = { "jdtls-launcher" },
                 }
             end
 
@@ -158,12 +171,10 @@ return {
                 pylsp = setup_pylsp,
                 bashls = setup_default,
                 lua_ls = setup_lua_ls,
+                jdtls = setup_jdtls,
                 tsserver = setup_default,
                 yamlls = setup_default,
                 terraformls = setup_default,
-                -- TODO(selman):
-                -- pylsp
-                -- jdtls
             }
 
             local capabilities = require("cmp_nvim_lsp").default_capabilities({
@@ -175,13 +186,14 @@ return {
 
             local lspconfig = require("lspconfig")
             for server, setupfn in pairs(servers) do
-                local settings = setupfn()
+                local setupargs = setupfn()
 
-                lspconfig[server].setup({
+                local _setup_args = vim.tbl_extend('force', {
                     capabilities = capabilities,
                     flags = flags,
-                    settings = settings,
-                })
+                }, setupargs)
+
+                lspconfig[server].setup(_setup_args)
             end
 
 
