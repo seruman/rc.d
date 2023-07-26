@@ -56,6 +56,8 @@ window:
   # Allow terminal applications to change Alacritty's window title.
   dynamic_title: true
 
+  option_as_alt: OnlyRight
+
 # NOTE(selman): With tmux, leaving it as default.
 #scrolling:
   # Maximum number of lines in the scrollback buffer.
