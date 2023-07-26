@@ -1,0 +1,15 @@
+local result=$(
+	TURENG_PREFIX="tureng-cli"
+	TURENG_PROMPT="Tureng> "
+	FZF_PROMPT="FZF> "
+	INITIAL_QUERY="${*:-}"
+	: | fzf --ansi --disabled --query "$INITIAL_QUERY" \
+		--bind "start:reload($TURENG_PREFIX {q} || true)+unbind(ctrl-r)" \
+		--bind "change:reload:sleep 0.1; $TURENG_PREFIX {q} || true" \
+		--bind "ctrl-f:unbind(change,ctrl-f)+change-prompt($FZF_PROMPT )+enable-search+rebind(ctrl-r)" \
+		--bind "ctrl-r:unbind(ctrl-r)+change-prompt($TURENG_PROMPT )+disable-search+reload($TURENG_PREFIX {q} || true)+rebind(change,ctrl-f)" \
+		--color "hl:-1:underline,hl+:-1:underline:reverse" \
+		--prompt "$TURENG_PROMPT" \
+		--delimiter : \
+		--header '╱ CTRL-R (Tureng mode) ╱ CTRL-F (FZF mode) ╱'
+) 
