@@ -330,9 +330,9 @@ return {
                         opts({ desc = "LSP typedefs" })
                     )
 
-                    vim.keymap.set('n', ']d', function() vim.lsp.diagnostic.goto_next() end,
+                    vim.keymap.set('n', ']d', function() vim.diagnostic.goto_next() end,
                         opts({ desc = "LSP next diagnostic" }))
-                    vim.keymap.set('n', '[d', function() vim.lsp.diagnostic.goto_prev() end,
+                    vim.keymap.set('n', '[d', function() vim.diagnostic.goto_prev() end,
                         opts({ desc = "LSP previous diagnostic" }))
 
                     -- restart LSP <space>lr
