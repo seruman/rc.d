@@ -4,7 +4,7 @@ export HISTSIZE=999999999
 export SAVEHIST=$HISTSIZE
 export HISTFILE=~/.zsh_history
 export ZPLUGINS=~/.config/zplugins
-setopt histignorealldups sharehistory
+setopt histignorealldups sharehistory interactivecomments
 
 # Use emacs keybindings even if our EDITOR is set to vi
 bindkey -e
