@@ -52,6 +52,18 @@ return {
                     end
                 })
 
+                vim.api.nvim_create_autocmd('LspDetach', {
+                    pattern = '*',
+                    callback = function(args)
+                        local client = vim.lsp.get_client_by_id(args.data.client_id)
+                        if client == nil or client.name == nil or client.name ~= "gopls" then
+                            return
+                        end
+
+                        vim.api.nvim_del_augroup_by_name('GoFormatOnSave')
+                    end
+                })
+
                 local tags = "-tags=" .. table.concat({
                     "integration",
                     "selman",
