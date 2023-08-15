@@ -160,6 +160,24 @@ return {
                 }
             end
 
+            local function setup_rust_analyzer()
+                local ok, rust_analyzer_bin = pcall(
+                    vim.fn.system,
+                    { 'rustup', 'which', 'rust-analyzer' }
+                )
+                if not ok then
+                    rust_analyzer_bin = 'rust-analyzer'
+                end
+
+                rust_analyzer_bin = string.gsub(rust_analyzer_bin, "\n$", "")
+
+                return {
+                    cmd = { rust_analyzer_bin },
+                }
+            end
+
+
+
 
 
             local function setup_default()
@@ -175,6 +193,7 @@ return {
                 tsserver = setup_default,
                 yamlls = setup_default,
                 terraformls = setup_default,
+                rust_analyzer = setup_rust_analyzer,
             }
 
             local capabilities = require("cmp_nvim_lsp").default_capabilities({
