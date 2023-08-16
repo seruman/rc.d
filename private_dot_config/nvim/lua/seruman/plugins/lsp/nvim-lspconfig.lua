@@ -189,6 +189,20 @@ return {
             end
 
 
+            local function setup_yamlls()
+                return {
+                    settings = {
+                        yaml = {
+                            keyOrdering = false,
+                            schemaStore = {
+                                enable = true
+                            },
+                        }
+                    }
+                }
+            end
+
+
 
 
 
@@ -203,7 +217,7 @@ return {
                 lua_ls = setup_lua_ls,
                 jdtls = setup_jdtls,
                 tsserver = setup_default,
-                yamlls = setup_default,
+                yamlls = setup_yamlls,
                 terraformls = setup_default,
                 rust_analyzer = setup_rust_analyzer,
             }
