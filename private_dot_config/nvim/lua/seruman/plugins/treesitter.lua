@@ -3,6 +3,7 @@ return {
         'nvim-treesitter/nvim-treesitter',
         dependencies = {
             'nvim-treesitter/nvim-treesitter-textobjects',
+            'nvim-treesitter/playground',
         },
         config = function()
             local languages = {
@@ -105,6 +106,10 @@ return {
                             ['<leader>A'] = '@parameter.inner',
                         },
                     },
+                },
+
+                playground = {
+                    enable = true,
                 },
             })
         end,
