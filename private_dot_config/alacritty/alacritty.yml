@@ -105,20 +105,20 @@ colors:
     black:   '#E9E1DB'
     red:     '#D7898C'
     green:   '#83B887'
-    yellow:  '#C29830'
+    yellow:  '#CC7F2B'
     blue:    '#485F84'
     magenta: '#BE79BB'
     cyan:    '#729893'
     white:   '#A38D78'
   bright:
-    black:   '#DED2C8'
+    black:   '#867462'
     red:     '#C65333'
     green:   '#659E69'
     yellow:  '#C29830'
-    blue:    '#485F84'
+    blue:    '#ABB9D6'
     magenta: '#854882'
     cyan:    '#436460'
-    white:   '#867462'
+    white:   '#6B5C4D'
 
 # Live config reload (changes require restart)
 live_config_reload: true
