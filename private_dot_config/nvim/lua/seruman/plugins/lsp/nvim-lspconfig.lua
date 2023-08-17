@@ -43,15 +43,25 @@ return {
                     end
                 end
 
-                vim.api.nvim_create_autocmd('BufWritePre', {
-                    group = vim.api.nvim_create_augroup('GoFormatOnSave', { clear = true }),
-                    pattern = '*.go',
-                    callback = function()
-                        goimports()
-                        vim.lsp.buf.format({ async = false })
+                -- START: SHAME
+                -- TODO(selman): Have no idea if this is the way to do it.
+                vim.api.nvim_create_autocmd('LspAttach', {
+                    callback = function(args)
+                        local client = vim.lsp.get_client_by_id(args.data.client_id)
+                        if client == nil or client.name == nil or client.name ~= "gopls" then
+                            return
+                        end
+
+                        vim.api.nvim_create_autocmd('BufWritePre', {
+                            group = vim.api.nvim_create_augroup('GoFormatOnSave', { clear = true }),
+                            pattern = '*.go',
+                            callback = function()
+                                goimports()
+                                vim.lsp.buf.format({ async = false })
+                            end
+                        })
                     end
                 })
-
                 vim.api.nvim_create_autocmd('LspDetach', {
                     pattern = '*',
                     callback = function(args)
@@ -60,9 +70,11 @@ return {
                             return
                         end
 
-                        vim.api.nvim_del_augroup_by_name('GoFormatOnSave')
+                        -- vim.api.nvim_del_augroup_by_name('GoFormatOnSave')
+                        pcall(vim.api.nvim_del_augroup, 'GoFormatOnSave')
                     end
                 })
+                -- END: SHAME
 
                 local tags = "-tags=" .. table.concat({
                     "integration",
