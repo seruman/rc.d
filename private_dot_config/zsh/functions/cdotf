@@ -1,0 +1,16 @@
+# vi: ft=zsh
+local previewcmd="
+CLICOLOR_FORCE=1 ls  $(chezmoi target-path)/{}
+"
+
+local dir=$(
+	chezmoi managed -i dirs |
+		fzf \
+			--prompt 'Dotfiles> ' \
+			--preview "${previewcmd}" \
+			--query "${*:-}"
+)
+
+if [[ -n "${dir}" ]]; then
+	echo "${dir}"
+fi
