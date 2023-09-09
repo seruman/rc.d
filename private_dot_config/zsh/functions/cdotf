@@ -1,6 +1,9 @@
 # vi: ft=zsh
+
+
+local chezmoi_target=$(chezmoi target-path)
 local previewcmd="
-CLICOLOR_FORCE=1 ls  $(chezmoi target-path)/{}
+CLICOLOR_FORCE=1 ls  ${chezmoi_target}/{}
 "
 
 local dir=$(
@@ -12,5 +15,8 @@ local dir=$(
 )
 
 if [[ -n "${dir}" ]]; then
-	echo "${dir}"
+    local absdir="${chezmoi_target}/${dir}"
+    if [[ -d "${absdir}" ]]; then
+        cd "${absdir}"
+    fi
 fi
