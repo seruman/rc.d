@@ -34,7 +34,8 @@ return {
                 "sql",
                 "terraform",
                 "toml",
-                "yaml"
+                "yaml",
+                "zig",
             }
 
             require('nvim-treesitter.configs').setup({
