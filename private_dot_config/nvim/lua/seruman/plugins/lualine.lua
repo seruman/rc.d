@@ -1,9 +1,10 @@
 return {
     {
         "nvim-lualine/lualine.nvim",
-        -- dependencies = {
-        --     "kyazdani42/nvim-web-devicons",
-        -- },
+        dependencies = {
+            "SmiteshP/nvim-navic",
+            "kyazdani42/nvim-web-devicons",
+        },
         opts = function()
             local function theme_melange()
                 -- NOTE(selman): Kinda ripped from;
@@ -75,6 +76,14 @@ return {
             end
 
 
+            local navic = require("nvim-navic")
+            navic.setup({
+                icongs = {},
+                highlight = true,
+                lsp = {
+                    auto_attach = true,
+                },
+            })
             return {
                 options = {
                     -- TODO(selman): Melange support.
@@ -85,7 +94,19 @@ return {
                     section_separators = { left = "", right = "" },
                 },
                 sections = {
-                    lualine_a = { { "mode", fmt = format_mode } },
+                    lualine_a = {
+                        { "mode", fmt = format_mode },
+                    },
+                    lualine_c = {
+                        {
+                            function()
+                                return navic.get_location()
+                            end,
+                            cond = function()
+                                return navic.is_available()
+                            end
+                        },
+                    }
                 },
             }
         end
