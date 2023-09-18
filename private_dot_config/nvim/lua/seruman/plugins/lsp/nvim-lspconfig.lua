@@ -171,6 +171,7 @@ return {
                                 -- makes it work, got sick of dealing with it.
                                 pylsp_black = { enabled = true, line_length = 120, skip_string_normalization = true },
                                 black = { enabled = true, line_length = 120, skip_string_normalization = true },
+                                rope_autoimport = { enabled = true },
                             }
                         }
                     }
