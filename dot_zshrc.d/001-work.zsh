@@ -4,4 +4,4 @@ export _WORK_DOTFILES=$XDG_CONFIG_HOME/work
 
 [[ -d $_WORK_DOTFILES ]] || return 0
 
-source $_WORK_DOTFILES/init.zsh
+[[ -f $_WORK_DOTFILES/init.zsh ]] && source $_WORK_DOTFILES/init.zsh
