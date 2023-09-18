@@ -1,3 +1,11 @@
+# vi: ft=zsh
+
+if [[ "$OS" != "Darwin" ]]; then
+  return
+fi
+
+# TODO(selman): some how cache this and only run if needed.
+
 defaults write -g ApplePressAndHoldEnabled -bool false
 defaults write -g InitialKeyRepeat -int 15 # normal minimum is 15 (225 ms)
 defaults write -g KeyRepeat -int 1 # normal minimum is 2 (30 ms)
@@ -8,3 +16,7 @@ defaults write -g KeyRepeat -int 1 # normal minimum is 2 (30 ms)
 defaults write com.apple.Finder QuitMenuItem 1
 defaults write com.apple.finder ShowStatusBar -bool true
 defaults write com.apple.finder ShowPathbar -bool true
+defaults write com.apple.finder _FXShowPosixPathInTitle -bool YES
+
+defaults write com.apple.finder NewWindowTarget -string "PfDe"
+defaults write com.apple.finder NewWindowTargetPath -string "file://${HOME}/"
