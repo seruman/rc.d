@@ -178,11 +178,7 @@ return {
             end
 
 
-            local function setup_jdtls()
-                return {
-                    cmd = { "jdtls-launcher" },
-                }
-            end
+
 
             local function setup_rust_analyzer()
                 local ok, rust_analyzer_bin = pcall(
@@ -227,7 +223,7 @@ return {
                 pylsp = setup_pylsp,
                 bashls = setup_default,
                 lua_ls = setup_lua_ls,
-                jdtls = setup_jdtls,
+                jdtls = setup_default,
                 tsserver = setup_default,
                 yamlls = setup_yamlls,
                 terraformls = setup_default,
