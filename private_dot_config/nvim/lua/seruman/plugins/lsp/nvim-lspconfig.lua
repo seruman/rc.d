@@ -99,7 +99,8 @@ return {
                             -- Diagnostics
                             analyses = {
                                 nilness = true,
-                                shadow = true,
+                                -- NOTE(selman): Tired of warnings for`if err := ...; err != nil`.
+                                shadow = false,
                                 unusedparams = true,
                                 unusedwrite = true,
                                 unusedvariable = true,
