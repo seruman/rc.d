@@ -45,3 +45,8 @@ fi
 export EDITOR=nvim
 export PAGER="${PAGER:-less}"
 export LESS='-R --mouse'
+
+
+if [[ -s "$XDG_CONFIG_HOME/work/zprofile" ]]; then
+    source "$XDG_CONFIG_HOME/work/zprofile"
+fi
