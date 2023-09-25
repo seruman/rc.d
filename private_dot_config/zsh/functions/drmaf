@@ -1,0 +1,9 @@
+# vi: ft=zsh
+
+local container_ids=$(docker ps -a | fzf --header-lines 1 --multi | awk '{print $1}' | tr '\n' ' ')
+
+if [ -z "$container_ids" ]; then
+  return 0
+fi
+
+docker rm ${=container_ids}
