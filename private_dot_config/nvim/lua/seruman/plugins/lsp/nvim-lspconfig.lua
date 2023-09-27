@@ -231,6 +231,7 @@ return {
                 terraformls = setup_default,
                 rust_analyzer = setup_rust_analyzer,
                 zls = setup_default,
+                clangd = setup_default,
             }
 
             local capabilities = require("cmp_nvim_lsp").default_capabilities({
