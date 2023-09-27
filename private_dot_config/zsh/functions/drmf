@@ -1,9 +1,20 @@
 # vi: ft=zsh
 
+local force_flag=""
+
+while getopts "f" opt; do
+  case $opt in
+    f)
+      force_flag="-f"
+      ;;
+  esac
+done
+
 local container_ids=$(docker ps -a | fzf --header-lines 1 --multi | awk '{print $1}' | tr '\n' ' ')
 
 if [ -z "$container_ids" ]; then
   return 0
 fi
 
-docker rm ${=container_ids}
+
+docker rm  ${=force_flag} ${=container_ids}
