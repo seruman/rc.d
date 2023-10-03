@@ -17,10 +17,20 @@ return {
                 },
                 winopts = {
                     preview = {
-                        layout = "vertical",
                         vertical = "up:60%",
+                        layout = "flex",
+                        wrap = 'wrap',
                     }
-                }
+                },
+                lsp = {
+                    code_actions = {
+                        prompt           = 'Code Actions> ',
+                        async_or_timeout = 5000,
+                        winopts          = {
+                            height = 0.3,
+                        },
+                    },
+                },
             })
             fzflua.register_ui_select()
 
