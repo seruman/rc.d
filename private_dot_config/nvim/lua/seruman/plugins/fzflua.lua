@@ -56,6 +56,12 @@ return {
                 end,
                 { desc = "Live grep" }
             )
+            vim.keymap.set("n", "<leader>frr",
+                function()
+                    require("fzf-lua").resume()
+                end,
+                { desc = "Resume last command/query" }
+            )
             vim.keymap.set("n", "<leader>fh/",
                 function()
                     require("fzf-lua").search_history()
