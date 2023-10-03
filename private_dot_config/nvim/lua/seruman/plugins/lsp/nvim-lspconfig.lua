@@ -314,7 +314,9 @@ return {
                     vim.keymap.set(
                         { 'n', 'v' },
                         '<leader>ca',
-                        vim.lsp.buf.code_action,
+                        function()
+                            require("fzf-lua").lsp_code_actions(fzfopts)
+                        end,
                         opts({ desc = "LSP code action" })
                     )
                     vim.keymap.set(
