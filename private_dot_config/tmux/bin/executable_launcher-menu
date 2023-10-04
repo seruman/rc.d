@@ -1,0 +1,21 @@
+# vi: ft=zsh
+
+function _main() {
+	tmux display-menu -t . -T "Hola!" \
+        ipython3 p "$(_cmd_ipython)"
+}
+
+function _cmd_ipython() {
+	local cmd=(
+		'display-popup'
+		'-E'
+        '-S' 'fg=blue'
+        '-b' 'double'
+        '-d' '#{pane_current_path}'
+        '"ipython3 --no-confirm-exit"'
+	)
+
+	echo "${cmd[@]}"
+}
+
+_main "$@"
