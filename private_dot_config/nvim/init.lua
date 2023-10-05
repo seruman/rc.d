@@ -71,5 +71,3 @@ vim.keymap.set("n", "<leader><C-g>p", yank_current_filepath, { desc = "Yank curr
 vim.cmd("inoreabbrev TODO TODO(selman):")
 vim.cmd("inoreabbrev NOTE NOTE(selman):")
 
--- TODO(selman): GoFillStruct
--- vim.lsp.buf.code_action({ context = { only = { 'source.organizeImports' } }, apply = true })
