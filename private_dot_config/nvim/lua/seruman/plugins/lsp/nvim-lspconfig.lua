@@ -221,10 +221,6 @@ return {
                 }
             end
 
-
-
-
-
             local function setup_default()
                 return {}
             end
