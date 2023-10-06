@@ -273,10 +273,7 @@ return {
                         }
                     )
 
-                    local fzfopts = {
-                        ignore_current_line = true,
-                        jump_to_single_result = true
-                    }
+                    local fzfopts = { jump_to_single_result = true }
 
                     local function opts(o)
                         return vim.tbl_extend('keep', { buffer = ev.buf }, o)
