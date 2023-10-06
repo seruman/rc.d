@@ -32,7 +32,6 @@ return {
                     },
                 },
             })
-            fzflua.register_ui_select()
 
             vim.keymap.set("n", "<leader>ff",
                 function()
