@@ -353,6 +353,14 @@ return {
                         end,
                         opts({ desc = "LSP diagnostics (workspace)" })
                     )
+
+                    vim.keymap.set(
+                        'n', '<space>d',
+                        function()
+                            vim.diagnostic.open_float({ border = "rounded", header = '' })
+                        end,
+                        opts({ desc = "LSP diagnostic under cursor (popup)" })
+                    )
                     vim.keymap.set(
                         'n', '<leader>ic',
                         function()
