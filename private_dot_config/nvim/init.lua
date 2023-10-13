@@ -71,3 +71,42 @@ vim.keymap.set("n", "<leader><C-g>p", yank_current_filepath, { desc = "Yank curr
 vim.cmd("inoreabbrev TODO TODO(selman):")
 vim.cmd("inoreabbrev NOTE NOTE(selman):")
 
+-- augroup CursorLine
+--     au!
+--     au VimEnter * setlocal cursorline
+--     au WinEnter * setlocal cursorline
+--     au BufWinEnter * setlocal cursorline
+--     au WinLeave * setlocal nocursorline
+-- augroup END
+local AugroupCursorLine = vim.api.nvim_create_augroup("CursorLine", { clear = true })
+vim.api.nvim_create_autocmd('VimEnter', {
+    group = AugroupCursorLine,
+    pattern= '*',
+    callback = function()
+        vim.opt_local.cursorline = true
+    end,
+})
+
+vim.api.nvim_create_autocmd('WinEnter', {
+    group = AugroupCursorLine,
+    pattern= '*',
+    callback = function()
+        vim.opt_local.cursorline = true
+    end,
+})
+
+vim.api.nvim_create_autocmd('BufWinEnter', {
+    group = AugroupCursorLine,
+    pattern= '*',
+    callback = function()
+        vim.opt_local.cursorline = true
+    end,
+})
+
+vim.api.nvim_create_autocmd('WinLeave', {
+    group = AugroupCursorLine,
+    pattern= '*',
+    callback = function()
+        vim.opt_local.cursorline = false
+    end,
+})
