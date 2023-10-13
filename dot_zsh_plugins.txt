@@ -3,5 +3,8 @@ sindresorhus/pure                       kind:fpath
 $ZPLUGINS/seruman/completion
 zdharma-continuum/fast-syntax-highlighting kind:defer
 wfxr/forgit
+# broken 
+wfxr/forgit path:completions kind:fpath
+wfxr/forgit path:completions/git-forgit.zsh
 mattmc3/zephyr path:plugins/confd
 zpm-zsh/colors
