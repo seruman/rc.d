@@ -300,8 +300,6 @@ return {
                         function() require("fzf-lua").lsp_implementations(fzfopts) end,
                         opts({ desc = "LSP implementations" })
                     )
-                    -- TODO(selman): Does not work on Alacritty+tmux. Guessing
-                    -- it is something to do with Alacritty
                     vim.keymap.set(
                         { 'n', 'i' },
                         '<C-k>',
