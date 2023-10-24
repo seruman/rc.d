@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-function kafkactl-tmux() {
-	local icon="${KAFKACTL_TMUX_ICON:-🌊}"
-	local color=${KAFKACTL_TMUX_COLOR:-"default"}
-	local context_color=${KAFKACTL_TMUX_CONTEXT_COLOR:-"green"}
-	local prefix=${KAFKACTL_TMUX_PREFIX:-"kafkactl"}
+function kaf-tmux() {
+	local icon="${KAF_TMUX_ICON:-🌊}"
+	local color=${KAF_TMUX_COLOR:-"default"}
+	local context_color=${KAF_TMUX_CONTEXT_COLOR:-"green"}
+	local prefix=${KAF_TMUX_PREFIX:-"kaf"}
 
 	while [[ "$#" -gt 0 ]]; do
 		case $1 in
@@ -32,13 +32,13 @@ function kafkactl-tmux() {
 		shift
 	done
 
-    if ! command -v kafkactl >/dev/null 2>&1; then
+    if ! command -v kaf >/dev/null 2>&1; then
         return
     fi
 
 	local current_context='N/A'
-	if command -v kafkactl >/dev/null 2>&1; then
-		current_context=$(kafkactl config current-context 2>/dev/null)
+	if command -v kaf >/dev/null 2>&1; then
+		current_context=$(kaf config current-context 2>/dev/null)
 	fi
 
 	if [[ -z "$current_context" ]]; then
@@ -50,4 +50,4 @@ function kafkactl-tmux() {
 
 }
 
-kafkactl-tmux "$@"
+kaf-tmux "$@"
