@@ -104,6 +104,7 @@ return {
                                 unusedparams = true,
                                 unusedwrite = true,
                                 unusedvariable = true,
+                                useany = true,
                             },
                             staticcheck = true,
 
