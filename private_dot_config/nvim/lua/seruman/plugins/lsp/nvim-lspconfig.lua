@@ -245,6 +245,7 @@ return {
                 lua_ls = setup_lua_ls,
                 jdtls = setup_default,
                 tsserver = setup_default,
+                jsonls = setup_default,
                 yamlls = setup_yamlls,
                 terraformls = setup_default,
                 rust_analyzer = setup_rust_analyzer,
