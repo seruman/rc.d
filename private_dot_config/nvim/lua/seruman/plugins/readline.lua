@@ -1,6 +1,6 @@
 return {
     {
-        "linty-org/readline.nvim",
+        "assistcontrol/readline.nvim",
         keys = {
             {
                 '<M-f>',
