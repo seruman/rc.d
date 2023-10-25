@@ -36,6 +36,7 @@ return {
                 "toml",
                 "yaml",
                 "zig",
+                "http",
             }
 
             require('nvim-treesitter.configs').setup({
