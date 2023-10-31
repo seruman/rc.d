@@ -1,5 +1,6 @@
 env:
   TERM: xterm-256color
+  COLORFGBG: 0;15
 
 window:
   # Window dimensions (changes require restart)
