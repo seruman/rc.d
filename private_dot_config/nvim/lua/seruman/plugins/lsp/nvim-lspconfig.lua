@@ -251,6 +251,7 @@ return {
                 rust_analyzer = setup_rust_analyzer,
                 zls = setup_default,
                 clangd = setup_default,
+                tailwindcss = setup_default,
             }
 
             local capabilities = require("cmp_nvim_lsp").default_capabilities({
