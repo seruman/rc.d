@@ -6,11 +6,11 @@ return {
             require("ibl").setup {
                 enabled = false,
                 indent = {
-                    highlight = 'IndentBlanklineChar',
+                    -- highlight = 'IndentBlanklineChar',
                     -- char = "",
                 },
                 whitespace = {
-                    highlight = 'IndentBlanklineSpaceChar',
+                    -- highlight = 'IndentBlanklineSpaceChar',
                     remove_blankline_trail = false,
                 },
                 scope = { enabled = false },
