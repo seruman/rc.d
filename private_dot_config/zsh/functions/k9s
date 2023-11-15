@@ -1,0 +1,4 @@
+# vi: ft=zsh
+#
+# NOTE(selman): k9s uses gdamore/tcell which does not know xterm-ghostty.
+TERM=xterm-256color =k9s "$@"
