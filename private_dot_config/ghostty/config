@@ -6,14 +6,13 @@ mouse-hide-while-typing = true
 
 cursor-style = block
 cursor-style-blink = false
+shell-integration-features = no-cursor
 
 command = zsh
 command-arg = -l
 command-arg = -c
 command-arg = tmux new -A -s main
 
-# NOTE(selman): Tmux :( . It is enabled in zshrc.d/ just in case.
-shell-integration = none
 
 font-family = "Berkeley Mono"
 font-size = 16
