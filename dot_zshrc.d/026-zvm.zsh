@@ -1,7 +1,5 @@
-if [[ -n "$(command -v zvm)" ]]; then
-    path=(
-        "$HOME/.zvm/self"
-        "$HOME/.zvm/bin"
-        $path
-    )
-fi
+path=(
+	"$HOME/.zvm/self"(N)
+	"$HOME/.zvm/bin"(N)
+	$path
+)
