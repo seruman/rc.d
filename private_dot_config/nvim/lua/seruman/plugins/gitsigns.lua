@@ -4,10 +4,10 @@ return {
         dependencies = {
             "nvim-lua/plenary.nvim",
         },
-        opts = {
+        opts = function()
             -- TODO(selman): Is needed?
             -- on_attach = function(bufnr)
-            --     local gs = package.loaded.gitsigns
+            local gs = require('gitsigns')
 
             --     local function map(mode, l, r, opts)
             --         opts = opts or {}
@@ -29,9 +29,9 @@ return {
             --     end, { expr = true })
 
             --     -- Actions
-            --     map('n', '<leader>hs', gs.stage_hunk)
+            vim.keymap.set('n', '<leader>hs', gs.stage_hunk)
             --     map('n', '<leader>hr', gs.reset_hunk)
-            --     map('v', '<leader>hs', function() gs.stage_hunk { vim.fn.line("."), vim.fn.line("v") } end)
+            vim.keymap.set('v', '<leader>hs', function() gs.stage_hunk { vim.fn.line("."), vim.fn.line("v") } end)
             --     map('v', '<leader>hr', function() gs.reset_hunk { vim.fn.line("."), vim.fn.line("v") } end)
             --     map('n', '<leader>hS', gs.stage_buffer)
             --     map('n', '<leader>hu', gs.undo_stage_hunk)
@@ -46,6 +46,6 @@ return {
             --     -- Text object
             --     map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
             -- end
-        }
+        end
     },
 }
