@@ -112,3 +112,7 @@ vim.api.nvim_create_autocmd('WinLeave', {
         vim.opt_local.cursorline = false
     end,
 })
+
+if vim.env.GHOSTTY_RESOURCES_DIR and vim.fn.isdirectory(vim.env.GHOSTTY_RESOURCES_DIR .. "/vim") then
+    vim.opt.runtimepath:append(vim.env.GHOSTTY_RESOURCES_DIR .. "/vim")
+end
