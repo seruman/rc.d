@@ -9,10 +9,7 @@ cursor-style = block
 cursor-style-blink = false
 shell-integration-features = no-cursor
 
-command = zsh
-command-arg = -l
-command-arg = -c
-command-arg = tmux new -A -s main
+command = "zsh -l -c 'tmux new -A -s main'"
 
 
 font-family = "Berkeley Mono"
