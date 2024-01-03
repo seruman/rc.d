@@ -1,7 +1,7 @@
 # NOTE(selman): without decorations, tabs can not be used :(
 window-decoration = false
 window-padding-x = 10
-window-padding-y = 15
+window-padding-y = 10
 mouse-hide-while-typing = true
 macos-option-as-alt = left
 
