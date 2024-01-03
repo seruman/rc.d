@@ -13,12 +13,11 @@ command = "zsh -l -c 'tmux new -A -s main'"
 
 
 font-family = "Berkeley Mono"
-font-size = 16
+font-size = 15
 font-feature = -calt
-# TODO(selman): underlines and tmux border characters gets thicker as well.
-# Underline looks fine with default font but with Berkeley Mono it is
-# unreadable.
-# font-thicken=true
+font-thicken=true
+adjust-underline-thickness = -50%
+adjust-underline-position = 10%
 
 # Melange Light
 background=#F4F0ED
