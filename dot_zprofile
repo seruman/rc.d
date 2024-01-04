@@ -35,7 +35,7 @@ if command -v brew >/dev/null 2>&1; then
     brewcache=${XDG_CACHE_HOME:=~/.cache}/zsh/homebrew.zsh
     [[ -d $brewcache:h ]] || mkdir -p $brewcache:h
     if [[ ! -f $brewcache ]]; then
-      brew shellenv 2> /dev/null | awk '/export HOME/{print}' > $brewcache
+      brew shellenv 2> /dev/null | awk '/export HOME/{print};/export MAN/{print};/export INFO/{print}' > $brewcache
     fi
     source $brewcache
     unset brewcache
