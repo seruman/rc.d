@@ -11,6 +11,22 @@ shell-integration-features = no-cursor
 
 command = "zsh -l -c 'tmux new -A -s main'"
 
+# Unbind split bindings
+keybind = super+alt+left=unbind
+keybind = super+d=unbind
+keybind = super+right_bracket=unbind
+keybind = super+alt+right=unbind
+keybind = super+ctrl+down=unbind
+keybind = super+left_bracket=unbind
+keybind = alt+shift+equal=unbind
+keybind = super+ctrl+left=unbind
+keybind = super+shift+d=unbind
+keybind = super+ctrl+right=unbind
+keybind = super+alt+down=unbind
+keybind = super+alt+up=unbind
+keybind = super+shift+enter=unbind
+keybind = super+ctrl+up=unbind
+
 
 font-family = "Berkeley Mono"
 font-size = 15
