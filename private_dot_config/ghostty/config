@@ -33,7 +33,7 @@ font-size = 15
 font-feature = -calt
 font-thicken=true
 adjust-underline-thickness = -50%
-adjust-underline-position = 10%
+adjust-cell-height = 10%
 
 # Melange Light
 background=#F4F0ED
