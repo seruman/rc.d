@@ -163,69 +163,18 @@ local keys = {
             end),
         },
     },
-    {
-        key = 'b',
-        mods = 'LEADER|CTRL',
-        action = wezterm.action.SendKey { key = 'b', mods = 'CTRL' },
-    },
-    {
-        key = '\\',
-        mods = 'LEADER',
-        action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' },
-    },
-    {
-        key = '-',
-        mods = 'LEADER',
-        action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' },
-    },
-    {
-        key = 'c',
-        mods = 'LEADER',
-        action = wezterm.action.SpawnTab('CurrentPaneDomain')
-    },
-    -- p/n previous next tab
-    {
-        key = 'p',
-        mods = 'LEADER',
-        action = wezterm.action.ActivateTabRelative(-1),
-    },
-    {
-        key = 'n',
-        mods = 'LEADER',
-        action = wezterm.action.ActivateTabRelative(1),
-    },
-    {
-        key = '[',
-        mods = 'LEADER',
-        action = wezterm.action.ActivateCopyMode
-    },
-    {
-        mods = 'LEADER',
-        key = 'z',
-        action = wezterm.action.TogglePaneZoomState
-    },
-
-    -- h/j/k/l activate pane
-    {
-        key = 'h',
-        mods = 'LEADER',
-        action = wezterm.action.ActivatePaneDirection('Left'),
-    },
-    {
-        key = 'j',
-        mods = 'LEADER',
-        action = wezterm.action.ActivatePaneDirection('Down'),
-    },
-    {
-        key = 'k',
-        mods = 'LEADER',
-        action = wezterm.action.ActivatePaneDirection('Up'),
-    },
-    {
-        key = 'l',
-        mods = 'LEADER',
-        action = wezterm.action.ActivatePaneDirection('Right'),
-    },
+    { key = 'b',  mods = 'LEADER|CTRL', action = wezterm.action.SendKey { key = 'b', mods = 'CTRL' } },
+    { key = '\\', mods = 'LEADER',      action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' }, },
+    { key = '-',  mods = 'LEADER',      action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' }, },
+    { key = 'c',  mods = 'LEADER',      action = wezterm.action.SpawnTab('CurrentPaneDomain') },
+    { key = 'p',  mods = 'LEADER',      action = wezterm.action.ActivateTabRelative(-1), },
+    { key = 'n',  mods = 'LEADER',      action = wezterm.action.ActivateTabRelative(1), },
+    { key = '[',  mods = 'LEADER',      action = wezterm.action.ActivateCopyMode },
+    { key = 'z',  mods = 'LEADER',      action = wezterm.action.TogglePaneZoomState },
+    { key = 'h',  mods = 'LEADER',      action = wezterm.action.ActivatePaneDirection('Left'), },
+    { key = 'j',  mods = 'LEADER',      action = wezterm.action.ActivatePaneDirection('Down'), },
+    { key = 'k',  mods = 'LEADER',      action = wezterm.action.ActivatePaneDirection('Up'), },
+    { key = 'l',  mods = 'LEADER',      action = wezterm.action.ActivatePaneDirection('Right'), },
 }
 
 for i = 1, 9 do
