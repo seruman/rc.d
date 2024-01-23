@@ -49,6 +49,23 @@ wezterm.on('update-status', function(window, pane)
             { Text = ' SEARCH ' },
             'ResetAttributes',
         }
+    elseif active_table == 'resize_mode' then
+        mode = wezterm.format {
+            { Background = { Color = '#7B4D7F' } },
+            { Foreground = { Color = '#FEFEFE' } },
+            { Text = ' RESIZE ' },
+            'ResetAttributes',
+        }
+    else
+        if active_table then
+            local t = active_table or ''
+            mode = wezterm.format {
+                { Background = { Color = '#485F84' } },
+                { Foreground = { Color = '#FEFEFE' } },
+                { Text = ' UNKNOWN: ' .. t .. ' ' },
+                'ResetAttributes',
+            }
+        end
     end
 
     -- if both leader and mode set
@@ -140,6 +157,61 @@ colorscheme.tab_bar = {
         italic = true,
     },
 }
+
+local resize_mode = {
+    {
+        key = "H",
+        mods = "SHIFT",
+        action = wezterm.action { AdjustPaneSize = { "Left", 5 } },
+    },
+    {
+        key = "H",
+        action = wezterm.action { AdjustPaneSize = { "Left", 5 } },
+    },
+    {
+        key = "h",
+        action = wezterm.action { AdjustPaneSize = { "Left", 5 } },
+    },
+    {
+        key = "J",
+        mods = "SHIFT",
+        action = wezterm.action { AdjustPaneSize = { "Down", 5 } },
+    },
+    {
+        key = "J",
+        action = wezterm.action { AdjustPaneSize = { "Down", 5 } },
+    },
+    {
+        key = "j",
+        action = wezterm.action { AdjustPaneSize = { "Down", 5 } },
+    },
+    {
+        key = "K",
+        mods = "SHIFT",
+        action = wezterm.action { AdjustPaneSize = { "Up", 5 } },
+    },
+    {
+        key = "K",
+        action = wezterm.action { AdjustPaneSize = { "Up", 5 } },
+    },
+    {
+        key = "k",
+        action = wezterm.action { AdjustPaneSize = { "Up", 5 } },
+    },
+    {
+        key = "L",
+        mods = "SHIFT",
+        action = wezterm.action { AdjustPaneSize = { "Right", 5 } },
+    },
+    {
+        key = "L",
+        action = wezterm.action { AdjustPaneSize = { "Right", 5 } },
+    },
+    {
+        key = "l",
+        action = wezterm.action { AdjustPaneSize = { "Right", 5 } },
+    },
+}
 local keys = {
     -- {
     --     key = "v",
@@ -175,6 +247,58 @@ local keys = {
     { key = 'j',  mods = 'LEADER',      action = wezterm.action.ActivatePaneDirection('Down'), },
     { key = 'k',  mods = 'LEADER',      action = wezterm.action.ActivatePaneDirection('Up'), },
     { key = 'l',  mods = 'LEADER',      action = wezterm.action.ActivatePaneDirection('Right'), },
+    {
+        key = "H",
+        mods = "LEADER|SHIFT",
+        action = wezterm.action.Multiple {
+            wezterm.action { AdjustPaneSize = { "Left", 5 } },
+            wezterm.action.ActivateKeyTable({
+                name = "resize_mode",
+                until_unkown = true,
+                one_shot = false,
+                timeout_milliseconds = 1000,
+            }),
+        }
+    },
+    {
+        key = "J",
+        mods = "LEADER|SHIFT",
+        action = wezterm.action.Multiple {
+            wezterm.action { AdjustPaneSize = { "Down", 5 } },
+            wezterm.action.ActivateKeyTable({
+                name = "resize_mode",
+                until_unkown = true,
+                one_shot = false,
+                timeout_milliseconds = 1000,
+            }),
+        }
+    },
+    {
+        key = "K",
+        mods = "LEADER|SHIFT",
+        action = wezterm.action.Multiple {
+            wezterm.action { AdjustPaneSize = { "Up", 5 } },
+            wezterm.action.ActivateKeyTable({
+                name = "resize_mode",
+                until_unkown = true,
+                one_shot = false,
+                timeout_milliseconds = 1000,
+            }),
+        }
+    },
+    {
+        key = "L",
+        mods = "LEADER|SHIFT",
+        action = wezterm.action.Multiple {
+            wezterm.action { AdjustPaneSize = { "Right", 5 } },
+            wezterm.action.ActivateKeyTable({
+                name = "resize_mode",
+                until_unkown = true,
+                one_shot = false,
+                timeout_milliseconds = 1000,
+            }),
+        }
+    },
 }
 
 for i = 1, 9 do
@@ -263,7 +387,6 @@ wezterm.on(
     end
 )
 
-
 return {
     -- NOTE(selman): causes redraw in neovim.
     -- unix_domains = {
@@ -295,6 +418,7 @@ return {
     key_tables = {
         copy_mode = copy_mode,
         search_mode = search_mode,
+        resize_mode = resize_mode,
     },
     mouse_bindings = mouse_bindings,
     leader = { key = "b", mods = "CTRL", timeout_milliseconds = 1000 },
