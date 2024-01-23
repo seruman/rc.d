@@ -83,7 +83,8 @@ local colorscheme = {
         "#854882", -- bright magenta
         "#436460", -- bright cyan
         "#6B5C4D"  -- bright white
-    }
+    },
+    split         = "#839496"
 }
 
 
@@ -109,7 +110,7 @@ local window_frame = {
     -- the window is not focused
     inactive_titlebar_bg = '#eee8d5',
 }
-colorscheme.compose_cursor = 'orange'
+-- colorscheme.compose_cursor = 'blue'
 colorscheme.tab_bar = {
     background = window_frame.active_titlebar_bg,
     inactive_tab_edge = '#eee8d5',
@@ -140,11 +141,11 @@ colorscheme.tab_bar = {
     },
 }
 local keys = {
-    {
-        key = "v",
-        mods = "CTRL",
-        action = wezterm.action { EmitEvent = "trigger-vim-with-scrollback" }
-    },
+    -- {
+    --     key = "v",
+    --     mods = "CTRL",
+    --     action = wezterm.action { EmitEvent = "trigger-vim-with-scrollback" }
+    -- },
     { key = 'UpArrow',   mods = 'SHIFT', action = wezterm.action.ScrollToPrompt(-1) },
     { key = 'DownArrow', mods = 'SHIFT', action = wezterm.action.ScrollToPrompt(1) },
     {
@@ -197,9 +198,43 @@ local keys = {
         key = '[',
         mods = 'LEADER',
         action = wezterm.action.ActivateCopyMode
-    }
+    },
+    {
+        mods = 'LEADER',
+        key = 'z',
+        action = wezterm.action.TogglePaneZoomState
+    },
 
+    -- h/j/k/l activate pane
+    {
+        key = 'h',
+        mods = 'LEADER',
+        action = wezterm.action.ActivatePaneDirection('Left'),
+    },
+    {
+        key = 'j',
+        mods = 'LEADER',
+        action = wezterm.action.ActivatePaneDirection('Down'),
+    },
+    {
+        key = 'k',
+        mods = 'LEADER',
+        action = wezterm.action.ActivatePaneDirection('Up'),
+    },
+    {
+        key = 'l',
+        mods = 'LEADER',
+        action = wezterm.action.ActivatePaneDirection('Right'),
+    },
 }
+
+for i = 1, 9 do
+    table.insert(keys, {
+        key = tostring(i),
+        mods = 'LEADER',
+        action = wezterm.action.ActivateTab(i - 1),
+    })
+end
 
 local mouse_bindings = {
     {
@@ -272,14 +307,20 @@ wezterm.on(
         local pane = tab.active_pane
         local title = basename(pane.foreground_process_name)
             .. ' '
-            .. pane.pane_id
+            .. tab.tab_index + 1
         return {
             { Text = ' ' .. title .. ' ' },
         }
     end
 )
 
+
 return {
+    -- NOTE(selman): causes redraw in neovim.
+    -- unix_domains = {
+    --     { name = "main" },
+    -- },
+    -- default_gui_startup_args = { "connect", "main" },
     -- default_prog = { '/opt/homebrew/bin/fish', '-l' },
     window_frame = window_frame,
     front_end = "WebGpu",
@@ -291,7 +332,8 @@ return {
     font = wezterm.font('Berkeley Mono', { weight = 800, stretch = "Normal", style = "Normal" }),
     -- freetype_load_flags = 'NO_HINTING'
     font_size = 15.0,
-    line_height = 1,
+    -- NOTE(selman): to hide inactive cursor.
+    -- cursor_thickness = -2,
     window_decorations = "NONE | RESIZE",
     adjust_window_size_when_changing_font_size = false,
     window_padding = {
@@ -309,4 +351,12 @@ return {
     leader = { key = "b", mods = "CTRL", timeout_milliseconds = 1000 },
     inactive_pane_hsb = {},
     force_reverse_video_cursor = true,
+    tab_and_split_indices_are_zero_based = false,
 }
+
+-- for k, v in pairs(overrides) do
+--     config[k] = v
+-- end
+--
+
+-- return config
