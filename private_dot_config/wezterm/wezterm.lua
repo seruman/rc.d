@@ -1,5 +1,6 @@
 -- https://github.com/wez/wezterm/blob/main/assets/shell-integration/wezterm.sh
 local wezterm = require 'wezterm'
+local act = wezterm.action
 local io = require 'io';
 local os = require 'os';
 wezterm.on("trigger-vim-with-scrollback", function(window, pane)
@@ -17,8 +18,8 @@ wezterm.on("trigger-vim-with-scrollback", function(window, pane)
     f:close();
 
     -- Open a new window running vim and tell it to open the file
-    window:perform_action(wezterm.action { SpawnCommandInNewTab = {
-        args = { "nvim", name } }
+    window:perform_action(act { SpawnCommandInNewTab = {
+        args = { "nvim", name, }, },
     }, pane)
 end)
 wezterm.on('update-status', function(window, pane)
@@ -26,9 +27,9 @@ wezterm.on('update-status', function(window, pane)
     if window:leader_is_active() then
         -- leader = ' WAIT '
         leader = wezterm.format {
-            { Background = { Color = '#485F84' } },
-            { Foreground = { Color = '#FEFEFE' } },
-            { Text = ' WAIT ' },
+            { Background = { Color = '#485F84', }, },
+            { Foreground = { Color = '#FEFEFE', }, },
+            { Text = ' WAIT ', },
             'ResetAttributes',
         }
     end
@@ -37,32 +38,32 @@ wezterm.on('update-status', function(window, pane)
     local active_table = window:active_key_table()
     if active_table == 'copy_mode' then
         mode = wezterm.format {
-            { Background = { Color = '#C1823E' } },
-            { Foreground = { Color = '#FEFEFE' } },
-            { Text = ' COPY ' },
+            { Background = { Color = '#C1823E', }, },
+            { Foreground = { Color = '#FEFEFE', }, },
+            { Text = ' COPY ', },
             'ResetAttributes',
         }
     elseif active_table == 'search_mode' then
         mode = wezterm.format {
-            { Background = { Color = '#869496' } },
-            { Foreground = { Color = '#FEFEFE' } },
-            { Text = ' SEARCH ' },
+            { Background = { Color = '#869496', }, },
+            { Foreground = { Color = '#FEFEFE', }, },
+            { Text = ' SEARCH ', },
             'ResetAttributes',
         }
     elseif active_table == 'resize_mode' then
         mode = wezterm.format {
-            { Background = { Color = '#7B4D7F' } },
-            { Foreground = { Color = '#FEFEFE' } },
-            { Text = ' RESIZE ' },
+            { Background = { Color = '#7B4D7F', }, },
+            { Foreground = { Color = '#FEFEFE', }, },
+            { Text = ' RESIZE ', },
             'ResetAttributes',
         }
     else
         if active_table then
             local t = active_table or ''
             mode = wezterm.format {
-                { Background = { Color = '#485F84' } },
-                { Foreground = { Color = '#FEFEFE' } },
-                { Text = ' UNKNOWN: ' .. t .. ' ' },
+                { Background = { Color = '#485F84', }, },
+                { Foreground = { Color = '#FEFEFE', }, },
+                { Text = ' UNKNOWN: ' .. t .. ' ', },
                 'ResetAttributes',
             }
         end
@@ -89,7 +90,7 @@ local colorscheme = {
         "#485F84", -- blue
         "#BE79BB", -- magenta
         "#729893", -- cyan
-        "#A38D78"  -- white
+        "#A38D78", -- white
     },
     brights       = {
         "#867462", -- bright black
@@ -99,9 +100,9 @@ local colorscheme = {
         "#ABB9D6", -- bright blue
         "#854882", -- bright magenta
         "#436460", -- bright cyan
-        "#6B5C4D"  -- bright white
+        "#6B5C4D", -- bright white
     },
-    split         = "#839496"
+    split         = "#839496",
 }
 
 
@@ -114,7 +115,7 @@ local window_frame = {
     -- fallback fonts you may have used there.
     -- font = wezterm.font { family = 'Roboto', weight = 'Bold' },
     -- font = wezterm.font('Berkeley Mono', { weight = 800, stretch = "Normal", style = "Normal" }),
-    font = wezterm.font('Berkeley Mono', { weight = 800, stretch = "Normal", style = "Normal" }),
+    font = wezterm.font('Berkeley Mono', { weight = 800, stretch = "Normal", style = "Normal", }),
     -- The size of the font in the tab bar.
     -- Default to 10.0 on Windows but 12.0 on other systems
     font_size = 13.0,
@@ -162,68 +163,68 @@ local resize_mode = {
     {
         key = "H",
         mods = "SHIFT",
-        action = wezterm.action { AdjustPaneSize = { "Left", 5 } },
+        action = act { AdjustPaneSize = { "Left", 5, }, },
     },
     {
         key = "H",
-        action = wezterm.action { AdjustPaneSize = { "Left", 5 } },
+        action = act { AdjustPaneSize = { "Left", 5, }, },
     },
     {
         key = "h",
-        action = wezterm.action { AdjustPaneSize = { "Left", 5 } },
+        action = act { AdjustPaneSize = { "Left", 5, }, },
     },
     {
         key = "J",
         mods = "SHIFT",
-        action = wezterm.action { AdjustPaneSize = { "Down", 5 } },
+        action = act { AdjustPaneSize = { "Down", 5, }, },
     },
     {
         key = "J",
-        action = wezterm.action { AdjustPaneSize = { "Down", 5 } },
+        action = act { AdjustPaneSize = { "Down", 5, }, },
     },
     {
         key = "j",
-        action = wezterm.action { AdjustPaneSize = { "Down", 5 } },
+        action = act { AdjustPaneSize = { "Down", 5, }, },
     },
     {
         key = "K",
         mods = "SHIFT",
-        action = wezterm.action { AdjustPaneSize = { "Up", 5 } },
+        action = act { AdjustPaneSize = { "Up", 5, }, },
     },
     {
         key = "K",
-        action = wezterm.action { AdjustPaneSize = { "Up", 5 } },
+        action = act { AdjustPaneSize = { "Up", 5, }, },
     },
     {
         key = "k",
-        action = wezterm.action { AdjustPaneSize = { "Up", 5 } },
+        action = act { AdjustPaneSize = { "Up", 5, }, },
     },
     {
         key = "L",
         mods = "SHIFT",
-        action = wezterm.action { AdjustPaneSize = { "Right", 5 } },
+        action = act { AdjustPaneSize = { "Right", 5, }, },
     },
     {
         key = "L",
-        action = wezterm.action { AdjustPaneSize = { "Right", 5 } },
+        action = act { AdjustPaneSize = { "Right", 5, }, },
     },
     {
         key = "l",
-        action = wezterm.action { AdjustPaneSize = { "Right", 5 } },
+        action = act { AdjustPaneSize = { "Right", 5, }, },
     },
 }
 local keys = {
     -- {
     --     key = "v",
     --     mods = "CTRL",
-    --     action = wezterm.action { EmitEvent = "trigger-vim-with-scrollback" }
+    --     action = act { EmitEvent = "trigger-vim-with-scrollback" }
     -- },
-    { key = 'UpArrow',   mods = 'SHIFT', action = wezterm.action.ScrollToPrompt(-1) },
-    { key = 'DownArrow', mods = 'SHIFT', action = wezterm.action.ScrollToPrompt(1) },
+    { key = 'UpArrow',   mods = 'SHIFT', action = act.ScrollToPrompt(-1), },
+    { key = 'DownArrow', mods = 'SHIFT', action = act.ScrollToPrompt(1), },
     {
         key = 'E',
         mods = 'CTRL|SHIFT',
-        action = wezterm.action.PromptInputLine {
+        action = act.PromptInputLine {
             description = 'Enter new name for tab',
             action = wezterm.action_callback(function(window, pane, line)
                 -- line will be `nil` if they hit escape without entering anything
@@ -235,70 +236,70 @@ local keys = {
             end),
         },
     },
-    { key = 'b',  mods = 'LEADER|CTRL', action = wezterm.action.SendKey { key = 'b', mods = 'CTRL' } },
-    { key = '\\', mods = 'LEADER',      action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' }, },
-    { key = '-',  mods = 'LEADER',      action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' }, },
-    { key = 'c',  mods = 'LEADER',      action = wezterm.action.SpawnTab('CurrentPaneDomain') },
-    { key = 'p',  mods = 'LEADER',      action = wezterm.action.ActivateTabRelative(-1), },
-    { key = 'n',  mods = 'LEADER',      action = wezterm.action.ActivateTabRelative(1), },
-    { key = '[',  mods = 'LEADER',      action = wezterm.action.ActivateCopyMode },
-    { key = 'z',  mods = 'LEADER',      action = wezterm.action.TogglePaneZoomState },
-    { key = 'h',  mods = 'LEADER',      action = wezterm.action.ActivatePaneDirection('Left'), },
-    { key = 'j',  mods = 'LEADER',      action = wezterm.action.ActivatePaneDirection('Down'), },
-    { key = 'k',  mods = 'LEADER',      action = wezterm.action.ActivatePaneDirection('Up'), },
-    { key = 'l',  mods = 'LEADER',      action = wezterm.action.ActivatePaneDirection('Right'), },
-    { key = 'k',  mods = 'CTRL',        action = wezterm.action.ClearScrollback 'ScrollbackAndViewport', },
+    { key = 'b',  mods = 'LEADER|CTRL', action = act.SendKey { key = 'b', mods = 'CTRL', }, },
+    { key = '\\', mods = 'LEADER',      action = act.SplitHorizontal { domain = 'CurrentPaneDomain', }, },
+    { key = '-',  mods = 'LEADER',      action = act.SplitVertical { domain = 'CurrentPaneDomain', }, },
+    { key = 'c',  mods = 'LEADER',      action = act.SpawnTab('CurrentPaneDomain'), },
+    { key = 'p',  mods = 'LEADER',      action = act.ActivateTabRelative(-1), },
+    { key = 'n',  mods = 'LEADER',      action = act.ActivateTabRelative(1), },
+    { key = '[',  mods = 'LEADER',      action = act.ActivateCopyMode, },
+    { key = 'z',  mods = 'LEADER',      action = act.TogglePaneZoomState, },
+    { key = 'h',  mods = 'LEADER',      action = act.ActivatePaneDirection('Left'), },
+    { key = 'j',  mods = 'LEADER',      action = act.ActivatePaneDirection('Down'), },
+    { key = 'k',  mods = 'LEADER',      action = act.ActivatePaneDirection('Up'), },
+    { key = 'l',  mods = 'LEADER',      action = act.ActivatePaneDirection('Right'), },
+    { key = 'k',  mods = 'CTRL',        action = act.ClearScrollback 'ScrollbackAndViewport', },
     {
         key = "H",
         mods = "LEADER|SHIFT",
-        action = wezterm.action.Multiple {
-            wezterm.action { AdjustPaneSize = { "Left", 5 } },
-            wezterm.action.ActivateKeyTable({
+        action = act.Multiple {
+            act { AdjustPaneSize = { "Left", 5, }, },
+            act.ActivateKeyTable({
                 name = "resize_mode",
                 until_unkown = true,
                 one_shot = false,
                 timeout_milliseconds = 1000,
             }),
-        }
+        },
     },
     {
         key = "J",
         mods = "LEADER|SHIFT",
-        action = wezterm.action.Multiple {
-            wezterm.action { AdjustPaneSize = { "Down", 5 } },
-            wezterm.action.ActivateKeyTable({
+        action = act.Multiple {
+            act { AdjustPaneSize = { "Down", 5, }, },
+            act.ActivateKeyTable({
                 name = "resize_mode",
                 until_unkown = true,
                 one_shot = false,
                 timeout_milliseconds = 1000,
             }),
-        }
+        },
     },
     {
         key = "K",
         mods = "LEADER|SHIFT",
-        action = wezterm.action.Multiple {
-            wezterm.action { AdjustPaneSize = { "Up", 5 } },
-            wezterm.action.ActivateKeyTable({
+        action = act.Multiple {
+            act { AdjustPaneSize = { "Up", 5, }, },
+            act.ActivateKeyTable({
                 name = "resize_mode",
                 until_unkown = true,
                 one_shot = false,
                 timeout_milliseconds = 1000,
             }),
-        }
+        },
     },
     {
         key = "L",
         mods = "LEADER|SHIFT",
-        action = wezterm.action.Multiple {
-            wezterm.action { AdjustPaneSize = { "Right", 5 } },
-            wezterm.action.ActivateKeyTable({
+        action = act.Multiple {
+            act { AdjustPaneSize = { "Right", 5, }, },
+            act.ActivateKeyTable({
                 name = "resize_mode",
                 until_unkown = true,
                 one_shot = false,
                 timeout_milliseconds = 1000,
             }),
-        }
+        },
     },
 }
 
@@ -306,14 +307,14 @@ for i = 1, 9 do
     table.insert(keys, {
         key = tostring(i),
         mods = 'LEADER',
-        action = wezterm.action.ActivateTab(i - 1),
+        action = act.ActivateTab(i - 1),
     })
 end
 
 local mouse_bindings = {
     {
-        event = { Down = { streak = 3, button = 'Left' } },
-        action = wezterm.action.SelectTextAtMouseCursor 'SemanticZone',
+        event = { Down = { streak = 3, button = 'Left', }, },
+        action = act.SelectTextAtMouseCursor 'SemanticZone',
         mods = 'NONE',
     },
 }
@@ -330,36 +331,39 @@ if wezterm.gui then
         {
             key = "Escape",
             mods = "NONE",
-            action = wezterm.action.Multiple {
-                wezterm.action.ClearSelection,
-                wezterm.action { CopyMode = "ClearPattern" },
-                wezterm.action { CopyMode = "Close" },
-            }
+            action = act.Multiple {
+                act.ClearSelection,
+                act { CopyMode = "ClearPattern", },
+                act { CopyMode = "Close", },
+            },
         },
-        { key = "h", mods = "NONE", action = wezterm.action { CopyMode = "MoveLeft" } },
-        { key = "j", mods = "NONE", action = wezterm.action { CopyMode = "MoveDown" } },
-        { key = "k", mods = "NONE", action = wezterm.action { CopyMode = "MoveUp" } },
-        { key = "l", mods = "NONE", action = wezterm.action { CopyMode = "MoveRight" } },
+        { key = "h", mods = "NONE", action = act { CopyMode = "MoveLeft", }, },
+        { key = "j", mods = "NONE", action = act { CopyMode = "MoveDown", }, },
+        { key = "k", mods = "NONE", action = act { CopyMode = "MoveUp", }, },
+        { key = "l", mods = "NONE", action = act { CopyMode = "MoveRight", }, },
         -- Enter search mode to edit the pattern.
         -- When the search pattern is an empty string the existing pattern is preserved
         {
             key = "/",
             mods = "NONE",
-            action = wezterm.action { Search = { CaseSensitiveString = "" } },
+            action = act { Search = { CaseSensitiveString = "", }, },
         },
         -- navigate any search mode results
-        { key = "n", mods = "NONE",  action = wezterm.action { CopyMode = "NextMatch" } },
-        { key = "N", mods = "SHIFT", action = wezterm.action { CopyMode = "PriorMatch" } },
-        { key = 'g', mods = 'NONE',  action = wezterm.action.CopyMode 'MoveToScrollbackTop', },
-        { key = 'G', mods = 'NONE',  action = wezterm.action.CopyMode 'MoveToScrollbackBottom', },
+        { key = "n",     mods = "NONE",  action = act { CopyMode = "NextMatch", }, },
+        { key = "N",     mods = "SHIFT", action = act { CopyMode = "PriorMatch", }, },
+        { key = 'g',     mods = 'NONE',  action = act.CopyMode 'MoveToScrollbackTop', },
+        { key = 'G',     mods = 'NONE',  action = act.CopyMode 'MoveToScrollbackBottom', },
+        { key = 'Enter', mods = 'NONE',  action = act.CopyMode { SetSelectionMode = 'SemanticZone', }, },
+        { key = 'k',     mods = 'SHIFT', action = act.CopyMode 'MoveBackwardSemanticZone', },
+        { key = 'j',     mods = 'SHIFT', action = act.CopyMode 'MoveForwardSemanticZone', },
     }
 
     search_mode = wezterm.gui.default_key_tables().search_mode
     local my_search_mode = {
-        { key = "Escape", mods = "NONE", action = wezterm.action { CopyMode = "Close" } },
+        { key = "Escape", mods = "NONE", action = act { CopyMode = "Close", }, },
         -- Go back to copy mode when pressing enter, so that we can use unmodified keys like "n"
         -- to navigate search results without conflicting with typing into the search area.
-        { key = "Enter",  mods = "NONE", action = "ActivateCopyMode" },
+        { key = "Enter",  mods = "NONE", action = "ActivateCopyMode", },
     }
 
     for _, val in ipairs(my_copy_mode) do
@@ -383,7 +387,7 @@ wezterm.on(
             .. ' '
             .. tab.tab_index + 1
         return {
-            { Text = ' ' .. title .. ' ' },
+            { Text = ' ' .. title .. ' ', },
         }
     end
 )
@@ -402,7 +406,7 @@ return {
     use_fancy_tab_bar = true,
     show_new_tab_button_in_tab_bar = true,
     colors = colorscheme,
-    font = wezterm.font('Berkeley Mono', { weight = 800, stretch = "Normal", style = "Normal" }),
+    font = wezterm.font('Berkeley Mono', { weight = 800, stretch = "Normal", style = "Normal", }),
     -- freetype_load_flags = 'NO_HINTING'
     font_size = 15.0,
     -- NOTE(selman): to hide inactive cursor.
@@ -422,7 +426,7 @@ return {
         resize_mode = resize_mode,
     },
     mouse_bindings = mouse_bindings,
-    leader = { key = "b", mods = "CTRL", timeout_milliseconds = 1000 },
+    leader = { key = "b", mods = "CTRL", timeout_milliseconds = 1000, },
     inactive_pane_hsb = {},
     force_reverse_video_cursor = true,
     tab_and_split_indices_are_zero_based = false,
