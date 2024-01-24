@@ -247,6 +247,7 @@ local keys = {
     { key = 'j',  mods = 'LEADER',      action = wezterm.action.ActivatePaneDirection('Down'), },
     { key = 'k',  mods = 'LEADER',      action = wezterm.action.ActivatePaneDirection('Up'), },
     { key = 'l',  mods = 'LEADER',      action = wezterm.action.ActivatePaneDirection('Right'), },
+    { key = 'k',  mods = 'CTRL',        action = wezterm.action.ClearScrollback 'ScrollbackAndViewport', },
     {
         key = "H",
         mods = "LEADER|SHIFT",
