@@ -19,12 +19,7 @@ wezterm.on("trigger-vim-with-scrollback", function(window, pane)
 	f:close()
 
 	-- Open a new window running vim and tell it to open the file
-	window:perform_action(
-		act({ SpawnCommandInNewTab = {
-			args = { "nvim", name },
-		} }),
-		pane
-	)
+	window:perform_action(act({ SpawnCommandInNewTab = { args = { "nvim", name } } }), pane)
 end)
 
 wezterm.on("update-status", function(window, pane)
@@ -327,6 +322,7 @@ local mouse_bindings = {
 -- https://www.florianbellmann.com/blog/switch-from-tmux-to-wezterm
 -- https://github.com/crides/dotfiles/blob/249a84d00003efc485fc3f81cee05f2562d99585/config/wezterm/wezterm.lua#L329
 -- https://github.com/mhanberg/.dotfiles/blob/3a82ead67b241d14ffba2cd7f55bbdb0b7cd925c/config/wezterm/wezterm.lua
+-- https://github.com/yutkat/dotfiles/blob/4760f2bdc33772d1b31bdaba5d5dbb1ce0657bc9/.config/wezterm/keybinds.lua#L212
 local copy_mode = nil
 local search_mode = nil
 if wezterm.gui then
@@ -337,14 +333,45 @@ if wezterm.gui then
 			mods = "NONE",
 			action = act.Multiple({
 				act.ClearSelection,
-				act({ CopyMode = "ClearPattern" }),
-				act({ CopyMode = "Close" }),
+				act.CopyMode("ClearPattern"),
+				act.CopyMode("Close"),
 			}),
 		},
-		{ key = "h", mods = "NONE", action = act({ CopyMode = "MoveLeft" }) },
-		{ key = "j", mods = "NONE", action = act({ CopyMode = "MoveDown" }) },
-		{ key = "k", mods = "NONE", action = act({ CopyMode = "MoveUp" }) },
-		{ key = "l", mods = "NONE", action = act({ CopyMode = "MoveRight" }) },
+		{
+			key = "q",
+			mods = "NONE",
+			action = act.Multiple({
+				act.ClearSelection,
+				act.CopyMode("ClearPattern"),
+				act.CopyMode("Close"),
+			}),
+		},
+		-- cursor
+		{ key = "h", mods = "NONE", action = act.CopyMode("MoveLeft") },
+		{ key = "j", mods = "NONE", action = act.CopyMode("MoveDown") },
+		{ key = "k", mods = "NONE", action = act.CopyMode("MoveUp") },
+		{ key = "l", mods = "NONE", action = act.CopyMode("MoveRight") },
+		-- word
+		{ key = "w", mods = "NONE", action = act.CopyMode("MoveForwardWord") },
+		{ key = "b", mods = "NONE", action = act.CopyMode("MoveBackwardWord") },
+		{
+			key = "e",
+			mods = "NONE",
+			action = act({
+				Multiple = {
+					act.CopyMode("MoveRight"),
+					act.CopyMode("MoveForwardWord"),
+					act.CopyMode("MoveLeft"),
+				},
+			}),
+		},
+		-- line
+		{ key = "0", mods = "NONE", action = act.CopyMode("MoveToStartOfLine") },
+		{ key = "$", mods = "SHIFT", action = act.CopyMode("MoveToEndOfLineContent") },
+		{ key = "$", mods = "NONE", action = act.CopyMode("MoveToEndOfLineContent") },
+		{ key = "^", mods = "SHIFT", action = act.CopyMode("MoveToStartOfLineContent") },
+		{ key = "^", mods = "NONE", action = act.CopyMode("MoveToStartOfLineContent") },
+
 		-- Enter search mode to edit the pattern.
 		-- When the search pattern is an empty string the existing pattern is preserved
 		{
@@ -353,8 +380,22 @@ if wezterm.gui then
 			action = act({ Search = { CaseSensitiveString = "" } }),
 		},
 		-- navigate any search mode results
-		{ key = "n", mods = "NONE", action = act({ CopyMode = "NextMatch" }) },
-		{ key = "N", mods = "SHIFT", action = act({ CopyMode = "PriorMatch" }) },
+		{
+			key = "n",
+			mods = "NONE",
+			action = act.Multiple({
+				act.CopyMode("NextMatch"),
+				act.CopyMode("ClearSelectionMode"),
+			}),
+		},
+		{
+			key = "N",
+			mods = "SHIFT",
+			action = act.Multiple({
+				act.CopyMode("PriorMatch"),
+				act.CopyMode("ClearSelectionMode"),
+			}),
+		},
 		{ key = "g", mods = "NONE", action = act.CopyMode("MoveToScrollbackTop") },
 		{ key = "G", mods = "NONE", action = act.CopyMode("MoveToScrollbackBottom") },
 		{ key = "Enter", mods = "NONE", action = act.CopyMode({ SetSelectionMode = "SemanticZone" }) },
@@ -364,10 +405,18 @@ if wezterm.gui then
 
 	search_mode = wezterm.gui.default_key_tables().search_mode
 	local my_search_mode = {
-		{ key = "Escape", mods = "NONE", action = act({ CopyMode = "Close" }) },
+		{ key = "Escape", mods = "NONE", action = act.CopyMode("Close") },
+		{ key = "q", mods = "CTRL", action = act.CopyMode("Close") },
 		-- Go back to copy mode when pressing enter, so that we can use unmodified keys like "n"
 		-- to navigate search results without conflicting with typing into the search area.
-		{ key = "Enter", mods = "NONE", action = "ActivateCopyMode" },
+		{
+			key = "Enter",
+			mods = "NONE",
+			action = act.Multiple({
+				act.CopyMode("ClearSelectionMode"),
+				act.ActivateCopyMode,
+			}),
+		},
 	}
 
 	for _, val in ipairs(my_copy_mode) do
