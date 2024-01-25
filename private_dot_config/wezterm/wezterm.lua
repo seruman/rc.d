@@ -248,6 +248,7 @@ local keys = {
 	{ key = "k", mods = "LEADER", action = act.ActivatePaneDirection("Up") },
 	{ key = "l", mods = "LEADER", action = act.ActivatePaneDirection("Right") },
 	{ key = "k", mods = "CTRL", action = act.ClearScrollback("ScrollbackAndViewport") },
+	{ key = "f", mods = "LEADER|CTRL", action = act.ActivateCommandPalette },
 	{
 		key = "H",
 		mods = "LEADER|SHIFT",
