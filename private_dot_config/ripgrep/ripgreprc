@@ -1,3 +1,4 @@
 --hidden
+--glob=!.git/
 --glob=!{.direnv,vendor}
 --glob=!{**/.direnv,**/vendor}
