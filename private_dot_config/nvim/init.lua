@@ -83,7 +83,7 @@ vim.cmd("inoreabbrev NOTE NOTE(selman):")
 local AugroupCursorLine = vim.api.nvim_create_augroup("CursorLine", { clear = true })
 vim.api.nvim_create_autocmd('VimEnter', {
     group = AugroupCursorLine,
-    pattern= '*',
+    pattern = '*',
     callback = function()
         vim.opt_local.cursorline = true
     end,
@@ -91,7 +91,7 @@ vim.api.nvim_create_autocmd('VimEnter', {
 
 vim.api.nvim_create_autocmd('WinEnter', {
     group = AugroupCursorLine,
-    pattern= '*',
+    pattern = '*',
     callback = function()
         vim.opt_local.cursorline = true
     end,
@@ -99,7 +99,7 @@ vim.api.nvim_create_autocmd('WinEnter', {
 
 vim.api.nvim_create_autocmd('BufWinEnter', {
     group = AugroupCursorLine,
-    pattern= '*',
+    pattern = '*',
     callback = function()
         vim.opt_local.cursorline = true
     end,
