@@ -107,10 +107,20 @@ vim.api.nvim_create_autocmd('BufWinEnter', {
 
 vim.api.nvim_create_autocmd('WinLeave', {
     group = AugroupCursorLine,
-    pattern= '*',
+    pattern = '*',
     callback = function()
         vim.opt_local.cursorline = false
     end,
+})
+
+vim.filetype.add({
+    filename = { [".swcrc"] = "json", },
+    pattern = {
+        ["%.env%.[%w_.-]+"] = "dotenv",
+        ["%.env"] = "dotenv",
+        ["%.envrc"] = "sh",
+        ["%.envrc%.?[%w_.-]*"] = "sh",
+    }
 })
 
 if vim.env.GHOSTTY_RESOURCES_DIR and vim.fn.isdirectory(vim.env.GHOSTTY_RESOURCES_DIR .. "/vim") then
