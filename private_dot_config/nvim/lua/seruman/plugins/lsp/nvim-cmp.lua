@@ -7,9 +7,11 @@ return {
             { "hrsh7th/cmp-cmdline" },
             { "hrsh7th/cmp-nvim-lsp" },
             { "hrsh7th/cmp-nvim-lsp-document-symbol" },
+            { "onsails/lspkind.nvim" }
         },
         config = function()
             local cmp = require("cmp")
+            local lspkind = require("lspkind")
             cmp.setup({
                 snippet = {
                     -- NOTE(selman): nvim-cmp requires a snippet engine to
@@ -34,20 +36,36 @@ return {
                         selection_order = "near_cursor",
                     },
                 },
-
+                -- window = {
+                --     completion = {
+                --         winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
+                --         col_offset = -3,
+                --         side_padding = 0,
+                --     },
+                -- },
                 formatting = {
-                    format = function(entry, vim_item)
-                        -- Source
-                        vim_item.menu = ({
-                            buffer = "[Buffer]",
-                            nvim_lsp = "[LSP]",
-                            luasnip = "[LuaSnip]",
-                            nvim_lua = "[Lua]",
-                            latex_symbols = "[LaTeX]",
-                            cody = "[cody]",
-                        })[entry.source.name]
-                        return vim_item
-                    end
+                    format = lspkind.cmp_format({
+                        with_text = true,
+                        mode = 'symbol', -- show only symbol annotations
+                        maxwidth = 50,   -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+                        -- can also be a function to dynamically calculate max width such as
+                        -- maxwidth = function() return math.floor(0.45 * vim.o.columns) end,
+                        ellipsis_char = '...',     -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
+                        show_labelDetails = false, -- show labelDetails in menu. Disabled by default
+
+                        -- The function below will be called before any actual modifications from lspkind
+                        -- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
+                        menu = (
+                            {
+                                buffer = "[Buffer]",
+                                nvim_lsp = "[LSP]",
+                                luasnip = "[LuaSnip]",
+                                nvim_lua = "[Lua]",
+                                latex_symbols = "[LaTeX]",
+                                cody = "[cody]",
+                            }
+                        ),
+                    })
                 },
                 confirm_opts = {
                     behavior = cmp.ConfirmBehavior.Insert,
