@@ -1,19 +1,43 @@
 return {
     {
         "ibhagwan/fzf-lua",
-        -- dependencies = {
-        --     "kyazdani42/nvim-web-devicons",
-        -- },
+        dependencies = {
+            "folke/trouble.nvim",
+        },
         -- Load no matter what.
         lazy = false,
         config = function()
             local fzflua = require("fzf-lua")
+
+            local quicfix_trouble = function(selected, opts)
+                if #selected > 1 then
+                    -- code from `actions.file_sel_to_qf`
+                    local qf_list = {}
+                    for i = 1, #selected do
+                        local file = require 'fzf-lua'.path.entry_to_file(selected[i])
+                        local text = selected[i]:match(":%d+:%d?%d?%d?%d?:?(.*)$")
+                        table.insert(qf_list, {
+                            filename = file.path,
+                            lnum = file.line,
+                            col = file.col,
+                            text = text,
+                        })
+                    end
+                    -- this sets the quickfix list, you may or may not need it for 'trouble.nvim'
+                    vim.fn.setqflist(qf_list)
+                    -- call the command to open the 'trouble.nvim' interface
+                    require("trouble").toggle("quickfix")
+                end
+            end
 
             fzflua.setup({
                 files = {
                     prompt = "Files> ",
                     -- Use FZF_DEFAULT_COMMAND to keep the default behavior.
                     cmd = vim.env.FZF_DEFAULT_COMMAND,
+                    actions = {
+                        ["ctrl-r"] = quicfix_trouble,
+                    },
                 },
                 winopts = {
                     preview = {
