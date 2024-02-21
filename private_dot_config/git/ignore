@@ -1,0 +1,4 @@
+.ropeproject/
+node_modules/
+.envrc
+.direnv/
