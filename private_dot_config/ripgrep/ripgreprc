@@ -4,3 +4,4 @@
 --glob=!{**/.direnv,**/vendor}
 --glob=!.ropeproject/
 --glob=!.venv/
+--glob=!.envrc/

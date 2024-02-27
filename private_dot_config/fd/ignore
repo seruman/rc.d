@@ -2,3 +2,4 @@
 vendor/
 .github/
 .venv/
+envrc/
