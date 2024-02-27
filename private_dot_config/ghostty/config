@@ -35,25 +35,26 @@ font-thicken=true
 adjust-underline-thickness = -50%
 adjust-cell-height = 10%
 
-# Zenbones
-background = #F0EDEC
-foreground = #6B5C4D
+# Melange Light
+background=#F4F0ED
+foreground=#6B5C4D
 
-palette = 0=#F0EDEC
-palette = 1=#A8334C
-palette = 2=#4F6C31
-palette = 3=#944927
-palette = 4=#286486
-palette = 5=#88507D
-palette = 6=#3B8992
-palette = 7=#2C363C
+## Normal colors
+palette = 0=#e9e1db
+palette = 1=#d7898c
+palette = 2=#83b887
+palette = 3=#cc7f2b
+palette = 4=#485f84
+palette = 5=#be79bb
+palette = 6=#729893
+palette = 7=#a38d78
 
-
-palette = 8=#CFC1BA
-palette = 9=#94253E
-palette = 10=#3F5A22
-palette = 11=#803D1C
-palette = 12=#1D5573
-palette = 13=#7B3B70
-palette = 14=#2B747C
-palette = 15=#4F5E68
+## Bright colors
+palette = 8=#867462
+palette = 9=#c65333
+palette = 10=#659e69
+palette = 11=#c29830
+palette = 12=#abb9d6
+palette = 13=#854882
+palette = 14=#436460
+palette = 15=#6b5c4d

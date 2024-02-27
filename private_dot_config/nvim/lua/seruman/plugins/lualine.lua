@@ -88,7 +88,7 @@ return {
                 options = {
                     -- TODO(selman): Melange support.
                     -- theme = "solarized_light",
-                    -- theme = theme_melange(),
+                    theme = theme_melange(),
                     icons_enabled = false,
                     component_separators = { left = "|", right = "|" },
                     section_separators = { left = "", right = "" },
