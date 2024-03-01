@@ -12,9 +12,6 @@ return {
 				opts = {
 					formatters_by_ft = {
 						lua = { "stylua" },
-						-- Conform will run multiple formatters sequentially
-						python = { "isort", "black" },
-						-- Use a sub-list to run only the first available formatter
 						typescript = { { "prettierd", "prettier" } },
 						typescriptreact = { { "prettierd", "prettier" } },
 						javascript = { { "prettierd", "prettier" } },
@@ -225,6 +222,63 @@ return {
 				}
 			end
 
+			local function setup_pyright()
+				return {
+					settings = {
+						reportMissingTypeStubs = true,
+						reportImportCycles = true,
+						reportUnusedImport = true,
+						reportUnusedClass = true,
+						reportUnusedFunction = true,
+						reportUnusedVariable = true,
+						reportDuplicateImport = true,
+						reportDeprecated = "warning",
+						reportMissingSuperCall = "warning",
+						reportUnnecessaryIsInstance = "warning",
+						reportUnnecessaryCast = "warning",
+						reportUnnecessaryComparison = "warning",
+						reportUnnecessaryContains = "warning",
+						reportImplicitStringConcatenation = "warning",
+						reportUnusedCallResult = "warning",
+						reportUnusedExpression = "warning",
+						reportUnnecessaryTypeIgnoreComment = "warning",
+						reportMatchNotExhaustive = "warning",
+						reportShadowedImports = "warning",
+						pyright = {
+							disableOrganizeImports = true,
+							autoImportCompletions = true,
+							diagnosticMode = "openFilesOnly",
+						},
+						python = {
+							-- analysis = {
+							-- 	ignore = { "*" },
+							-- },
+						},
+					},
+				}
+			end
+
+			local function setup_ruff_lsp()
+				return {
+					on_attach = function(client, _)
+						if client.name == "ruff_lsp" then
+							-- Disable hover in favor of Pyright
+							client.server_capabilities.hoverProvider = false
+						end
+					end,
+					init_options = {
+						settings = {
+							format = {
+								args = { "--line-length", "120" },
+							},
+							lint = {
+								run = "onSave",
+							},
+						},
+					},
+				}
+			end
+
 			local function setup_rust_analyzer()
 				local ok, rust_analyzer_bin = pcall(vim.fn.system, { "rustup", "which", "rust-analyzer" })
 				if not ok then
@@ -270,7 +324,8 @@ return {
 			local servers = {
 				gopls = setup_gopls,
 				-- pylsp = setup_pylsp,
-				pyright = setup_default,
+				pyright = setup_pyright,
+				ruff_lsp = setup_ruff_lsp,
 				bashls = setup_default,
 				lua_ls = setup_lua_ls,
 				jdtls = setup_default,
