@@ -77,13 +77,6 @@ return {
 
 
             local navic = require("nvim-navic")
-            navic.setup({
-                icongs = {},
-                highlight = true,
-                lsp = {
-                    auto_attach = true,
-                },
-            })
             return {
                 options = {
                     -- TODO(selman): Melange support.
