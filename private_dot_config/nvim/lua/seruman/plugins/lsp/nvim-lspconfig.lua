@@ -225,34 +225,37 @@ return {
 			local function setup_pyright()
 				return {
 					settings = {
-						reportMissingTypeStubs = true,
-						reportImportCycles = true,
-						reportUnusedImport = true,
-						reportUnusedClass = true,
-						reportUnusedFunction = true,
-						reportUnusedVariable = true,
-						reportDuplicateImport = true,
-						reportDeprecated = "warning",
-						reportMissingSuperCall = "warning",
-						reportUnnecessaryIsInstance = "warning",
-						reportUnnecessaryCast = "warning",
-						reportUnnecessaryComparison = "warning",
-						reportUnnecessaryContains = "warning",
-						reportImplicitStringConcatenation = "warning",
-						reportUnusedCallResult = "warning",
-						reportUnusedExpression = "warning",
-						reportUnnecessaryTypeIgnoreComment = "warning",
-						reportMatchNotExhaustive = "warning",
-						reportShadowedImports = "warning",
 						pyright = {
 							disableOrganizeImports = true,
 							autoImportCompletions = true,
-							diagnosticMode = "openFilesOnly",
 						},
 						python = {
-							-- analysis = {
-							-- 	ignore = { "*" },
-							-- },
+							analysis = {
+								indexing = true,
+								-- diagnosticMode = "openFilesOnly",
+								-- diagnosticSeverityOverrides = {
+                                -- TODO(selman): not sure if works :(
+								reportMissingTypeStubs = "information",
+								reportImportCycles = "error",
+								reportUnusedImport = "error",
+								reportUnusedClass = "warning",
+								reportUnusedFunction = "warning",
+								reportUnusedVariable = "warning",
+								reportDuplicateImport = "warning",
+								reportDeprecated = "warning",
+								reportMissingSuperCall = "warning",
+								reportUnnecessaryIsInstance = "warning",
+								reportUnnecessaryCast = "warning",
+								reportUnnecessaryComparison = "warning",
+								reportUnnecessaryContains = "warning",
+								reportImplicitStringConcatenation = "warning",
+								reportUnusedCallResult = "warning",
+								reportUnusedExpression = "warning",
+								reportUnnecessaryTypeIgnoreComment = "warning",
+								reportMatchNotExhaustive = "warning",
+								reportShadowedImports = "warning",
+								-- },
+							},
 						},
 					},
 				}
@@ -272,7 +275,7 @@ return {
 								args = { "--line-length", "120" },
 							},
 							lint = {
-								run = "onSave",
+								-- run = "onSave",
 							},
 						},
 					},
@@ -404,8 +407,18 @@ return {
 					vim.keymap.set("n", "gr", function()
 						require("fzf-lua").lsp_references(fzfopts)
 					end, opts({ desc = "LSP references" }))
-					vim.keymap.set("n", "<space>f", ":Format<CR>", opts({ desc = "Conform format with LSP fallback", silent = true}))
-					vim.keymap.set("v", "<space>f", ":Format<CR>", opts({ desc = "Conform format with LSP fallback", silent = true}))
+					vim.keymap.set(
+						"n",
+						"<space>f",
+						":Format<CR>",
+						opts({ desc = "Conform format with LSP fallback", silent = true })
+					)
+					vim.keymap.set(
+						"v",
+						"<space>f",
+						":Format<CR>",
+						opts({ desc = "Conform format with LSP fallback", silent = true })
+					)
 					vim.keymap.set("n", "<leader>dd", function()
 						require("fzf-lua").lsp_document_diagnostics(fzfopts)
 					end, opts({ desc = "LSP diagnostics (document)" }))
