@@ -234,7 +234,7 @@ return {
 								indexing = true,
 								-- diagnosticMode = "openFilesOnly",
 								-- diagnosticSeverityOverrides = {
-                                -- TODO(selman): not sure if works :(
+								-- TODO(selman): not sure if works :(
 								reportMissingTypeStubs = "information",
 								reportImportCycles = "error",
 								reportUnusedImport = "error",
@@ -427,7 +427,12 @@ return {
 					end, opts({ desc = "LSP diagnostics (workspace)" }))
 
 					vim.keymap.set("n", "<space>d", function()
-						vim.diagnostic.open_float({ border = "rounded", header = "" })
+						vim.diagnostic.open_float({
+							border = "rounded",
+							header = "",
+							close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
+							source = true,
+						})
 					end, opts({ desc = "LSP diagnostic under cursor (popup)" }))
 					vim.keymap.set("n", "<leader>ic", function()
 						require("fzf-lua").lsp_incoming_calls(fzfopts)

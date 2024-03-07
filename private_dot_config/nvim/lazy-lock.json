@@ -23,7 +23,7 @@
   "mini.comment": { "branch": "main", "commit": "a4b7e46deb9ad2feb8902cc5dbf087eced112ee5" },
   "nvim-cmp": { "branch": "main", "commit": "04e0ca376d6abdbfc8b52180f8ea236cbfddf782" },
   "nvim-goc.lua": { "branch": "master", "commit": "6337ef573cb493fc4088faef73ff4844d7be213f" },
-  "nvim-highlight-colors": { "branch": "main", "commit": "3b57a76ab79bd437c2cb03a7fe0c5405ac8fbfc2" },
+  "nvim-highlight-colors": { "branch": "main", "commit": "a9f191d5ba27a5943b8992bf618858fa7374758f" },
   "nvim-lspconfig": { "branch": "master", "commit": "9553725789be682ecd945a527ec552e489ea8534" },
   "nvim-navic": { "branch": "master", "commit": "8649f694d3e76ee10c19255dece6411c29206a54" },
   "nvim-surround": { "branch": "main", "commit": "d47001f8ddf9646c24f16d2732d4d0255acd2121" },
