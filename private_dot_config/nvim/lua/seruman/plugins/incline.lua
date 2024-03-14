@@ -10,8 +10,12 @@ return {
 			local devicons = require("nvim-web-devicons")
 			require("incline").setup({
 				window = {
+					zindex = 30,
 					padding = 0,
-					margin = { horizontal = 0 },
+					margin = {
+						vertical = { top = vim.o.laststatus == 3 and 0 or 1, bottom = 0 }, -- shift to overlap window borders
+						horizontal = { left = 0, right = 0 },
+					},
 				},
 				render = function(props)
 					local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ":t")
