@@ -17,6 +17,7 @@
     path = ~/.gitconfig.d/02-github.gitconfig
     path = ~/.gitconfig.d/03-dsf.gitconfig
     path = ~/.gitconfig.d/04-difftastic.gitconfig
+    path = ~/.gitconfig.d/05-gh.gitconfig
     path = ~/.config/work/gitconfig
 
 [push]

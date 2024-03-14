@@ -1,0 +1,2 @@
+[alias]
+    prcof = !GH_FORCE_TTY=yes gh pr list | fzf --ansi --header-lines 3 --preview 'GH_FORCE_TTY=yes gh pr view  {1}' | awk '{ print $1}' | xargs -I {} gh pr checkout {}
