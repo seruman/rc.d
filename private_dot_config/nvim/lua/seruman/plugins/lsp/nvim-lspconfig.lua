@@ -235,6 +235,7 @@ return {
 								-- diagnosticMode = "openFilesOnly",
 								-- diagnosticSeverityOverrides = {
 								-- TODO(selman): not sure if works :(
+								reportPrivateUsage = false,
 								reportMissingTypeStubs = "information",
 								reportImportCycles = "error",
 								reportUnusedImport = "error",
