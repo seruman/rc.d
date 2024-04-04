@@ -38,16 +38,6 @@ return {
 						{ "navic" },
 					},
 				},
-				tabline = {
-					lualine_a = {
-						{
-							"tabs",
-							max_length = vim.o.columns,
-							mode = 2,
-							use_mode_colors = true,
-						},
-					},
-				},
 			}
 		end,
 	},
