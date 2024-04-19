@@ -341,6 +341,7 @@ return {
 				zls = setup_default,
 				clangd = setup_default,
 				tailwindcss = setup_default,
+				typos_lsp = setup_default,
 			}
 
 			local capabilities = require("cmp_nvim_lsp").default_capabilities({
