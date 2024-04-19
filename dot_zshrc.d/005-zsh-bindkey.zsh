@@ -10,3 +10,7 @@ bindkey "^[[B" down-line-or-beginning-search
 
 bindkey "^[[1;3C" forward-word
 bindkey "^[[1;3D" backward-word
+
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey '^x^e' edit-command-line
