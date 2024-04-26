@@ -3,3 +3,4 @@
     lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
     ap = add --patch
     psuo = !git push --set-upstream origin $(git symbolic-ref --short HEAD)
+    semtagg = "!f() { git semtag -fc -r -ii | fzf --ansi; }; f"
