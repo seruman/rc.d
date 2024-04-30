@@ -375,22 +375,29 @@ return {
 							underline = true,
 						})
 
-					local fzfopts = { jump_to_single_result = true }
-
-					local function opts(o)
-						return vim.tbl_extend("keep", { buffer = ev.buf }, o)
+					local function fzfopts(o)
+						return vim.tbl_extend("force", { jump_to_single_result = true }, o or {})
 					end
 
-					-- TODO(selman): What a messy format.
+					local function opts(o)
+						return vim.tbl_extend("keep", { buffer = ev.buf }, o or {})
+					end
+
+                    -- TODO(selman): not using TBH, but keeping it for future reference.
+					-- vim.keymap.set("n", "gD", function()
+					-- 	require("fzf-lua").lsp_declarations(fzfopts())
+					-- end, opts({ desc = "LSP declarations" }))
 					vim.keymap.set("n", "gD", function()
-						require("fzf-lua").lsp_declarations(fzfopts)
-					end, opts({ desc = "LSP declarations" }))
+						require("fzf-lua").lsp_definitions(fzfopts({
+							jump_to_single_result_action = require("fzf-lua.actions").file_vsplit,
+						}))
+					end, opts({ desc = "LSP definitions" }))
 					vim.keymap.set("n", "gd", function()
-						require("fzf-lua").lsp_definitions(fzfopts)
+						require("fzf-lua").lsp_definitions(fzfopts())
 					end, opts({ desc = "LSP definitions" }))
 					vim.keymap.set("n", "K", vim.lsp.buf.hover, opts({ desc = "LSP hover" }))
 					vim.keymap.set("n", "gi", function()
-						require("fzf-lua").lsp_implementations(fzfopts)
+						require("fzf-lua").lsp_implementations(fzfopts())
 					end, opts({ desc = "LSP implementations" }))
 					vim.keymap.set(
 						{ "n", "i" },
@@ -407,7 +414,7 @@ return {
 					)
 					vim.keymap.set({ "n", "v" }, "<leader>cl", vim.lsp.codelens.run, opts({ desc = "LSP code lens" }))
 					vim.keymap.set("n", "gr", function()
-						require("fzf-lua").lsp_references(fzfopts)
+						require("fzf-lua").lsp_references(fzfopts())
 					end, opts({ desc = "LSP references" }))
 					vim.keymap.set(
 						"n",
@@ -422,10 +429,10 @@ return {
 						opts({ desc = "Conform format with LSP fallback", silent = true })
 					)
 					vim.keymap.set("n", "<leader>dd", function()
-						require("fzf-lua").lsp_document_diagnostics(fzfopts)
+						require("fzf-lua").lsp_document_diagnostics(fzfopts())
 					end, opts({ desc = "LSP diagnostics (document)" }))
 					vim.keymap.set("n", "<leader>dw", function()
-						require("fzf-lua").lsp_workspace_diagnostics(fzfopts)
+						require("fzf-lua").lsp_workspace_diagnostics(fzfopts())
 					end, opts({ desc = "LSP diagnostics (workspace)" }))
 
 					vim.keymap.set("n", "<space>d", function()
@@ -437,19 +444,19 @@ return {
 						})
 					end, opts({ desc = "LSP diagnostic under cursor (popup)" }))
 					vim.keymap.set("n", "<leader>ic", function()
-						require("fzf-lua").lsp_incoming_calls(fzfopts)
+						require("fzf-lua").lsp_incoming_calls(fzfopts())
 					end, opts({ desc = "LSP incoming calls" }))
 					vim.keymap.set("n", "<leader>oc", function()
-						require("fzf-lua").lsp_incoming_calls(fzfopts)
+						require("fzf-lua").lsp_incoming_calls(fzfopts())
 					end, opts({ desc = "LSP outgound calls" }))
 					vim.keymap.set("n", "<leader>sd", function()
-						require("fzf-lua").lsp_document_symbols(fzfopts)
+						require("fzf-lua").lsp_document_symbols(fzfopts())
 					end, opts({ desc = "LSP symbols (document)" }))
 					vim.keymap.set("n", "<leader>sw", function()
-						require("fzf-lua").lsp_live_workspace_symbols(fzfopts)
+						require("fzf-lua").lsp_live_workspace_symbols(fzfopts())
 					end, opts({ desc = "LSP symbold (workspace)" }))
 					vim.keymap.set("n", "<leader>td", function()
-						require("fzf-lua").lsp_typedefs(fzfopts)
+						require("fzf-lua").lsp_typedefs(fzfopts())
 					end, opts({ desc = "LSP typedefs" }))
 					vim.keymap.set("n", "]d", function()
 						vim.diagnostic.goto_next()
