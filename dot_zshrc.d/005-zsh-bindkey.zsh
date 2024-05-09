@@ -28,7 +28,7 @@ function _gitsemtag(){
         return 0
     fi
 
-    local selection=$(echo $tags | fzf --ansi --height 40% --reverse --prompt="semtag> " --preview="git show --color {1}")
+    local selection=$(echo $tags | fzf --ansi --prompt="semtag> " --preview="git show --color {1}")
     if [[ -z $selection ]]; then
         zle reset-prompt
         return 0
@@ -40,4 +40,4 @@ function _gitsemtag(){
 }
 
 zle -N _gitsemtag{,}
-bindkey '^x^t' _gitsemtag
+bindkey '^l^t' _gitsemtag
