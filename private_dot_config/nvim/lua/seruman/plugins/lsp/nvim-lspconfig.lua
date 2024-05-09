@@ -228,34 +228,78 @@ return {
 						pyright = {
 							disableOrganizeImports = true,
 							autoImportCompletions = true,
+							disableTaggedHints = false,
 						},
 						python = {
 							analysis = {
 								indexing = true,
+								typeCheckingMode = "basic",
 								-- diagnosticMode = "openFilesOnly",
-								-- diagnosticSeverityOverrides = {
 								-- TODO(selman): not sure if works :(
-								reportPrivateUsage = false,
-								reportMissingTypeStubs = "information",
-								reportImportCycles = "error",
-								reportUnusedImport = "error",
-								reportUnusedClass = "warning",
-								reportUnusedFunction = "warning",
-								reportUnusedVariable = "warning",
-								reportDuplicateImport = "warning",
-								reportDeprecated = "warning",
-								reportMissingSuperCall = "warning",
-								reportUnnecessaryIsInstance = "warning",
-								reportUnnecessaryCast = "warning",
-								reportUnnecessaryComparison = "warning",
-								reportUnnecessaryContains = "warning",
-								reportImplicitStringConcatenation = "warning",
-								reportUnusedCallResult = "warning",
-								reportUnusedExpression = "warning",
-								reportUnnecessaryTypeIgnoreComment = "warning",
-								reportMatchNotExhaustive = "warning",
-								reportShadowedImports = "warning",
-								-- },
+								diagnosticSeverityOverrides = {
+									reportAttributeAccessIssue = "warning",
+									reportCallIssue = "error",
+									reportMissingTypeStubs = "none",
+									reportImportCycles = "error",
+									reportUnusedImport = "none", -- Ruff handles this.
+									reportUnusedClass = "warning",
+									reportUnusedFunction = "warning",
+									reportUnusedVariable = "warning",
+									reportDuplicateImport = "warning",
+									reportDeprecated = "warning",
+									reportMissingSuperCall = "none",
+									reportUnnecessaryIsInstance = "information",
+									reportUnnecessaryCast = "information",
+									reportUnnecessaryComparison = "warning",
+									reportUnnecessaryContains = "warning",
+									reportImplicitStringConcatenation = "warning",
+									reportUnusedCallResult = "none",
+									reportUnusedExpression = "information",
+									reportUnnecessaryTypeIgnoreComment = "warning",
+									reportMatchNotExhaustive = "warning",
+									reportShadowedImports = "warning",
+								},
+							},
+						},
+					},
+				}
+			end
+
+			local function setup_basedpyright()
+				return {
+					settings = {
+						basedpyright = {
+							disableOrganizeImports = true,
+							autoImportCompletions = true,
+							disableTaggedHints = false,
+							analysis = {
+								indexing = true,
+								typeCheckingMode = "basic",
+								-- diagnosticMode = "openFilesOnly",
+								-- TODO(selman): not sure if works :(
+								diagnosticSeverityOverrides = {
+									reportAttributeAccessIssue = "warning",
+									reportCallIssue = "error",
+									reportMissingTypeStubs = "none",
+									reportImportCycles = "error",
+									reportUnusedImport = "none", -- Ruff handles this.
+									reportUnusedClass = "warning",
+									reportUnusedFunction = "warning",
+									reportUnusedVariable = "warning",
+									reportDuplicateImport = "warning",
+									reportDeprecated = "warning",
+									reportMissingSuperCall = "none",
+									reportUnnecessaryIsInstance = "information",
+									reportUnnecessaryCast = "information",
+									reportUnnecessaryComparison = "warning",
+									reportUnnecessaryContains = "warning",
+									reportImplicitStringConcatenation = "warning",
+									reportUnusedCallResult = "none",
+									reportUnusedExpression = "information",
+									reportUnnecessaryTypeIgnoreComment = "warning",
+									reportMatchNotExhaustive = "warning",
+									reportShadowedImports = "warning",
+								},
 							},
 						},
 					},
@@ -328,7 +372,8 @@ return {
 			local servers = {
 				gopls = setup_gopls,
 				-- pylsp = setup_pylsp,
-				pyright = setup_pyright,
+				-- pyright = setup_pyright,
+				basedpyright = setup_basedpyright,
 				ruff_lsp = setup_ruff_lsp,
 				bashls = setup_default,
 				lua_ls = setup_lua_ls,
@@ -383,7 +428,7 @@ return {
 						return vim.tbl_extend("keep", { buffer = ev.buf }, o or {})
 					end
 
-                    -- TODO(selman): not using TBH, but keeping it for future reference.
+					-- TODO(selman): not using TBH, but keeping it for future reference.
 					-- vim.keymap.set("n", "gD", function()
 					-- 	require("fzf-lua").lsp_declarations(fzfopts())
 					-- end, opts({ desc = "LSP declarations" }))
