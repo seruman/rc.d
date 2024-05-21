@@ -17,11 +17,6 @@ bindkey '^x^e' edit-command-line
 
 
 function _gitsemtag(){
-    if [[ ! -d .git ]]; then
-        zle reset-prompt
-        return 0
-    fi
-
     local tags=$(git semtag -r -ii -fc)
     if [[ -z $tags ]]; then
         zle reset-prompt
