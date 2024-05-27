@@ -36,3 +36,14 @@ function _gitsemtag(){
 
 zle -N _gitsemtag{,}
 bindkey '^l^t' _gitsemtag
+
+
+function _gotsa(){
+    LBUFFER="gotsa -run ''"
+    CURSOR=$(( ${#LBUFFER} - 1 ))
+    zle reset-prompt
+    return 0
+}
+
+zle -N _gotsa{,}
+bindkey '^p^g' _gotsa
