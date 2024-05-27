@@ -35,15 +35,11 @@ local palette = vim.tbl_extend("keep", p, {
 local generator = require("zenbones.specs")
 local base_specs = generator.generate(palette, bg, generator.get_global_config(colors_name, bg))
 
-
 -- Optionally extend specs using Lush
 local specs = lush.extends({ base_specs }).with(function()
 	return {
 		MatchParen({ gui = "bold" }),
 		CmpItemKind({ fg = palette.bg, bg = palette.fg }),
-        Statement { base_specs.Statement, fg = palette.rose },
-        Special { fg = palette.water },
-        Type { fg = palette.sky, gui = "italic" },
 	}
 end)
 
