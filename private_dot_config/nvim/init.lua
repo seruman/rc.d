@@ -42,11 +42,11 @@ vim.o.switchbuf = table.concat({ "useopen", "usetab", "newtab" }, ",")
 vim.o.cursorline = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
+vim.o.expandtab = true
 
 vim.keymap.set("n", "<leader>q", "<cmd>q<CR>", { desc = "Quit" })
 vim.keymap.set("n", "<leader>w", "<cmd>w<CR>", { desc = "Write" })
 vim.keymap.set("n", "<leader>nh", "<cmd>nohl<CR>", { desc = "Clear highlights" })
-vim.keymap.set("n", "<c-l>", "<cmd>set cursorline!<CR>", { desc = "Toggle cursorline" })
 vim.keymap.set("n", "n", "nzzzv", { desc = "Move to next search match and center screen" })
 vim.keymap.set("n", "N", "Nzzzv", { desc = "Move to previous search match and center screen" })
 vim.keymap.set("n", "*", "*N", { desc = "Highlight without jumping forward" })
@@ -69,44 +69,37 @@ vim.keymap.set("n", "<leader><C-g>p", yank_current_filepath, { desc = "Yank curr
 vim.cmd("inoreabbrev TODO TODO(selman):")
 vim.cmd("inoreabbrev NOTE NOTE(selman):")
 
--- augroup CursorLine
---     au!
---     au VimEnter * setlocal cursorline
---     au WinEnter * setlocal cursorline
---     au BufWinEnter * setlocal cursorline
---     au WinLeave * setlocal nocursorline
--- augroup END
 local AugroupCursorLine = vim.api.nvim_create_augroup("CursorLine", { clear = true })
-vim.api.nvim_create_autocmd('VimEnter', {
-    group = AugroupCursorLine,
-    pattern = '*',
-    callback = function()
-        vim.opt_local.cursorline = true
-    end,
+vim.api.nvim_create_autocmd("VimEnter", {
+	group = AugroupCursorLine,
+	pattern = "*",
+	callback = function()
+		vim.opt_local.cursorline = true
+	end,
 })
 
-vim.api.nvim_create_autocmd('WinEnter', {
-    group = AugroupCursorLine,
-    pattern = '*',
-    callback = function()
-        vim.opt_local.cursorline = true
-    end,
+vim.api.nvim_create_autocmd("WinEnter", {
+	group = AugroupCursorLine,
+	pattern = "*",
+	callback = function()
+		vim.opt_local.cursorline = true
+	end,
 })
 
-vim.api.nvim_create_autocmd('BufWinEnter', {
-    group = AugroupCursorLine,
-    pattern = '*',
-    callback = function()
-        vim.opt_local.cursorline = true
-    end,
+vim.api.nvim_create_autocmd("BufWinEnter", {
+	group = AugroupCursorLine,
+	pattern = "*",
+	callback = function()
+		vim.opt_local.cursorline = true
+	end,
 })
 
-vim.api.nvim_create_autocmd('WinLeave', {
-    group = AugroupCursorLine,
-    pattern = '*',
-    callback = function()
-        vim.opt_local.cursorline = false
-    end,
+vim.api.nvim_create_autocmd("WinLeave", {
+	group = AugroupCursorLine,
+	pattern = "*",
+	callback = function()
+		vim.opt_local.cursorline = false
+	end,
 })
 
 vim.filetype.add({
