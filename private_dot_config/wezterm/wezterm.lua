@@ -247,7 +247,7 @@ local keys = {
 	{ key = "j", mods = "LEADER", action = act.ActivatePaneDirection("Down") },
 	{ key = "k", mods = "LEADER", action = act.ActivatePaneDirection("Up") },
 	{ key = "l", mods = "LEADER", action = act.ActivatePaneDirection("Right") },
-	{ key = "k", mods = "CTRL", action = act.ClearScrollback("ScrollbackAndViewport") },
+	-- { key = "k", mods = "CTRL", action = act.ClearScrollback("ScrollbackAndViewport") },
 	{ key = "f", mods = "LEADER|CTRL", action = act.ActivateCommandPalette },
 	{
 		key = "H",
@@ -401,7 +401,6 @@ if wezterm.gui then
 		{ key = "G", mods = "NONE", action = act.CopyMode("MoveToScrollbackBottom") },
 		{ key = "Enter", mods = "NONE", action = act.CopyMode({ SetSelectionMode = "SemanticZone" }) },
 		{ key = "k", mods = "SHIFT", action = act.CopyMode("MoveBackwardSemanticZone") },
-		{ key = "j", mods = "SHIFT", action = act.CopyMode("MoveForwardSemanticZone") },
 	}
 
 	search_mode = wezterm.gui.default_key_tables().search_mode
@@ -433,15 +432,18 @@ local function basename(s)
 	return string.gsub(s, "(.*[/\\])(.*)", "%2")
 end
 
-wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
-	local pane = tab.active_pane
-	local title = basename(pane.foreground_process_name) .. " " .. tab.tab_index + 1
-	return {
-		{ Text = " " .. title .. " " },
-	}
-end)
+-- wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
+-- 	local pane = tab.active_pane
+-- 	local idx = tab.tab_index + 1
+-- 	local shit = tab.get_title()
+-- 	-- if empty use basename of the process name
+-- 	local title = idx .. " | " .. basename(pane.foreground_process_name)
+-- 	return {
+-- 		{ Text = " " .. title .. " " },
+-- 	}
+-- end)
 
-return {
+local overrides = {
 	-- NOTE(selman): causes redraw in neovim.
 	-- unix_domains = {
 	--     { name = "main" },
@@ -479,11 +481,12 @@ return {
 	inactive_pane_hsb = {},
 	force_reverse_video_cursor = true,
 	tab_and_split_indices_are_zero_based = false,
+	scrollback_lines = 100000,
 }
 
--- for k, v in pairs(overrides) do
---     config[k] = v
--- end
---
+local config = wezterm.config_builder()
+for k, v in pairs(overrides) do
+	config[k] = v
+end
 
--- return config
+return config
