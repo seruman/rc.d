@@ -21,6 +21,27 @@ return {
 						css = { { "prettierd", "prettier" } },
 						sh = { "shfmt" },
 						bash = { "shfmt" },
+						go = { "goimports", "gofumpt" },
+					},
+					formatters = {
+						goimports = {
+							prepend_args = function(self, ctx)
+								local local_ = table.concat({
+									"github.com/seruman",
+									vim.env.GOPLS_LOCAL,
+								}, ",")
+
+								return {
+									"--local",
+									local_,
+								}
+							end,
+						},
+					},
+					format_on_save = {
+						-- These options will be passed to conform.format()
+						timeout_ms = 500,
+						lsp_fallback = true,
 					},
 				},
 			},
@@ -41,69 +62,6 @@ return {
 			local function setup_gopls()
 				-- Format on save.
 				-- TODO(selman): organizeImports breaks imports some how, could not figure out why.
-
-				local function goimports()
-					-- NOTE(selman): Could not get imports to work with;
-					--     vim.lsp.buf.code_action({ context = { only = { 'source.organizeImports' } }, apply = true, })
-					-- Causes dobule imports or write in the middle of existing text/import statement.
-					-- Request and apply code action manually;
-					-- copied from: https://github.com/golang/go/issues/57281
-					-- -not a related issue though-
-					local params = vim.lsp.util.make_range_params()
-					params.context = { only = { "source.organizeImports" } }
-
-					local response = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 1000)
-					for _, r in pairs(response or {}) do
-						for _, action in pairs(r.result or {}) do
-							-- textDocument/codeAction can return either Command[] or CodeAction[]. If
-							-- it is a CodeAction, it can have either an edit, a command or both.
-							-- Edits should be executed first.
-							if action.edit then
-								vim.lsp.util.apply_workspace_edit(action.edit, "UTF-8")
-							end
-							if action.command then
-								-- If the response was a Command[], then the inner "command' is a
-								-- string, if the response was a CodeAction, then the inner command is a
-								-- Command.
-								local command = type(action.command) == "table" and action.command or action
-								vim.lsp.buf.execute_command(command)
-							end
-						end
-					end
-				end
-
-				-- START: SHAME
-				-- TODO(selman): Have no idea if this is the way to do it.
-				vim.api.nvim_create_autocmd("LspAttach", {
-					callback = function(args)
-						local client = vim.lsp.get_client_by_id(args.data.client_id)
-						if client == nil or client.name == nil or client.name ~= "gopls" then
-							return
-						end
-
-						vim.api.nvim_create_autocmd("BufWritePre", {
-							group = vim.api.nvim_create_augroup("GoFormatOnSave", { clear = true }),
-							pattern = "*.go",
-							callback = function()
-								goimports()
-								vim.cmd("Format")
-							end,
-						})
-					end,
-				})
-				vim.api.nvim_create_autocmd("LspDetach", {
-					pattern = "*",
-					callback = function(args)
-						local client = vim.lsp.get_client_by_id(args.data.client_id)
-						if client == nil or client.name == nil or client.name ~= "gopls" then
-							return
-						end
-
-						-- vim.api.nvim_del_augroup_by_name('GoFormatOnSave')
-						pcall(vim.api.nvim_del_augroup, "GoFormatOnSave")
-					end,
-				})
-				-- END: SHAME
 
 				local tags = "-tags=" .. table.concat({
 					"integration",
@@ -145,12 +103,8 @@ return {
 								tidy = true,
 								vendor = true,
 							},
-							-- TODO(selman): Could not get this to work, how LSP
-							-- snippets work?
 							experimentalPostfixCompletions = true,
-							-- TODO(selman): Probably my colorscheme/LSP setup would
-							-- not handle this.
-							semanticTokens = true,
+							semanticTokens = false,
 						},
 					},
 				}
@@ -374,7 +328,8 @@ return {
 				-- pylsp = setup_pylsp,
 				-- pyright = setup_pyright,
 				basedpyright = setup_basedpyright,
-				ruff_lsp = setup_ruff_lsp,
+				-- ruff_lsp = setup_ruff_lsp,
+				-- ruff_lsp = setup_default,
 				bashls = setup_default,
 				lua_ls = setup_lua_ls,
 				jdtls = setup_default,
@@ -384,10 +339,12 @@ return {
 				terraformls = setup_default,
 				rust_analyzer = setup_rust_analyzer,
 				zls = setup_default,
-				clangd = setup_default,
+				-- clangd = setup_default,
 				tailwindcss = setup_default,
 				typos_lsp = setup_default,
 				nim_langserver = setup_default,
+				taplo = setup_default,
+				["protobuf-language-server"] = setup_default,
 			}
 
 			local capabilities = require("cmp_nvim_lsp").default_capabilities({
@@ -396,8 +353,21 @@ return {
 			})
 
 			local flags = { debounce_text_changes = 150 }
-
 			local lspconfig = require("lspconfig")
+
+			local configs = require("lspconfig.configs")
+			local util = require("lspconfig.util")
+
+			configs["protobuf-language-server"] = {
+				default_config = {
+					cmd = { "protobuf-language-server" },
+					filetypes = { "proto", "cpp" },
+					root_fir = util.root_pattern(".git"),
+					single_file_support = true,
+					settings = {},
+				},
+			}
+
 			for server, setupfn in pairs(servers) do
 				local setupargs = setupfn()
 
