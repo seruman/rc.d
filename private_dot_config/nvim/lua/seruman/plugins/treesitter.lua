@@ -84,6 +84,9 @@ return {
 							["iB"] = "@block.inner",
 							["aB"] = "@block.outer",
 							["aT"] = "@structtag.outer",
+							-- NOTE(selman): collides with `at` for HTML tags.
+							["at"] = "@go.subtest_call.outer",
+							["atn"] = "@go.subtest_call.name.outer",
 						},
 					},
 					move = {
@@ -91,12 +94,14 @@ return {
 						set_jumps = true, -- whether to set jumps in the jumplist
 						goto_next_start = {
 							["]]"] = "@function.outer",
+							["]t"] = "@go.subtest_call.outer",
 						},
 						goto_next_end = {
 							["]["] = "@function.outer",
 						},
 						goto_previous_start = {
 							["[["] = "@function.outer",
+							["[t"] = "@go.subtest_call.outer",
 						},
 						goto_previous_end = {
 							["[]"] = "@function.outer",
