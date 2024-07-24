@@ -101,6 +101,13 @@ vim.api.nvim_create_autocmd("WinLeave", {
 	end,
 })
 
+vim.api.nvim_create_autocmd("VimResized", {
+	pattern = "*",
+	callback = function()
+		vim.cmd("wincmd =")
+	end,
+})
+
 vim.filetype.add({
 	filename = { [".swcrc"] = "json" },
 	pattern = {
