@@ -345,6 +345,7 @@ return {
 				nim_langserver = setup_default,
 				taplo = setup_default,
 				["protobuf-language-server"] = setup_default,
+				["hare-ls"] = setup_default,
 			}
 
 			local capabilities = require("cmp_nvim_lsp").default_capabilities({
@@ -362,7 +363,17 @@ return {
 				default_config = {
 					cmd = { "protobuf-language-server" },
 					filetypes = { "proto", "cpp" },
-					root_fir = util.root_pattern(".git"),
+					root_dir = util.root_pattern(".git"),
+					single_file_support = true,
+					settings = {},
+				},
+			}
+
+			configs["hare-ls"] = {
+				default_config = {
+					cmd = { "hare-ls" },
+					filetypes = { "hare" },
+					root_dir = util.root_pattern(".git"),
 					single_file_support = true,
 					settings = {},
 				},
