@@ -1,4 +1,4 @@
-export HAREPATH="$HOME/.hare"
+export HAREINSTALLPATH="$HOME/.hare"
 
-path=("$HAREPATH/bin" $path)
-manpath=("$HAREPATH/share/man" $manpath)
+path=("$HAREINSTALLPATH/bin" $path)
+manpath=("$HAREINSTALLPATH/share/man" $manpath)
