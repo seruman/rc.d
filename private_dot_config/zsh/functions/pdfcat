@@ -1,0 +1,16 @@
+#function pdfcat {
+
+# TODO(selman): 
+# - rempve tempfile
+# - pdfium-cli options 
+# - multiple pages?
+# - multiple files?
+
+set -o localoptions -o localtraps
+
+
+local tmpfile=$(mktemp)
+pdfium-cli render "$1"  - > "$tmpfile"
+kitty +kitten icat "$tmpfile"
+
+
