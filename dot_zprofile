@@ -18,13 +18,13 @@ path=(
     # :home:
     $HOME/{,s}bin(N)
 
-    # homebrew
-    /opt/{homebrew,local}/{,s}bin(N)
-
     # Go
     $HOME/go/bin(N)
     # Rust
     $HOME/.cargo/bin:$PATH
+
+    # homebrew
+    /opt/{homebrew,local}/{,s}bin(N)
 
     # :rest:
     $path
