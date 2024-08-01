@@ -9,6 +9,7 @@ return {
 			{ "ibhagwan/fzf-lua" },
 			{
 				"stevearc/conform.nvim",
+				-- enabled = false,
 				opts = {
 					formatters_by_ft = {
 						lua = { "stylua" },
@@ -260,10 +261,10 @@ return {
 				}
 			end
 
-			local function setup_ruff_lsp()
+			local function setup_ruff()
 				return {
 					on_attach = function(client, _)
-						if client.name == "ruff_lsp" then
+						if client.name == "ruff" then
 							-- Disable hover in favor of Pyright
 							client.server_capabilities.hoverProvider = false
 						end
@@ -319,6 +320,14 @@ return {
 				}
 			end
 
+			local function setup_typos_lsp()
+				return {
+					init_options = {
+						diagnosticSeverity = "Warning",
+					},
+				}
+			end
+
 			local function setup_default()
 				return {}
 			end
@@ -328,8 +337,7 @@ return {
 				-- pylsp = setup_pylsp,
 				-- pyright = setup_pyright,
 				basedpyright = setup_basedpyright,
-				-- ruff_lsp = setup_ruff_lsp,
-				-- ruff_lsp = setup_default,
+				ruff = setup_ruff,
 				bashls = setup_default,
 				lua_ls = setup_lua_ls,
 				jdtls = setup_default,
@@ -341,7 +349,7 @@ return {
 				zls = setup_default,
 				-- clangd = setup_default,
 				tailwindcss = setup_default,
-				typos_lsp = setup_default,
+				typos_lsp = setup_typos_lsp,
 				nim_langserver = setup_default,
 				taplo = setup_default,
 				["protobuf-language-server"] = setup_default,
@@ -396,7 +404,7 @@ return {
 				callback = function(ev)
 					vim.lsp.handlers["textDocument/publishDiagnostics"] =
 						vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-							virtual_text = true,
+							virtual_text = false,
 							signs = true,
 							update_in_insert = false,
 							underline = true,
