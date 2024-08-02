@@ -6,6 +6,7 @@ macos-option-as-alt = left
 
 cursor-style = block
 cursor-style-blink = false
+cursor-invert-fg-bg = true
 shell-integration-features = no-cursor
 
 command = "zsh -l -c 'tmux new -A -s main'"
