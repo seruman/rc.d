@@ -11,6 +11,6 @@ set -o localoptions -o localtraps
 
 local tmpfile=$(mktemp)
 pdfium-cli render "$1"  - > "$tmpfile"
-kitty +kitten icat "$tmpfile"
+timg --pixelation=kitty "$tmpfile"
 
 
