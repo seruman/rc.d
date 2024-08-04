@@ -329,6 +329,13 @@ return {
 				}
 			end
 
+			local function setup_clangd()
+				-- No proto please
+				return {
+					filetypes = { "c", "cpp", "objc", "objcpp" },
+				}
+			end
+
 			local function setup_default()
 				return {}
 			end
@@ -348,7 +355,7 @@ return {
 				terraformls = setup_default,
 				rust_analyzer = setup_rust_analyzer,
 				zls = setup_default,
-				-- clangd = setup_default,
+				clangd = setup_clangd,
 				tailwindcss = setup_default,
 				typos_lsp = setup_typos_lsp,
 				nim_langserver = setup_default,
