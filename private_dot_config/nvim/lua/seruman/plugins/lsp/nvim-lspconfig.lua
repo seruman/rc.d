@@ -23,6 +23,7 @@ return {
 						sh = { "shfmt" },
 						bash = { "shfmt" },
 						go = { "goimports", "gofumpt" },
+						templ = { "templ" },
 					},
 					formatters = {
 						goimports = {
@@ -354,6 +355,9 @@ return {
 				taplo = setup_default,
 				["protobuf-language-server"] = setup_default,
 				["hare-ls"] = setup_default,
+				html = setup_default,
+				htmx = setup_default,
+				templ = setup_default,
 			}
 
 			local capabilities = require("cmp_nvim_lsp").default_capabilities({

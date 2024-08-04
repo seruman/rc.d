@@ -7,6 +7,11 @@ return {
 				highlight = true,
 				lsp = {
 					auto_attach = true,
+					preference = {
+						"templ",
+						"html",
+						"htmx",
+					},
 				},
 			})
 		end,

@@ -4,6 +4,7 @@ return {
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter-textobjects",
 			"nvim-treesitter/playground",
+			"vrischmann/tree-sitter-templ",
 		},
 		config = function()
 			local languages = {
@@ -39,6 +40,7 @@ return {
 				"http",
 				"markdown",
 				"markdown_inline",
+				"templ",
 			}
 
 			require("nvim-treesitter.configs").setup({
