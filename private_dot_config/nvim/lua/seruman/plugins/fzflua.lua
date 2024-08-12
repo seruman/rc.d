@@ -44,7 +44,12 @@ return {
 						vertical = "up:60%",
 						layout = "flex",
 						wrap = "wrap",
+						title = false,
+						scrollbar = "float",
+						delay = 50,
 					},
+					border = "single",
+					backdrop = 97,
 				},
 				lsp = {
 					code_actions = {
