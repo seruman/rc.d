@@ -2,7 +2,11 @@
 
 local previewcmd
 read -r -d '' previewcmd <<'EOF'
-export CLICOLOR_FORCE=true
+setopt extended_glob
+setopt no_nomatch
+
+export CLICOLOR_FORCE=1
+export COLORTERM=truecolor
 
 local repo=$(echo {})
 local repo_path=$(ghq list --full-path -e {})
@@ -10,7 +14,6 @@ local repo_path=$(ghq list --full-path -e {})
 local current_branch=$(git -C ${repo_path} branch --show-current)
 local ref_name=$(git -C ${repo_path} name-rev --name-only HEAD)
 
-# use either current branch or ref name. if tag checkout, ref name is tag name if in branch both are same.
 local ref_to_show=${current_branch:-$ref_name}
 
 gum format -t template "{{ Foreground (Color \"31\" )  ( Bold \"${repo}\")}} @{{ Bold \"${ref_to_show}\" }}"
@@ -23,6 +26,11 @@ for remote in ${remotes[@]}; do
 	gum format -t template "{{ Bold \"${remote}\" }}: {{ Underline \"${url}\" }}"
 	echo
 done
+
+local readme_files=$(ls ${repo_path}/(#i)readme.md  2>/dev/null)
+if [ -n "$readme_files" ]; then
+    glow -s light $readme_files
+fi
 EOF
 
 local repopath=$(
