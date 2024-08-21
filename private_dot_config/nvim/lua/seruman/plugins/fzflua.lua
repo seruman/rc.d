@@ -31,6 +31,10 @@ return {
 			end
 
 			fzflua.setup({
+				"default-title",
+				hls = {
+					title = "PMenuSel",
+				},
 				files = {
 					prompt = "Files> ",
 					-- Use FZF_DEFAULT_COMMAND to keep the default behavior.
