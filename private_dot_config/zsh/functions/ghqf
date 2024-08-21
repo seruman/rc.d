@@ -1,17 +1,39 @@
-local previewcmd="
-    gum format -t template '{{ Bold \"{}\" }}';
-    git -C \$(ghq list --full-path -e {}) remote get-url \$(git -C \$(ghq list --full-path -e {}) remote);
-    ls --color=always \$(ghq list --full-path -e {});
-    " 
+# vi: ft=zsh
+
+local previewcmd
+read -r -d '' previewcmd <<'EOF'
+export CLICOLOR_FORCE=true
+
+local repo=$(echo {})
+local repo_path=$(ghq list --full-path -e {})
+
+local current_branch=$(git -C ${repo_path} branch --show-current)
+local ref_name=$(git -C ${repo_path} name-rev --name-only HEAD)
+
+# use either current branch or ref name. if tag checkout, ref name is tag name if in branch both are same.
+local ref_to_show=${current_branch:-$ref_name}
+
+gum format -t template "{{ Foreground (Color \"31\" )  ( Bold \"${repo}\")}} @{{ Bold \"${ref_to_show}\" }}"
+echo '\n'
+
+local remotes=($(git -C "${repo_path}" remote))
+
+for remote in ${remotes[@]}; do
+	local url=$(git -C ${repo_path} remote get-url ${remote})
+	gum format -t template "{{ Bold \"${remote}\" }}: {{ Underline \"${url}\" }}"
+	echo
+done
+EOF
+
 local repopath=$(
 	ghq list |
 		fzf \
+			--ansi \
 			--prompt 'Repositories> ' \
 			--preview "${previewcmd}" \
 			--query "${*:-}" |
 		xargs -I{} ghq list --full-path -e {}
-) 
-if [ -n "$repopath" ]
-then
+)
+if [ -n "$repopath" ]; then
 	cd "$repopath"
 fi
