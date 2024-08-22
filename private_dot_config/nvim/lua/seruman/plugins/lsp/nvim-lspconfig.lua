@@ -22,7 +22,9 @@ return {
 						css = { "prettierd", "prettier", stop_after_first = true },
 						sh = { "shfmt" },
 						bash = { "shfmt" },
+						zsh = { "shfmt" },
 						go = { "goimports", "gofumpt" },
+						python = { "ruff_fix", "ruff_format", "ruff_organize_imports" },
 						templ = { "templ" },
 					},
 					formatters = {
@@ -292,12 +294,7 @@ return {
 					end,
 					init_options = {
 						settings = {
-							format = {
-								args = { "--line-length", "120" },
-							},
-							lint = {
-								-- run = "onSave",
-							},
+							lineLength = 120,
 						},
 					},
 				}
