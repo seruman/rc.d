@@ -32,9 +32,8 @@ return {
 
 			fzflua.setup({
 				"default-title",
-				hls = {
-					title = "PMenuSel",
-				},
+				hls = { title = "PMenuSel" },
+				grep = { RIPGREP_CONFIG_PATH = vim.env.RIPGREP_CONFIG_PATH },
 				files = {
 					prompt = "Files> ",
 					-- Use FZF_DEFAULT_COMMAND to keep the default behavior.
