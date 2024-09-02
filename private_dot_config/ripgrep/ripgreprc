@@ -1,7 +1,8 @@
 --hidden
 --glob=!.git/
---glob=!{.direnv,vendor}
---glob=!{**/.direnv,**/vendor}
+--glob=!{.direnv/,vendor/}
+--glob=!{**/.direnv/,**/vendor/}
 --glob=!.ropeproject/
 --glob=!.venv/
 --glob=!.envrc/
+--glob=!vendor/

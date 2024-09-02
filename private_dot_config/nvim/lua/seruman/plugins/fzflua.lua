@@ -29,18 +29,20 @@ return {
 					require("trouble").toggle("quickfix")
 				end
 			end
-
+			local troubleactions = require("trouble.sources.fzf").actions
 			fzflua.setup({
 				"default-title",
 				hls = { title = "PMenuSel" },
 				grep = { RIPGREP_CONFIG_PATH = vim.env.RIPGREP_CONFIG_PATH },
+				defaults = {
+					actions = {
+						["ctrl-r"] = troubleactions.open,
+					},
+				},
 				files = {
 					prompt = "Files> ",
 					-- Use FZF_DEFAULT_COMMAND to keep the default behavior.
 					cmd = vim.env.FZF_DEFAULT_COMMAND,
-					actions = {
-						["ctrl-r"] = quicfix_trouble,
-					},
 				},
 				winopts = {
 					preview = {

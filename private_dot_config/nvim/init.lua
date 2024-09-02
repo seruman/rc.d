@@ -42,6 +42,7 @@ vim.o.switchbuf = table.concat({ "useopen", "usetab", "newtab" }, ",")
 vim.o.cursorline = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
+vim.o.splitkeep = "screen"
 
 vim.keymap.set("n", "<leader>q", "<cmd>q<CR>", { desc = "Quit" })
 vim.keymap.set("n", "<leader>w", "<cmd>w<CR>", { desc = "Write" })

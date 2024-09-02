@@ -1,2 +1,3 @@
 export BUN_INSTALL="$HOME/.bun"
-path=( "$BUN_INSTALL/bin" $path )
+source "$BUN_INSTALL/_bun"
+path=("$BUN_INSTALL/bin" $path)

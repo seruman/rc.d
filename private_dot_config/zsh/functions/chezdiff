@@ -1,0 +1,14 @@
+# vi: ft=zsh
+
+local selected_file
+
+selected_file=$(chezmoi status -p absolute |
+    awk '{print $2}' |
+    fzf --preview 'chezmoi --color true diff {}' \
+        --multi \
+        --preview-window=right:60%:wrap)
+
+if [[ -n "$selected_file" ]]; then
+    # print the file names
+    echo $selected_file | xargs
+fi
