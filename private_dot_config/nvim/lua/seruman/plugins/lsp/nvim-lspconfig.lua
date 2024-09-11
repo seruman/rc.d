@@ -370,7 +370,7 @@ return {
 				jdtls = function()
 					return {
 						-- TODO(selman): I hate this fucking thing.
-						cmd_env = { JAVA_HOME = "/Users/selman/.sdkman/candidates/java/22.0.2-tem/" },
+						cmd_env = { JAVA_HOME = vim.env.HOME .. "/.sdkman/candidates/java/22.0.2-tem/" },
 					}
 				end,
 				tsserver = setup_default,

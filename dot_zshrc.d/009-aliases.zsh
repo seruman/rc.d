@@ -29,13 +29,12 @@ alias goiw="goimports -w \$(find . -type f -name '*.go' -not -path './vendor/*')
 
 # github
 alias ghprls="gh pr list"
-alias ghprlsf="GH_FORCE_TTY=yes gh pr list | fzf --ansi --header-lines 3 --preview 'GH_FORCE_TTY=yes gh pr view  {1}' | awk '{ print \$1}' | xargs -I {} gh pr view --web {}"
-alias ghprcof="GH_FORCE_TTY=yes gh pr list | fzf --ansi --header-lines 3 --preview 'GH_FORCE_TTY=yes gh pr view  {1}' | awk '{ print \$1}' | xargs -I {} gh pr checkout {}"
+alias ghprlsf="GH_FORCE_TTY=yes gh pr list | fzf --ansi --header-lines 4 --preview 'GH_FORCE_TTY=yes gh pr view  {1}' | awk '{ print \$1}' | xargs -I {} gh pr view --web {}"
+alias ghprcof="GH_FORCE_TTY=yes gh pr list | fzf --ansi --header-lines 4 --preview 'GH_FORCE_TTY=yes gh pr view  {1}' | awk '{ print \$1}' | xargs -I {} gh pr checkout {}"
 alias ghprmk="gh pr create"
 
 # ripgrep
 alias rgnoi="rg --no-ignore"
-
 
 # URL encode/decode
 alias urldecode='python2 -c "import sys, urllib as ul; \
@@ -49,8 +48,8 @@ alias utd="unixtime decode"
 
 # OpenScad: macOS
 if [[ "$OS" == "Darwin" ]]; then
-	local openscad_dir="/Applications/OpenSCAD.app/Contents/MacOS"
-	if [[ ! -f "$openscad_dir" ]]; then :; fi
+    local openscad_dir="/Applications/OpenSCAD.app/Contents/MacOS"
+    if [[ ! -f "$openscad_dir" ]]; then :; fi
 
-	alias openscad="$openscad_dir/OpenSCAD"
+    alias openscad="$openscad_dir/OpenSCAD"
 fi
