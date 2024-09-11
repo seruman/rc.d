@@ -367,7 +367,12 @@ return {
 				ruff = setup_ruff,
 				bashls = setup_default,
 				lua_ls = setup_lua_ls,
-				jdtls = setup_default,
+				jdtls = function()
+					return {
+						-- TODO(selman): I hate this fucking thing.
+						cmd_env = { JAVA_HOME = "/Users/selman/.sdkman/candidates/java/22.0.2-tem/" },
+					}
+				end,
 				tsserver = setup_default,
 				jsonls = setup_default,
 				yamlls = setup_yamlls,
