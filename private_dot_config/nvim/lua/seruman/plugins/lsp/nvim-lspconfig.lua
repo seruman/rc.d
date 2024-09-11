@@ -27,6 +27,7 @@ return {
 						go = { "goimports", "gofumpt" },
 						python = { "ruff_fix", "ruff_format", "ruff_organize_imports" },
 						templ = { "templ" },
+						java = { "google-java-format" },
 					},
 					formatters = {
 						goimports = {
@@ -450,7 +451,17 @@ return {
 							workspace_project_dir,
 						},
 						root_dir = vim.fs.dirname(vim.fs.find({ "gradlew", ".git", "mvnw" }, { upward = true })[1]),
-						settings = {},
+						settings = {
+							java = {
+								format = {
+									enabled = true,
+									settings = {
+										url = workspace_dir .. "/eclipse-java-google-style.xml",
+										profile = "GoogleStyle",
+									},
+								},
+							},
+						},
 					}
 					require("jdtls").start_or_attach(config)
 				end,
