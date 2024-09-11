@@ -1,0 +1,8 @@
+# vi: ft=zsh
+
+if ! command -v kaf &> /dev/null
+then
+    return 0
+fi
+
+kaf config select-cluster
