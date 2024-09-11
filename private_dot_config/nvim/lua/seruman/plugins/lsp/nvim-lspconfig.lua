@@ -7,6 +7,7 @@ return {
 			-- TODO(selman): Pin fidget.nvim as it's being rewritten.
 			{ "j-hui/fidget.nvim", tag = "legacy", config = true },
 			{ "ibhagwan/fzf-lua" },
+			{ "mfussenegger/nvim-jdtls" },
 			{
 				"stevearc/conform.nvim",
 				-- enabled = false,
@@ -367,12 +368,6 @@ return {
 				ruff = setup_ruff,
 				bashls = setup_default,
 				lua_ls = setup_lua_ls,
-				jdtls = function()
-					return {
-						-- TODO(selman): I hate this fucking thing.
-						cmd_env = { JAVA_HOME = vim.env.HOME .. "/.sdkman/candidates/java/22.0.2-tem/" },
-					}
-				end,
 				tsserver = setup_default,
 				jsonls = setup_default,
 				yamlls = setup_yamlls,
@@ -432,6 +427,34 @@ return {
 
 				lspconfig[server].setup(_setup_args)
 			end
+
+			-- JDTLS is a fucking mess, instead of setting it up with lspconfig, using nvim-jdtls create an autocmd to run on java filetype
+			-- TODO(selman): maybe mason is the way to go? IDK.
+			vim.api.nvim_create_autocmd("FileType", {
+				pattern = "java",
+				callback = function(ev)
+					local workspace_dir = vim.fn.expand("~/.cache/jdtls/workspace")
+					local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
+					local workspace_project_dir = workspace_dir .. "/" .. project_name
+
+					local jdtls_java_bin = vim.fn.expand("~/.sdkman/candidates/java/22.0.2-tem/bin/java")
+					local lombok_path = vim.fn.expand("~/.cache/jdtls/workspace/lombok.jar")
+
+					local config = {
+						cmd = {
+							"jdtls",
+							"--java-executable",
+							jdtls_java_bin,
+							"--jvm-arg=-javaagent:" .. lombok_path,
+							"-data",
+							workspace_project_dir,
+						},
+						root_dir = vim.fs.dirname(vim.fs.find({ "gradlew", ".git", "mvnw" }, { upward = true })[1]),
+						settings = {},
+					}
+					require("jdtls").start_or_attach(config)
+				end,
+			})
 
 			-- Set mappings on LSP attach.
 			vim.api.nvim_create_autocmd("LspAttach", {
