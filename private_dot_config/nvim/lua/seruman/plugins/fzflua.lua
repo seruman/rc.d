@@ -65,6 +65,14 @@ return {
 						},
 					},
 				},
+				previewers = {
+					builtin = {
+						syntax_limit_l = 0, -- infinite
+						-- syntax_limit_b = 1024 * 1024, -- 1MB
+						syntax_limit_b = 1024 * 30, -- 30KB
+						limit_b = 1024 * 1024, -- 10MB
+					},
+				},
 			})
 
 			vim.keymap.set("n", "<leader>ff", function()
