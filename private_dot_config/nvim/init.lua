@@ -44,6 +44,9 @@ vim.o.ignorecase = true
 vim.o.smartcase = true
 vim.o.splitkeep = "screen"
 
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 vim.keymap.set("n", "<leader>q", "<cmd>q<CR>", { desc = "Quit" })
 vim.keymap.set("n", "<leader>w", "<cmd>w<CR>", { desc = "Write" })
 vim.keymap.set("n", "<leader>nh", "<cmd>nohl<CR>", { desc = "Clear highlights" })
