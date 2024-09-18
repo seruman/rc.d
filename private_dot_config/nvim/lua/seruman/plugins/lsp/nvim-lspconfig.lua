@@ -451,15 +451,45 @@ return {
 							workspace_project_dir,
 						},
 						root_dir = vim.fs.dirname(vim.fs.find({ "gradlew", ".git", "mvnw" }, { upward = true })[1]),
-						settings = {
+						init_options = {
 							java = {
-								format = {
-									enabled = true,
-									settings = {
-										url = workspace_dir .. "/eclipse-java-google-style.xml",
-										profile = "GoogleStyle",
+								imports = {
+									gradle = {
+										wrapper = {
+											checksums = {
+												{
+													sha256 = "41c8aa7a337a44af18d8cda0d632ebba469aef34f3041827624ef5c1a4e4419d",
+													allowed = true,
+												},
+											},
+										},
 									},
 								},
+							},
+						},
+						settings = {
+							java = {
+								-- TODO(selman): could not get this to work :(
+								-- format = {
+								-- 	enabled = true,
+								-- 	settings = {
+								-- 		url = workspace_dir .. "/eclipse-java-google-style.xml",
+								-- 		profile = "GoogleStyle",
+								-- 	},
+								-- },
+								--
+								-- imports = {
+								-- 	gradle = {
+								-- 		wrapper = {
+								-- 			checksums = {
+								-- 				{
+								-- 					sha256 = "41c8aa7a337a44af18d8cda0d632ebba469aef34f3041827624ef5c1a4e4419d",
+								-- 					allowed = true,
+								-- 				},
+								-- 			},
+								-- 		},
+								-- 	},
+								-- },
 							},
 						},
 					}
