@@ -44,5 +44,5 @@
   "vim-cucumber": { "branch": "master", "commit": "c0c9f5fd631632d794c6aa6d8d0ab13f834a1113" },
   "vim-easy-align": { "branch": "master", "commit": "9815a55dbcd817784458df7a18acacc6f82b1241" },
   "which-key.nvim": { "branch": "main", "commit": "bfec3d6bc0a9b0b2cb11644642f78c2c3915eef0" },
-  "zenbones.nvim": { "branch": "main", "commit": "006f15ad3437d85884ad50347bcbc60c9a377640" }
+  "zenbones.nvim": { "branch": "main", "commit": "12daea796d5079a65dd7032bb85540443e8b30e8" }
 }
