@@ -369,7 +369,7 @@ return {
 				ruff = setup_ruff,
 				bashls = setup_default,
 				lua_ls = setup_lua_ls,
-				tsserver = setup_default,
+				ts_ls = setup_default,
 				jsonls = setup_default,
 				yamlls = setup_yamlls,
 				terraformls = setup_default,
