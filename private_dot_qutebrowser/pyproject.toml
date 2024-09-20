@@ -1,0 +1,9 @@
+[tool.uv]
+dev-dependencies = [
+    "qutebrowser>=3.2.1",
+]
+[tool.uv.workspace]
+members = []
+
+[tool.basedpyright]
+stubPath = "./stubs"

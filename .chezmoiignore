@@ -3,3 +3,4 @@
 .config/work
 .config/work/**
 **/.DS_Store
+.qutebrowser/.git/
