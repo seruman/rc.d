@@ -1,9 +1,17 @@
+[project]
+name = "qutebrowser-config"
+version = "0.1.0"
+requires-python = "==3.12.4"
+
 [tool.uv]
 dev-dependencies = [
     "qutebrowser>=3.2.1",
+    "rich>=13.8.1",
 ]
 [tool.uv.workspace]
 members = []
 
-[tool.basedpyright]
-stubPath = "./stubs"
+[tool.ruff]
+line-length = 120
+indent-width = 4
+

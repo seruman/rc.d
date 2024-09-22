@@ -61,27 +61,27 @@ EOF
 URL=$(echo "$QUTE_URL" | awk -F/ '{print $3}' | sed 's/www.//g')
 echo "message-info 'Looking for password for $URL...'" >>$QUTE_FIFO
 
-UUID_URL=$(op item list | jq -r '.[] | "\(.uuid):\(.overview.url)"' | grep "$URL") || $(echo "message-error 'No entry found for $URL'" >>$QUTE_FIFO)
+UUID_URL=$(op item list --format=json | jq -r '.[] | "\(.id):\(.urls[]?.href)" ' | grep "$URL") || $(echo "message-error 'No entry found for $URL'" >>$QUTE_FIFO)
 
 IFS=: read -r UUID var2 <<<"$UUID_URL"
-ITEM=$(op get item --session="$TOKEN" "$UUID")
+ITEM=$(op item get --reveal --format=json "$UUID")
 
-PASSWORD=$(echo "$ITEM" | opt/homebrew/bin/jq -r '.details.fields | .[] | select(.designation=="password") | .value')
+PASSWORD=$(echo "$ITEM" | jq -r '.fields[]? | select(.purpose=="PASSWORD") | .value')
 
 if [ -n "$PASSWORD" ]; then
-    TITLE=$(echo "$ITEM" | opt/homebrew/bin/jq -r '.overview.title')
-    USERNAME=$(echo "$ITEM" | opt/homebrew/bin/jq -r '.details.fields | .[] | select(.designation=="username") | .value')
+    TITLE=$(echo "$ITEM" | jq -r '.title')
+    USERNAME=$(echo "$ITEM" | jq -r '.fields[]? | select(.purpose=="USERNAME") | .value')
 
     printjs() {
         js | sed 's,//.*$,,' | tr '\n' ' '
     }
     echo "jseval -q $(printjs)" >>"$QUTE_FIFO"
 
-    TOTP=$(echo "$ITEM" | op get totp --session="$TOKEN" "$UUID")
-    if [ -n "$TOTP" ]; then
-        echo "$TOTP" | pbcopy
-        echo "One time password for $TITLE: $TOTP in clipboard" | terminal-notifier -title "Qutebrowser 1Password" -sound default
-    fi
+    # TOTP=$(echo "$ITEM" | op get totp --session="$TOKEN" "$UUID")
+    # if [ -n "$TOTP" ]; then
+    #     echo "$TOTP" | pbcopy
+    #     echo "One time password for $TITLE: $TOTP in clipboard" | terminal-notifier -title "Qutebrowser 1Password" -sound default
+    # fi
 else
     echo "No password found for $URL" | terminal-notifier -title "Qutebrowser 1Password" -sound default
 fi
