@@ -5,7 +5,44 @@ return {
 			local nvimtree = require("nvim-tree")
 
 			nvimtree.setup({
-				renderer = { root_folder_label = vim.fn.pathshorten, group_empty = vim.fn.pathshorten },
+				view = {
+					preserve_window_proportions = true,
+					width = {
+						min = 30,
+						max = 120,
+					},
+				},
+				renderer = {
+					root_folder_label = false,
+					group_empty = true,
+					add_trailing = true,
+					highlight_git = true,
+					indent_markers = {
+						-- Display indent markers when folders are open
+						enable = true,
+					},
+					icons = {
+						show = {
+							git = false,
+						},
+					},
+				},
+				git = { enable = true },
+				actions = {
+					change_dir = { enable = false },
+					expand_all = { exclude = { "node_modules", ".git", "vendor", "target" } },
+					open_file = {
+						resize_window = false, -- don't resize window when opening file
+					},
+				},
+				filters = {
+					custom = {
+						"^.git$",
+						".DS_Store",
+						"node_modules",
+						"vendor",
+					},
+				},
 			})
 
 			vim.keymap.set("n", "<leader>ntt", "<Cmd>NvimTreeToggle<CR>", { desc = "Toggle file tree" })
