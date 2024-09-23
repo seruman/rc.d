@@ -41,6 +41,8 @@ return {
 				"markdown",
 				"markdown_inline",
 				"templ",
+				"java",
+				"groovy",
 			}
 
 			require("nvim-treesitter.configs").setup({
