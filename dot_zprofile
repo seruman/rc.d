@@ -21,7 +21,7 @@ path=(
     # Go
     $HOME/go/bin(N)
     # Rust
-    $HOME/.cargo/bin:$PATH
+    $HOME/.cargo/bin(N)
 
     # homebrew
     /opt/{homebrew,local}/{,s}bin(N)
