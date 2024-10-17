@@ -69,9 +69,6 @@ local yank_current_filepath = function()
 end
 vim.keymap.set("n", "<leader><C-g>p", yank_current_filepath, { desc = "Yank current file path to unnamed register" })
 
-vim.cmd("inoreabbrev TODO TODO(selman):")
-vim.cmd("inoreabbrev NOTE NOTE(selman):")
-
 local AugroupCursorLine = vim.api.nvim_create_augroup("CursorLine", { clear = true })
 vim.api.nvim_create_autocmd({ "VimEnter", "WinEnter", "BufWinEnter" }, {
 	group = AugroupCursorLine,
