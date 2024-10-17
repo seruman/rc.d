@@ -8,9 +8,6 @@
 [pull]
     rebase = true
 
-[difftool]
-    prompt = false
-
 [include]
     path = ~/.gitconfig.d/00-aliases.gitconfig
     path = ~/.gitconfig.d/01-ghq.gitconfig
@@ -22,3 +19,6 @@
 
 [push]
     autoSetupRemote = true
+
+[difftool]
+    prompt = false

@@ -1,6 +1,4 @@
-[difftool "difftastic"]
-    cmd = difft "$LOCAL" "$REMOTE"
-
 [alias]
-    dtt = difftool --tool=difftastic
-    dtts = difftool --tool=difftastic --staged
+    dshow = -c diff.external=difft show --ext-diff
+    dtt = -c diff.external=difft diff
+    dtts = -c diff.external=difft diff --staged
