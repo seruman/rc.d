@@ -53,3 +53,7 @@ if [[ "$OS" == "Darwin" ]]; then
 
     alias openscad="$openscad_dir/OpenSCAD"
 fi
+
+if [ "$(alias gi 2>/dev/null)" ]; then
+    unalias gi
+fi
