@@ -2,7 +2,7 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
-			{ "hrsh7th/nvim-cmp" },
+			{ "iguanacucumber/magazine.nvim", name = "nvim-cmp" },
 			{ "hrsh7th/cmp-nvim-lsp" },
 			-- TODO(selman): Pin fidget.nvim as it's being rewritten.
 			{ "j-hui/fidget.nvim", tag = "legacy", config = true },
