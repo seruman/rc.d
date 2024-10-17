@@ -27,7 +27,8 @@ return {
 						go = { "goimports", "gofumpt" },
 						python = { "ruff_fix", "ruff_format", "ruff_organize_imports" },
 						templ = { "templ" },
-						java = { "google-java-format" },
+						java = { "google_java_format" },
+						groovy = { "npm-groovy-lint" },
 					},
 					formatters = {
 						goimports = {
@@ -40,6 +41,29 @@ return {
 								return {
 									"--local",
 									local_,
+								}
+							end,
+						},
+						ruff_format = {
+							append_args = function(self, ctx)
+								return {
+									"--line-length",
+									"120",
+								}
+							end,
+						},
+						google_java_format = {
+							command = "google-java-format",
+							args = { "-" },
+							range_args = function(self, ctx)
+								return {
+									"--lines",
+									ctx.range.start[1] .. ":" .. ctx.range["end"][1],
+									"--skip-sorting-imports",
+									"--skip-removing-unused-imports",
+									"--skip-javadoc-formatting",
+									"--skip-reflowing-long-strings",
+									"-",
 								}
 							end,
 						},
