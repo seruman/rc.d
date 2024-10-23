@@ -1,42 +1,64 @@
-window-decoration = false
 window-padding-x = 10
-window-padding-y = 10
 window-padding-color = background
 window-title-font-family = "Berkeley Mono"
 mouse-hide-while-typing = true
 macos-option-as-alt = left
 macos-titlebar-style = tabs
+macos-window-shadow = true
+unfocused-split-opacity = 0.90
+copy-on-select=true
+scrollback-limit = 50000000
+
 
 cursor-style = block
 cursor-style-blink = false
 cursor-invert-fg-bg = true
 shell-integration-features = no-cursor
 
-command = "zsh -l -c 'tmux new -A -s main'"
 
-# Unbind split bindings
-keybind = super+alt+left=unbind
-keybind = super+d=unbind
-keybind = super+right_bracket=unbind
-keybind = super+alt+right=unbind
-keybind = super+ctrl+down=unbind
-keybind = super+left_bracket=unbind
-keybind = alt+shift+equal=unbind
-keybind = super+ctrl+left=unbind
-keybind = super+shift+d=unbind
-keybind = super+ctrl+right=unbind
-keybind = super+alt+down=unbind
-keybind = super+alt+up=unbind
-keybind = super+shift+enter=unbind
-keybind = super+ctrl+up=unbind
+# keybind = ctrl+shift+j=write_scrollback_file:paste
 
-# send ls and newline
-# keybind = ctrl+a>b=write_scrollback_file:paste text:ls\x0a
+keybind = ctrl+b>n=new_window
+keybind = ctrl+b>c=new_tab
 
-# keybind = ctrl+b>c=new_tab
-# keybind = ctrl+b>p=previous_tab
-# keybind = ctrl+b>n=next_tab
+keybind = ctrl+b>n=next_tab
+keybind = ctrl+b>p=previous_tab
 
+keybind = ctrl+b>1=goto_tab:1
+keybind = ctrl+b>2=goto_tab:2
+keybind = ctrl+b>3=goto_tab:3
+keybind = ctrl+b>4=goto_tab:4
+keybind = ctrl+b>5=goto_tab:5
+keybind = ctrl+b>6=goto_tab:6
+keybind = ctrl+b>7=goto_tab:7
+keybind = ctrl+b>8=goto_tab:8
+keybind = ctrl+b>9=goto_tab:9
+keybind = ctrl+b>0=goto_tab:10
+
+keybind = ctrl+b>\=new_split:right
+keybind = ctrl+b>-=new_split:down
+
+keybind = ctrl+b>l=goto_split:right
+keybind = ctrl+b>h=goto_split:left
+keybind = ctrl+b>k=goto_split:top
+keybind = ctrl+b>j=goto_split:bottom
+
+keybind = ctrl+b>shift+l=resize_split:right,20
+keybind = ctrl+b>shift+h=resize_split:left,20
+keybind = ctrl+b>shift+k=resize_split:up,20
+keybind = ctrl+b>shift+j=resize_split:down,20
+
+keybind = ctrl+b>ctrl+b=scroll_page_up
+keybind = ctrl+b>ctrl+d=scroll_page_down
+
+keybind = ctrl+b>[=write_scrollback_file:paste
+
+keybind = ctrl+b>ctrl+n=jump_to_prompt:1
+keybind = ctrl+b>ctrl+p=jump_to_prompt:-1
+
+keybind = ctrl+k=clear_screen
+
+keybind = ctrl+b>u=toggle_quick_terminal
 font-family = "Berkeley Mono"
 font-size = 14
 font-feature = -calt
