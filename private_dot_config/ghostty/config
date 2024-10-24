@@ -7,7 +7,7 @@ macos-titlebar-style = tabs
 macos-window-shadow = true
 unfocused-split-opacity = 0.90
 copy-on-select=true
-scrollback-limit = 50000000
+scrollback-limit = 200_000_000
 
 
 cursor-style = block
@@ -48,11 +48,12 @@ keybind = ctrl+b>shift+h=resize_split:left,20
 keybind = ctrl+b>shift+k=resize_split:up,20
 keybind = ctrl+b>shift+j=resize_split:down,20
 
+keybind = ctrl+b>z=toggle_split_zoom
+
 keybind = ctrl+b>ctrl+b=scroll_page_up
 keybind = ctrl+b>ctrl+d=scroll_page_down
 
-keybind = ctrl+b>[=write_scrollback_file:paste
-keybind = ctrl+b>i=write_screen_file:paste
+keybind = ctrl+b>[=write_screen_file:paste
 
 keybind = ctrl+b>ctrl+n=jump_to_prompt:1
 keybind = ctrl+b>ctrl+p=jump_to_prompt:-1
