@@ -52,6 +52,7 @@ keybind = ctrl+b>ctrl+b=scroll_page_up
 keybind = ctrl+b>ctrl+d=scroll_page_down
 
 keybind = ctrl+b>[=write_scrollback_file:paste
+keybind = ctrl+b>i=write_screen_file:paste
 
 keybind = ctrl+b>ctrl+n=jump_to_prompt:1
 keybind = ctrl+b>ctrl+p=jump_to_prompt:-1
