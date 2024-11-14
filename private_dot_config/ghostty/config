@@ -61,6 +61,7 @@ keybind = ctrl+b>ctrl+p=jump_to_prompt:-1
 keybind = ctrl+k=clear_screen
 
 keybind = ctrl+b>u=toggle_quick_terminal
+keybind = global:cmd+shift+u=toggle_quick_terminal
 
 font-family = "Berkeley Mono"
 font-size = 14
