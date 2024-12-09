@@ -102,7 +102,3 @@ vim.filetype.add({
 		["%.envrc%.?[%w_.-]*"] = "sh",
 	},
 })
-
-if vim.env.GHOSTTY_RESOURCES_DIR and vim.fn.isdirectory(vim.env.GHOSTTY_RESOURCES_DIR .. "/vim") then
-	vim.opt.runtimepath:append(vim.env.GHOSTTY_RESOURCES_DIR .. "/vim")
-end
