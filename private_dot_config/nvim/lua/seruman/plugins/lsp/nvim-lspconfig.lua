@@ -2,7 +2,7 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
-			{ "iguanacucumber/magazine.nvim", name = "nvim-cmp" },
+			{ "iguanacucumber/magazine.nvim", name = "nvim-cmp", after = "nvim-lspconfig" },
 			{ "hrsh7th/cmp-nvim-lsp" },
 			-- TODO(selman): Pin fidget.nvim as it's being rewritten.
 			{ "j-hui/fidget.nvim", tag = "legacy", config = true },
@@ -24,10 +24,10 @@ return {
 						sh = { "shfmt" },
 						bash = { "shfmt" },
 						zsh = { "shfmt" },
-						go = { "goimports", "gofumpt" },
+						go = { "gofumpt", "goimports" },
 						python = { "ruff_fix", "ruff_format", "ruff_organize_imports" },
 						templ = { "templ" },
-						java = { "google_java_format" },
+						java = { "palantir_java_format" },
 						groovy = { "npm-groovy-lint" },
 					},
 					formatters = {
@@ -53,7 +53,7 @@ return {
 							end,
 						},
 						google_java_format = {
-							command = "google-java-format",
+							command = "",
 							args = { "-" },
 							range_args = function(self, ctx)
 								return {
@@ -63,6 +63,18 @@ return {
 									"--skip-removing-unused-imports",
 									"--skip-javadoc-formatting",
 									"--skip-reflowing-long-strings",
+									"-",
+								}
+							end,
+						},
+						palantir_java_format = {
+							command = "palantir-java-format",
+							args = { "--palantir", "-" },
+							range_args = function(self, ctx)
+								return {
+									"--palantir",
+									"--lines",
+									ctx.range.start[1] .. ":" .. ctx.range["end"][1],
 									"-",
 								}
 							end,
@@ -494,8 +506,9 @@ return {
 						settings = {
 							java = {
 								-- TODO(selman): could not get this to work :(
-								-- format = {
-								-- 	enabled = true,
+								format = {
+									-- 	enabled = false,
+								},
 								-- 	settings = {
 								-- 		url = workspace_dir .. "/eclipse-java-google-style.xml",
 								-- 		profile = "GoogleStyle",
