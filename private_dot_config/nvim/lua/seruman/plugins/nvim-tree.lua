@@ -1,6 +1,10 @@
 return {
 	{
 		"nvim-tree/nvim-tree.lua",
+		cmd = {
+			"NvimTreeToggle",
+			"NvimTreeFindFile",
+		},
 		config = function()
 			local nvimtree = require("nvim-tree")
 
