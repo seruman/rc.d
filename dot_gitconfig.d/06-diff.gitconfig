@@ -1,0 +1,3 @@
+[diff "mmdb"]
+    textconv = ~/bin/mmdbexport-git
+    binary = true
