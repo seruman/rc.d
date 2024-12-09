@@ -1,5 +1,5 @@
 return {
-    {
-        "tpope/vim-cucumber"
-    }
+	{
+		"tpope/vim-cucumber",
+	},
 }
