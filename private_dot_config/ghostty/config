@@ -35,6 +35,9 @@ keybind = ctrl+b>8=goto_tab:8
 keybind = ctrl+b>9=goto_tab:9
 keybind = ctrl+b>0=goto_tab:10
 
+keybind = ctrl+b>shift+period=move_tab:1
+keybind = ctrl+b>shift+comma=move_tab:-1
+
 keybind = ctrl+b>\=new_split:right
 keybind = ctrl+b>-=new_split:down
 
@@ -50,8 +53,7 @@ keybind = ctrl+b>shift+j=resize_split:down,100
 
 keybind = ctrl+b>z=toggle_split_zoom
 
-keybind = ctrl+b>ctrl+b=scroll_page_up
-keybind = ctrl+b>ctrl+d=scroll_page_down
+keybind = ctrl+b>ctrl+b=text:\x02
 
 keybind = ctrl+b>[=write_screen_file:paste
 
