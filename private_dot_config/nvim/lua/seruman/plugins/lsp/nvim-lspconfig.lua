@@ -2,8 +2,8 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
-			{ "iguanacucumber/magazine.nvim", name = "nvim-cmp", after = "nvim-lspconfig" },
-			{ "hrsh7th/cmp-nvim-lsp" },
+			{ "saghen/blink.cmp" },
+
 			-- TODO(selman): Pin fidget.nvim as it's being rewritten.
 			{ "j-hui/fidget.nvim", tag = "legacy", config = true },
 			{ "ibhagwan/fzf-lua" },
@@ -423,10 +423,11 @@ return {
 				templ = setup_default,
 			}
 
-			local capabilities = require("cmp_nvim_lsp").default_capabilities({
-				-- Disable snippets, see nvim-cmp configuration.
-				snippetSupport = false,
-			})
+			-- local capabilities = require("cmp_nvim_lsp").default_capabilities({
+			-- 	-- Disable snippets, see nvim-cmp configuration.
+			-- 	snippetSupport = false,
+			-- })
+			local capabilities = require("blink.cmp").get_lsp_capabilities()
 
 			local flags = { debounce_text_changes = 150 }
 			local lspconfig = require("lspconfig")
