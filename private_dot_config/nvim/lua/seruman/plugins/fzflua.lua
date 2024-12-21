@@ -9,29 +9,25 @@ return {
 		config = function()
 			local fzflua = require("fzf-lua")
 
-			local quicfix_trouble = function(selected, opts)
-				if #selected > 1 then
-					-- code from `actions.file_sel_to_qf`
-					local qf_list = {}
-					for i = 1, #selected do
-						local file = require("fzf-lua").path.entry_to_file(selected[i])
-						local text = selected[i]:match(":%d+:%d?%d?%d?%d?:?(.*)$")
-						table.insert(qf_list, {
-							filename = file.path,
-							lnum = file.line,
-							col = file.col,
-							text = text,
-						})
-					end
-					-- this sets the quickfix list, you may or may not need it for 'trouble.nvim'
-					vim.fn.setqflist(qf_list)
-					-- call the command to open the 'trouble.nvim' interface
-					require("trouble").toggle("quickfix")
+			---@type string[]?
+			local img_previewer
+			for _, v in ipairs({
+				{ cmd = "chafa", args = { "{file}", "--format=symbols" } },
+				{ cmd = "viu", args = { "-b" } },
+			}) do
+				if vim.fn.executable(v.cmd) == 1 then
+					img_previewer = vim.list_extend({ v.cmd }, v.args)
+					break
 				end
 			end
+
 			local troubleactions = require("trouble.sources.fzf").actions
 			fzflua.setup({
 				"default-title",
+				-- fzf_colors = true,
+				fzf_opts = {
+					["--no-scrollbar"] = true,
+				},
 				hls = { title = "PMenuSel" },
 				grep = { RIPGREP_CONFIG_PATH = vim.env.RIPGREP_CONFIG_PATH },
 				defaults = {
@@ -67,10 +63,13 @@ return {
 				},
 				previewers = {
 					builtin = {
-						syntax_limit_l = 0, -- infinite
-						-- syntax_limit_b = 1024 * 1024, -- 1MB
-						syntax_limit_b = 1024 * 30, -- 30KB
-						limit_b = 1024 * 1024, -- 10MB
+						extensions = {
+							["png"] = img_previewer,
+							["jpg"] = img_previewer,
+							["jpeg"] = img_previewer,
+							["gif"] = img_previewer,
+							["webp"] = img_previewer,
+						},
 					},
 				},
 			})
