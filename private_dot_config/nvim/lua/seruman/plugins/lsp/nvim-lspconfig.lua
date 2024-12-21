@@ -547,7 +547,10 @@ return {
 						})
 
 					local function fzfopts(o)
-						return vim.tbl_extend("force", { jump_to_single_result = true }, o or {})
+						return vim.tbl_extend("force", {
+							jump_to_single_result = true,
+							ignore_current_line = true,
+						}, o or {})
 					end
 
 					local function opts(o)
