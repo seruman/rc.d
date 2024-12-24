@@ -1,11 +1,44 @@
 # vim:fileencoding=utf-8:foldmethod=marker
 
 
-def setup(c, flavour, samecolorrows = False):
+def setup(c, flavour, samecolorrows=False):
     palette = {}
 
     # flavours {{{
-    if flavour == "latte":
+    if flavour == "seruzen":
+        palette = {
+            # Base colors from your scheme
+            "base": "#F4F0ED",  # Your background
+            "text": "#6B5C4D",  # Your foreground
+            # Accent colors mapped from your palette
+            "red": "#d7898c",  # palette 1
+            "maroon": "#c65333",  # palette 9
+            "green": "#83b887",  # palette 2
+            "teal": "#659e69",  # palette 10
+            "peach": "#cc7f2b",  # palette 3
+            "yellow": "#c29830",  # palette 11
+            "blue": "#485f84",  # palette 4
+            "lavender": "#abb9d6",  # palette 12
+            "mauve": "#be79bb",  # palette 5
+            "pink": "#854882",  # palette 13
+            "sapphire": "#729893",  # palette 6
+            "sky": "#436460",  # palette 14
+            # Shades of neutral for UI elements (derived from your base colors)
+            "crust": "#e9e1db",  # palette 0
+            "mantle": "#ebe3dd",  # slightly darker than base
+            "surface0": "#dcd4cc",  # darker shade of base
+            "surface1": "#cec6be",  # darker shade
+            "surface2": "#c0b8b0",  # darker shade
+            "overlay0": "#b2aaa2",  # darker shade
+            "overlay1": "#a49c94",  # darker shade
+            "overlay2": "#968e86",  # darker shade
+            "subtext0": "#887f77",  # darker shade
+            "subtext1": "#7a716a",  # darker shade
+            # Additional catppuccin colors mapped to your palette
+            "rosewater": "#d7898c",  # using your red as rosewater
+            "flamingo": "#cc7f2b",  # using your orange/peach
+        }
+    elif flavour == "latte":
         palette = {
             "rosewater": "#dc8a78",
             "flamingo": "#dd7878",
