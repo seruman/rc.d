@@ -4,3 +4,4 @@
 .config/work/**
 **/.DS_Store
 .qutebrowser/.git/
+.qutebrowser/.venv/
