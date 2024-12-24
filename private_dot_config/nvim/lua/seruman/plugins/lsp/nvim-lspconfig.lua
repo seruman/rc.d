@@ -400,8 +400,9 @@ return {
 			local servers = {
 				gopls = setup_gopls,
 				-- pylsp = setup_pylsp,
-				-- pyright = setup_pyright,
-				basedpyright = setup_basedpyright,
+				pyright = setup_pyright,
+				-- TODO: https://github.com/DetachHead/basedpyright/issues/513
+				-- basedpyright = setup_basedpyright,
 				ruff = setup_ruff,
 				bashls = setup_default,
 				lua_ls = setup_lua_ls,
