@@ -48,7 +48,7 @@ return {
 				providers = {
 					cody = {
 						name = "cody",
-						score_offset = 100,
+						score_offset = -100,
 						async = true,
 						module = "blink.compat.source",
 					},
