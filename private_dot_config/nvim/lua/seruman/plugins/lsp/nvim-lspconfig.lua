@@ -25,7 +25,11 @@ return {
 						bash = { "shfmt" },
 						zsh = { "shfmt" },
 						go = { "gofumpt", "goimports" },
-						python = { "ruff_fix", "ruff_format", "ruff_organize_imports" },
+						python = {
+							"ruff_fix",
+							"ruff_format",
+							-- "ruff_organize_imports",
+						},
 						templ = { "templ" },
 						java = { "palantir_java_format" },
 						groovy = { "npm-groovy-lint" },
