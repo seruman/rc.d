@@ -37,6 +37,14 @@ return {
 
 				-- ["<Tab>"] = { "snippet_forward", "fallback" },
 				-- ["<S-Tab>"] = { "snippet_backward", "fallback" },
+				cmdline = {
+					["<CR>"] = { "accept", "fallback" },
+					["<Tab>"] = { "show", "select_and_accept" },
+					["<C-C>"] = { "hide", "fallback" },
+
+					["<Up>"] = { "select_prev", "fallback" },
+					["<Down>"] = { "select_next", "fallback" },
+				},
 			},
 			appearance = {
 				use_nvim_cmp_as_default = true,
