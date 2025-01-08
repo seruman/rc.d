@@ -3,7 +3,8 @@
     name = Selman Kayrancioglu
 
 [commit]
-    verbose = true
+    ; verbose = true
+    template = ~/.gitconfig.d/committemplate.txt
 
 [pull]
     rebase = true
@@ -23,3 +24,5 @@
 
 [difftool]
     prompt = false
+[merge]
+	conflictstyle = diff3
