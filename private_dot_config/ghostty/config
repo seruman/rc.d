@@ -10,6 +10,7 @@ unfocused-split-opacity = 0.90
 copy-on-select=true
 scrollback-limit = 200_000_000
 quick-terminal-position = center
+quick-terminal-animation-duration = 0
 
 
 cursor-style = block
