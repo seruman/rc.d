@@ -16,7 +16,10 @@ quick-terminal-animation-duration = 0
 cursor-style = block
 cursor-style-blink = false
 cursor-invert-fg-bg = true
+shell-integration=fish
 shell-integration-features = no-cursor
+command = /opt/homebrew/bin/fish
+
 
 
 # keybind = ctrl+shift+j=write_scrollback_file:paste
