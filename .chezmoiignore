@@ -2,6 +2,7 @@
 .config/tmux/plugins/**
 .config/work
 .config/work/**
+.config/fish/fish_variables
 **/.DS_Store
 .qutebrowser/.git/
 .qutebrowser/.venv/
