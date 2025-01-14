@@ -1,16 +1,27 @@
+if not command -sq pyenv
+    return
+end
+
 set -Ux PYENV_ROOT $HOME/.pyenv
 fish_add_path $PYENV_ROOT/bin
 
-# TODO:
-while set pyenv_index (contains -i -- "/Users/selman/.pyenv/shims" $PATH)
+set -l pyenv_completion_file
+if command -sq brew
+    set pyenv_completion_file (brew --prefix pyenv)/completions/pyenv.fish
+end
+
+while set pyenv_index (contains -i -- "$PYENV_ROOT/shims" $PATH)
     set -eg PATH[$pyenv_index]
 end
 set -e pyenv_index
 
-#set -gx PATH '/Users/selman/.pyenv/shims' $PATH
-fish_add_path /Users/selman/.pyenv/shims
+fish_add_path $PYENV_ROOT/shims
 set -gx PYENV_SHELL fish
-source '/opt/homebrew/Cellar/pyenv/2.4.13/libexec/../completions/pyenv.fish'
+
+if test -f $pyenv_completion_file
+    source $pyenv_completion_file
+end
+
 command pyenv rehash 2>/dev/null
 function pyenv
     set command $argv[1]
