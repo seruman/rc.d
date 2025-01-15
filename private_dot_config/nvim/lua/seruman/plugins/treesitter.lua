@@ -5,6 +5,10 @@ return {
 			"nvim-treesitter/nvim-treesitter-textobjects",
 			"nvim-treesitter/playground",
 			"vrischmann/tree-sitter-templ",
+			{
+				"bezhermoso/tree-sitter-ghostty",
+				build = "make nvim_install",
+			},
 		},
 		config = function()
 			local languages = {
