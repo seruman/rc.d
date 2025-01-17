@@ -37,6 +37,7 @@
   "sg.nvim": { "branch": "master", "commit": "7c423ebeb028b3534eb20fe54972825384dbe7d6" },
   "snacks.nvim": { "branch": "main", "commit": "1b7a57a0b14b37a708330a346a767865954ce448" },
   "tabular": { "branch": "master", "commit": "12437cd1b53488e24936ec4b091c9324cafee311" },
+  "tree-sitter-ghostty": { "branch": "main", "commit": "85313191668ad80f9ceb7902e59a8de64126deb1" },
   "tree-sitter-templ": { "branch": "master", "commit": "60310af0d788a0160d719d4aff8f146b6e6c55bd" },
   "treesj": { "branch": "main", "commit": "ec234a9a13d61a7b95900abdb02fabaea1afd9f3" },
   "trouble.nvim": { "branch": "main", "commit": "4d36b8979287f5facc03fd6d955ace67db667e1d" },
