@@ -1,7 +1,7 @@
 return {
 	{
 		"ghostty",
-		dir = "/Applications/Ghostty.app/Contents/Resources/vim/vimfiles",
+		dir = "/Applications/Ghostty.app/Contents/Resources/nvim/site",
 		lazy = false,
 	},
 }
