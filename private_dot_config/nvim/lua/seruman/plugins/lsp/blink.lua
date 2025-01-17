@@ -37,7 +37,15 @@ return {
 
 				-- ["<Tab>"] = { "snippet_forward", "fallback" },
 				-- ["<S-Tab>"] = { "snippet_backward", "fallback" },
-				cmdline = { },
+				cmdline = {
+					preset = "none",
+					["<tab>"] = {
+						"select_next",
+					},
+					["<s-tab>"] = {
+						"select_prev",
+					},
+				},
 			},
 			appearance = {
 				use_nvim_cmp_as_default = true,
@@ -45,7 +53,7 @@ return {
 			},
 			sources = {
 				default = { "lsp", "path", "buffer", "cody" },
-				-- cmdline = {},
+				cmdline = {},
 				providers = {
 					cody = {
 						name = "cody",
