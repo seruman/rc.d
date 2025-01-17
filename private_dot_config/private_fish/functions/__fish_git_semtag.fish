@@ -15,7 +15,8 @@ function __fish_git_semtag
         fzf --ansi \
             --prompt="semtag> " \
             --preview="git show --color {1}")
-    
+
+    commandline -f repaint
     if test -n "$selection"
         commandline -i -- $selection
     end
