@@ -10,11 +10,6 @@ if command -sq brew
     set pyenv_completion_file (brew --prefix pyenv)/completions/pyenv.fish
 end
 
-while set pyenv_index (contains -i -- "$PYENV_ROOT/shims" $PATH)
-    set -eg PATH[$pyenv_index]
-end
-set -e pyenv_index
-
 fish_add_path $PYENV_ROOT/shims
 set -gx PYENV_SHELL fish
 
