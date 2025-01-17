@@ -1,5 +1,5 @@
 for p in /opt/homebrew/bin /opt/homebrew/sbin
-    test -d $p; and fish_add_path -U $p
+    test -d $p; and fish_add_path -g $p
 end
 
 if command -sq brew

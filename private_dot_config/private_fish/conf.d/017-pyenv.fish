@@ -2,15 +2,15 @@ if not command -sq pyenv
     return
 end
 
-set -Ux PYENV_ROOT $HOME/.pyenv
-fish_add_path $PYENV_ROOT/bin
+set -gx PYENV_ROOT $HOME/.pyenv
+fish_add_path -g $PYENV_ROOT/bin
 
 set -l pyenv_completion_file
 if command -sq brew
     set pyenv_completion_file (brew --prefix pyenv)/completions/pyenv.fish
 end
 
-fish_add_path $PYENV_ROOT/shims
+fish_add_path -g $PYENV_ROOT/shims
 set -gx PYENV_SHELL fish
 
 if test -f $pyenv_completion_file

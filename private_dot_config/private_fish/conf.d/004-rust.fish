@@ -1,1 +1,1 @@
-test -d $HOME/.cargo/bin; and fish_add_path $HOME/.cargo/bin
+test -d $HOME/.cargo/bin; and fish_add_path -g $HOME/.cargo/bin
