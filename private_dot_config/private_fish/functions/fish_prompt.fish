@@ -70,21 +70,23 @@ function fish_duration_prompt --description 'Show command duration'
     end
 end
 
-function prompt_char --argument char --description 'Color prompt character based on status'
-    set -l last_status $status
-    if test $last_status -eq 0
-        echo -n (set_color green)$char(set_color normal)
-    else
-        echo -n (set_color red)$char(set_color normal)
-    end
+function prompt_char --argument char --argument-names color --description 'Output prompt character with given color'
+    echo -n (set_color $color)$char(set_color normal)
 end
 
 function fish_prompt --description 'Two-line prompt'
+    set -l last_status $status
+    set -l prompt_color
+    if test $last_status -eq 0
+        set prompt_color green
+    else
+        set prompt_color red
+    end
+
     set -l pwd_part (set_color blue)(prompt_pwd -d 200)(set_color normal)
     set -l vcs_part (fish_vcs_prompt)
     set -l duration_part (fish_duration_prompt)
     set -l venv_part (fish_venv_prompt)
-    set -l prompt_part (prompt_char ";")
-
+    set -l prompt_part (prompt_char ";" $prompt_color)
     echo -s $pwd_part $vcs_part $duration_part \n $venv_part $prompt_part " "
 end
