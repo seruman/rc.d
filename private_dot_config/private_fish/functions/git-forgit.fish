@@ -1,11 +1,14 @@
-function git-forgit --wraps "git-forgit"
+function git-forgit --wraps=git-forgit
     if not status --is-interactive
         command git-forgit $argv
         return
     end
 
-    if test "$argv[1]" = "checkout_branch"; and test "$argv[2]" = "master"
-        echo "Warning: Checking out 'master' is discouraged. Consider using 'main' instead."
+    command git show-ref --quiet refs/heads/master
+    set --local master_exists (test $status -eq 0; and echo 1; or echo 0)
+
+    if test "$argv[1]" = checkout_branch; and test "$argv[2]" = master; and test $master_exists -eq 0
+        echo "Warning: Creating branches named 'master' is discouraged. Consider using 'main' instead."
         set --local prompt "Would you like to checkout 'main' instead? [Y/n] "
         while read --local --prompt-str $prompt response; or return 1
             switch $response
@@ -18,7 +21,6 @@ function git-forgit --wraps "git-forgit"
             end
         end
     else
-        # Pass through all git-forgit commands unchanged
         command git-forgit $argv
     end
 end
