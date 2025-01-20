@@ -20,3 +20,5 @@ palette = 12=#abb9d6
 palette = 13=#be79bb
 palette = 14=#729893
 palette = 15=#FFFFFF
+
+split-divider-color = #d4cbc3
