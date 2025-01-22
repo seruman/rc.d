@@ -1,0 +1,28 @@
+window-padding-x = 10
+window-padding-y = 0
+window-padding-color = background
+window-title-font-family = "Berkeley Mono"
+quit-after-last-window-closed=true 
+macos-titlebar-style = hidden
+macos-window-shadow = true
+window-height = 999999999
+window-width = 999999999
+
+copy-on-select=true
+scrollback-limit = 200_000_000
+
+
+cursor-style = block
+cursor-style-blink = false
+cursor-invert-fg-bg = true
+shell-integration=fish
+shell-integration-features = no-cursor
+
+keybind=clear
+
+font-family = "Berkeley Mono"
+font-size = 14
+font-feature = -calt
+font-thicken=true
+adjust-underline-thickness = -50%
+theme = seruzen
