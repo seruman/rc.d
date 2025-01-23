@@ -88,5 +88,5 @@ function fish_prompt --description 'Two-line prompt'
     set -l duration_part (fish_duration_prompt)
     set -l venv_part (fish_venv_prompt)
     set -l prompt_part (prompt_char ";" $prompt_color)
-    echo -s $pwd_part $vcs_part $duration_part \n $venv_part $prompt_part " "
+    echo -s \n$pwd_part $vcs_part $duration_part \n $venv_part $prompt_part " "
 end
