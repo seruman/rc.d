@@ -104,14 +104,3 @@
 #    "terminal"
 #    "qutebrowser"
 # ]
-:: default
-:: leader
-
-cmd - b; leader
-leader < cmd - b; default
-leader < escape; default
-
-leader < 0x21 [
-    "ghostty" : skhd -k 'cmd - b' ; skhd -k 'ctrl-c'; skhd -t 'nvimp ' ; skhd -k 'ctrl-b'; skhd -k 0x21 ; skhd -k "return"
-]
-
