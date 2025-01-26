@@ -76,3 +76,4 @@ font-feature = -calt
 font-thicken=true
 adjust-underline-thickness = -50%
 theme = seruzen
+auto-update-channel = tip
