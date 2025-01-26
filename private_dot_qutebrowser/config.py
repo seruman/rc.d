@@ -18,9 +18,13 @@ c.fonts.default_size = "15pt"
 # c.fonts.tabs.unselected = "bold default_size default_family"
 # c.fonts.completion.category = "bold default_size default_family"
 # c.fonts.completion.entry = "bold default_size default_family"
-c.window.hide_decoration = False
+c.window.hide_decoration = True
 c.colors.webpage.darkmode.enabled = False
 c.editor.command = ["/usr/local/bin/zed", "--wait", "{file}:{line}:{column0}"]
+c.url.start_pages = ["about:blank"]
+c.scrolling.smooth = True
+c.statusbar.show = "always"
+c.url.default_page = "https://kagi.com"
 c.url.start_pages = ["about:blank"]
 
 # All keybindings organized by mode
@@ -44,12 +48,18 @@ c.bindings.commands = {
         "<Alt-d>": "fake-key <Ctrl-Delete>",
         "<Alt-Backspace>": "fake-key <Ctrl-Backspace>",
         "<Ctrl-y>": "insert-text {primary}",
+        "<Ctrl-x><Ctrl-e>": "edit-text",
     },
     "normal": {
         # Navigation
         "\\ff": "cmd-set-text -s :tab-select",
+        "gt": "tab-next",
+        "gT": "tab-prev",
+        "\\nh": "search",
         "<Ctrl-o>": "back",
         "<Ctrl-i>": "forward",
+        "<Ctrl-[>": "back",
+        "<Ctrl-]>": "forward",
         # Tab position toggle
         "\\tt": "config-cycle tabs.position left top",
         # Overlay killer
@@ -69,12 +79,22 @@ c.bindings.commands = {
                 "cmd-later 10s set content.javascript.clipboard none",
             ]
         ),
+        "\\<Ctrl-f>": "spawn --userscript qute-1pass",
+        "\\\\": "clear-messages",
+        "\\<Ctrl-c>": "hint code userscript code_select.py",
+        "\\<Ctrl-x><Ctrl-e>": "edit-text",
     },
     "command": {
         "<Ctrl+e>": "edit-command",
     },
 }
 
+
+c.hints.selectors["code"] = [
+    # Selects all code tags whose direct parent is not a pre tag
+    ":not(pre) > code",
+    "pre",
+]
 # Domain-specific clipboard settings
 for pattern in [
     r"*://github.com",
