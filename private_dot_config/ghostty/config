@@ -21,8 +21,6 @@ shell-integration-features = no-cursor
 
 
 
-# keybind = ctrl+shift+j=write_scrollback_file:paste
-
 keybind = ctrl+b>n=new_window
 keybind = ctrl+b>c=new_tab
 
@@ -77,3 +75,5 @@ font-thicken=true
 adjust-underline-thickness = -50%
 theme = seruzen
 auto-update-channel = tip
+
+# duti -s com.apple.automator.GhosttyEdit public.plain-text all

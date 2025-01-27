@@ -1,16 +1,16 @@
 window-padding-x = 10
-window-padding-y = 0
 window-padding-color = background
 window-title-font-family = "Berkeley Mono"
-quit-after-last-window-closed=true 
-macos-titlebar-style = hidden
+mouse-hide-while-typing = false
+macos-option-as-alt = left
+# macos-titlebar-style = 
 macos-window-shadow = true
-window-height = 999999999
-window-width = 999999999
-
 copy-on-select=true
 scrollback-limit = 200_000_000
+quit-after-last-window-closed = true
 
+window-height = 99999999
+window-width = 99999999
 
 cursor-style = block
 cursor-style-blink = false
@@ -18,7 +18,11 @@ cursor-invert-fg-bg = true
 shell-integration=fish
 shell-integration-features = no-cursor
 
-keybind=clear
+keybind = clear
+keybind = super+equal=increase_font_size:1
+keybind = super+plus=increase_font_size:1
+keybind = super+minus=decrease_font_size:1
+keybind = super+zero=reset_font_size
 
 font-family = "Berkeley Mono"
 font-size = 14
@@ -26,3 +30,5 @@ font-feature = -calt
 font-thicken=true
 adjust-underline-thickness = -50%
 theme = seruzen
+
+# open -a Ghostty -n --args --command="$HOME/.local/share/bob/nvim-bin/nvim -c 'set nonumber' -c 'set signcolumn=no' -c 'LspStop' -c 'Copilot disable' $input_file" --config-file=$HOME/.config/ghostty/config-scrollback --config-default-files=false
