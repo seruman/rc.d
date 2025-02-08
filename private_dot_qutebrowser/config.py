@@ -1,3 +1,5 @@
+import os
+
 from qutebrowser.config.config import ConfigContainer
 from qutebrowser.config.configfiles import ConfigAPI
 
@@ -411,3 +413,5 @@ c.colors.tabs.selected.even.bg = base00
 # Background color for webpages if unset (or empty to use the theme's
 # color).
 c.colors.webpage.bg = base00
+
+config.source(os.path.expanduser("~/.config/work/qutebrowser/config.py"))
