@@ -1,5 +1,7 @@
 # git
-abbr -a gr 'git root'
+#abbr -a gr 'git root'
+# cd into git root aka cd (git root)
+abbr -a gr 'cd (git root)'
 
 # docker-compose
 abbr -a dc 'docker compose'
