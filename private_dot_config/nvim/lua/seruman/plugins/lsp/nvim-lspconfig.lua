@@ -426,6 +426,7 @@ return {
 				html = setup_default,
 				htmx = setup_default,
 				templ = setup_default,
+				["fish-lsp"] = setup_default,
 			}
 
 			-- local capabilities = require("cmp_nvim_lsp").default_capabilities({
@@ -455,6 +456,20 @@ return {
 					cmd = { "hare-ls" },
 					filetypes = { "hare" },
 					root_dir = util.root_pattern(".git"),
+					single_file_support = true,
+					settings = {},
+				},
+			}
+
+			configs["fish-lsp"] = {
+				default_config = {
+					name = "fish-lsp",
+					cmd = { "fish-lsp", "start" },
+					cmd_env = { fish_lsp_show_client_popups = false },
+					filetypes = { "fish" },
+					root_dir = function(fname)
+						return util.root_pattern(".git")(fname) or util.path.dirname(fname)
+					end,
 					single_file_support = true,
 					settings = {},
 				},
