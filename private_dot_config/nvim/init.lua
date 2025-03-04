@@ -62,6 +62,7 @@ vim.keymap.set("n", "<A-h>", "<Cmd>vertical resize +2<CR>", { desc = "Resize spl
 vim.keymap.set("n", "gs", "<Cmd>vertical wincmd f<CR>", { desc = "Open file under cursor in vertical split" })
 vim.keymap.set("n", "vy", "^vg_y", { desc = "Yank to end of line" })
 vim.keymap.set("n", "vv", "^vg_", { desc = "Visually select to end of line" })
+vim.keymap.set("n", "vs", ":vsplit<CR>", { desc = "Vertical split" })
 
 local yank_current_filepath = function()
 	local fpath = vim.fn.expand("%")
