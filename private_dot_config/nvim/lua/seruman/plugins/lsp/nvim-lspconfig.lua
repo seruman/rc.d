@@ -569,7 +569,7 @@ return {
 
 					local function fzfopts(o)
 						return vim.tbl_extend("force", {
-							jump_to_single_result = true,
+							jump1 = true,
 							ignore_current_line = true,
 						}, o or {})
 					end
@@ -584,7 +584,7 @@ return {
 					-- end, opts({ desc = "LSP declarations" }))
 					vim.keymap.set("n", "gD", function()
 						require("fzf-lua").lsp_definitions(fzfopts({
-							jump_to_single_result_action = require("fzf-lua.actions").file_vsplit,
+							jump1_action = require("fzf-lua.actions").file_vsplit,
 						}))
 					end, opts({ desc = "LSP definitions" }))
 					vim.keymap.set("n", "gd", function()
