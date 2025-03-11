@@ -84,6 +84,7 @@ c.bindings.commands = {
         "\\\\": "clear-messages",
         "\\<Ctrl-c>": "hint code userscript code_select.py",
         "\\<Ctrl-x><Ctrl-e>": "edit-text",
+        "\\sr": "spawn --userscript save-to-readwise-reader",
     },
     "command": {
         "<Ctrl+e>": "edit-command",
