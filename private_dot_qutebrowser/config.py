@@ -415,4 +415,6 @@ c.colors.tabs.selected.even.bg = base00
 # color).
 c.colors.webpage.bg = base00
 
-config.source(os.path.expanduser("~/.config/work/qutebrowser/config.py"))
+workcfg = os.path.expanduser("~/.config/work/qutebrowser/config.py")
+if os.path.exists(workcfg):
+    config.source(workcfg)
