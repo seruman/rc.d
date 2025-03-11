@@ -1,0 +1,32 @@
+#!/usr/bin/env zsh
+
+function message_info() {
+    echo "message-info '$1'" >>$QUTE_FIFO
+}
+
+function message_error() {
+    echo "message-error '$1'" >>$QUTE_FIFO
+}
+
+function _save() {
+    if [ -z "$QUTE_FIFO" ]; then
+        echo "QUTE_FIFO is not set. Exiting..."
+        exit 1
+    fi
+
+    local url="$QUTE_URL"
+    if [ -z "$url" ]; then
+        message_error "No URL provided"
+        exit 0
+    fi
+
+    message_info "Saving to Readwise: $url"
+    out=$(~/go/bin/readerctl save "$url") || {
+        message_error "Failed to save to Readwise"
+        exit 1
+    }
+    message_info "Saved to Readwise"
+    message_info "$out"
+}
+
+_save "$@"
