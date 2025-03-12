@@ -2,7 +2,10 @@ import os
 
 from qutebrowser.config.config import ConfigContainer
 from qutebrowser.config.configfiles import ConfigAPI
+from pathlib import Path
 
+
+currentdir = Path(__file__).parent
 
 # pyright: reportUndefinedVariable=false
 config: ConfigAPI = config  # noqa: F821 pylint: disable=E0602,C0103
@@ -27,6 +30,8 @@ c.statusbar.show = "always"
 c.url.default_page = "https://kagi.com"
 c.url.start_pages = ["about:blank"]
 c.content.autoplay = False
+c.auto_save.session = True
+c.tabs.pinned.frozen = True
 
 # All keybindings organized by mode
 c.bindings.commands = {
@@ -85,6 +90,7 @@ c.bindings.commands = {
         "\\<Ctrl-c>": "hint code userscript code_select.py",
         "\\<Ctrl-x><Ctrl-e>": "edit-text",
         "\\sr": "spawn --userscript save-to-readwise-reader",
+        "\\<space><space>": f"spawn --userscript sites.py {currentdir}/sites.json",
     },
     "command": {
         "<Ctrl+e>": "edit-command",
@@ -107,6 +113,7 @@ for pattern in [
     r"*://chatgpt.com",
     r"*://youtube.com",
     r"*://reddit.com",
+    r"*://bsky.app",
 ]:
     with config.pattern(pattern) as p:
         p.content.javascript.clipboard = "access-paste"
