@@ -8,3 +8,5 @@
 **/.DS_Store
 .qutebrowser/.git/
 .qutebrowser/.venv/
+.qutebrowser/**/__pycache__/
+.qutebrowser/**/__pycache__/**
