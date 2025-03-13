@@ -26,6 +26,8 @@ def main(
     got = choose(
         prompt=prompt,
         items=list(repos.keys()),
+        match_from_beginning=True,
+        rank_early_matches_higher=True,
         choose_bin="/opt/homebrew/bin/choose",
     )
 

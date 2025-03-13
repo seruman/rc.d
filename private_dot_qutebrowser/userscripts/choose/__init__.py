@@ -1,11 +1,11 @@
-from typing import Sequence, overload, Literal
+from typing import overload, Literal
 
 import subprocess
 
 
 @overload
 def choose(
-    items: Sequence[str],
+    items: list[str],
     return_index: Literal[True],
     num_rows: int | None = None,
     width: int | None = None,
@@ -16,14 +16,22 @@ def choose(
     disable_underline: bool = False,
     return_query_on_no_match: bool = False,
     prompt: str | None = None,
+    initial_query: str | None = None,
+    run_script: str | None = None,
+    extra_list_options_script: str | None = None,
+    separator: str | None = None,
+    show_special_chars: bool = False,
+    allow_empty_input: bool = False,
     output_results: bool = False,
+    match_from_beginning: bool = False,
+    rank_early_matches_higher: bool = False,
     choose_bin: str = "choose",
 ) -> int | None: ...
 
 
 @overload
 def choose(
-    items: Sequence[str],
+    items: list[str],
     return_index: Literal[False] = False,
     num_rows: int | None = None,
     width: int | None = None,
@@ -34,13 +42,21 @@ def choose(
     disable_underline: bool = False,
     return_query_on_no_match: bool = False,
     prompt: str | None = None,
+    initial_query: str | None = None,
+    run_script: str | None = None,
+    extra_list_options_script: str | None = None,
+    separator: str | None = None,
+    show_special_chars: bool = False,
+    allow_empty_input: bool = False,
     output_results: bool = False,
+    match_from_beginning: bool = False,
+    rank_early_matches_higher: bool = False,
     choose_bin: str = "choose",
 ) -> str | None: ...
 
 
 def choose(
-    items: Sequence[str],
+    items: list[str],
     return_index: bool = False,
     num_rows: int | None = None,
     width: int | None = None,
@@ -51,7 +67,15 @@ def choose(
     disable_underline: bool = False,
     return_query_on_no_match: bool = False,
     prompt: str | None = None,
+    initial_query: str | None = None,
+    run_script: str | None = None,
+    extra_list_options_script: str | None = None,
+    separator: str | None = None,
+    show_special_chars: bool = False,
+    allow_empty_input: bool = False,
     output_results: bool = False,
+    match_from_beginning: bool = False,
+    rank_early_matches_higher: bool = False,
     choose_bin: str = "choose",
 ) -> str | int | None:
     """
@@ -69,7 +93,16 @@ def choose(
         disable_underline: Disable underline and use background for matched string
         return_query_on_no_match: Return the query string if it doesn't match any item
         prompt: Text to display when query field is empty
+        initial_query: Initial query to start with (empty by default)
+        run_script: Path to a script to run when typing. Output appended to input field
+        extra_list_options_script: Same as run_script, but outputs are in the form of extra list options
+        separator: Defines separator string (default is a single newline)
+        show_special_chars: Show newline and tab as symbols (⏎ ⇥)
+        allow_empty_input: Allow empty input (choose will show up even if there are no items to select)
         output_results: Given a query, outputs results to standard output
+        match_from_beginning: Search matches symbols from beginning (instead of from end)
+        rank_early_matches_higher: Rank early matches higher
+        choose_bin: Path to the choose binary (default: "choose")
 
     Returns:
         If return_index is True, returns the selected index as an integer.
@@ -77,11 +110,12 @@ def choose(
         Returns None if the user cancels or no selection is made.
 
     Raises:
-        FileNotFoundError: If the 'choose' command is not found on the system
-        subprocess.CalledProcessError: If 'choose' returns a non-zero exit code
+        FileNotFoundError: If the choose binary is not found on the system
+        subprocess.CalledProcessError: If choose returns a non-zero exit code
     """
     cmd = [choose_bin]
 
+    # Add flags based on parameters
     if return_index:
         cmd.append("-i")
 
@@ -112,8 +146,32 @@ def choose(
     if prompt is not None:
         cmd.extend(["-p", prompt])
 
+    if initial_query is not None:
+        cmd.extend(["-q", initial_query])
+
+    if run_script is not None:
+        cmd.extend(["-r", run_script])
+
+    if extra_list_options_script is not None:
+        cmd.extend(["-t", extra_list_options_script])
+
+    if separator is not None:
+        cmd.extend(["-x", separator])
+
+    if show_special_chars:
+        cmd.append("-y")
+
+    if allow_empty_input:
+        cmd.append("-e")
+
     if output_results:
         cmd.append("-o")
+
+    if match_from_beginning:
+        cmd.append("-z")
+
+    if rank_early_matches_higher:
+        cmd.append("-a")
 
     try:
         result = subprocess.run(
