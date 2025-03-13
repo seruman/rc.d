@@ -1,6 +1,8 @@
 import pkgutil
+import sys
+import types
 from importlib.machinery import FileFinder, SourceFileLoader
-from typing import Iterator, cast
+from typing import Any, Callable, Iterator, cast
 
 from qutebrowser.app import loader
 from qutebrowser.utils import log
@@ -21,8 +23,10 @@ def load_components() -> None:
 def _custom_load_components() -> None:
     try:
         for source_loader, info in _walk_components():
-            source_loader.load_module(info.name)
-            loader._load_component(info)
+            namespaced_loader, namespaced_info = create_namespaced_loader(source_loader, info)
+
+            namespaced_loader()
+            loader._load_component(namespaced_info)
 
     except ImportError as e:
         log.extensions.error(f"[seruman] Failed to load components: {e}")
@@ -54,3 +58,34 @@ def _walk_components() -> Iterator[tuple[SourceFileLoader, loader.ExtensionInfo]
         source_loader = cast(SourceFileLoader, spec.loader)
 
         yield source_loader, loader.ExtensionInfo(name=name)
+
+
+def create_namespaced_loader(
+    source_loader: SourceFileLoader,
+    info: loader.ExtensionInfo,
+    namespace_prefix: str = "seruman",
+) -> tuple[Callable[[], types.ModuleType], loader.ExtensionInfo]:
+    namespaced_name = f"{namespace_prefix}.{info.name}"
+    namespaced_info = loader.ExtensionInfo(name=namespaced_name)
+
+    def namespaced_loader() -> Any:
+        module = source_loader.load_module(info.name)
+
+        if namespace_prefix not in sys.modules:
+            parent_module = types.ModuleType(namespace_prefix)
+            sys.modules[namespace_prefix] = parent_module
+
+        components_namespace = f"{namespace_prefix}.components"
+        if components_namespace not in sys.modules:
+            components_module = types.ModuleType(components_namespace)
+            sys.modules[components_namespace] = components_module
+            setattr(sys.modules[namespace_prefix], "components", components_module)
+
+        sys.modules[namespaced_name] = module
+
+        component_name = info.name.split(".")[-1]
+        setattr(sys.modules[components_namespace], component_name, module)
+
+        return module
+
+    return namespaced_loader, namespaced_info
