@@ -3,7 +3,9 @@ import os
 from qutebrowser.config.config import ConfigContainer
 from qutebrowser.config.configfiles import ConfigAPI
 from pathlib import Path
-import sys
+from monkey_patch import load_components
+
+load_components()
 
 
 currentdir = Path(__file__).parent
@@ -17,39 +19,6 @@ config.load_autoconfig()
 
 config_dir = os.path.dirname(os.path.abspath(__file__))
 
-try:
-    from qutebrowser.extensions import loader
-    from qutebrowser.api import message
-    import importlib.util
-
-    original_load_components = loader.load_components
-
-    def patched_load_components(*args, **kwargs):
-        original_load_components(*args, **kwargs)
-
-        try:
-            module_name = "qutebrowser.components.mode_hooks"
-
-            if module_name not in sys.modules:
-                spec = importlib.util.spec_from_file_location(module_name, os.path.join(config_dir, "mode_hooks.py"))
-                mod = importlib.util.module_from_spec(spec)
-                sys.modules[module_name] = mod
-                spec.loader.exec_module(mod)
-
-            info = loader.ExtensionInfo(module_name)
-            loader._load_component(info, skip_hooks=False)
-            message.info(f"Successfully loaded {module_name}")
-
-        except Exception as e:
-            message.error(f"Failed to load mode hooks component: {str(e)}")
-            import traceback
-
-            message.error(traceback.format_exc())
-
-    loader.load_components = patched_load_components
-
-except Exception as e:
-    raise e
 
 # Basic settings
 c.fonts.default_size = "15pt"
