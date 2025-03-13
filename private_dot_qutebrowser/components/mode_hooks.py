@@ -33,11 +33,8 @@ def update_border(win_id, mode_name, border_style: str | None):
     js_code = f"""
     (function() {{
         try {{
-            console.log('Mode border script starting... Mode: {mode_name}');
-
             var existingStyle = document.getElementById('qutebrowser-mode-border');
             if (existingStyle) {{
-                console.log('Removing existing mode border style');
                 existingStyle.parentNode.removeChild(existingStyle);
             }}
 
@@ -65,10 +62,8 @@ def update_border(win_id, mode_name, border_style: str | None):
 
             document.head.appendChild(style);
 
-            console.log('Mode border style successfully applied: {mode_name} - {bs}');
             return true;
         }} catch (e) {{
-            console.error('Error in mode border script:', e.message);
             return false;
         }}
     }})();
