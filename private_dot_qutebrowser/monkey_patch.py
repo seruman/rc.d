@@ -3,10 +3,8 @@ import sys
 import types
 from importlib.machinery import FileFinder, SourceFileLoader
 from typing import Any, Callable, Iterator, cast
-
 from qutebrowser.app import loader
 from qutebrowser.utils import log
-
 import components
 
 
@@ -25,9 +23,12 @@ def _custom_load_components() -> None:
         for source_loader, info in _walk_components():
             namespaced_loader, namespaced_info = create_namespaced_loader(source_loader, info)
 
+            if namespaced_info.name in sys.modules:
+                log.extensions.debug(f"[seruman] Module {namespaced_info.name} already loaded, skipping")
+                continue
+
             namespaced_loader()
             loader._load_component(namespaced_info)
-
     except ImportError as e:
         log.extensions.error(f"[seruman] Failed to load components: {e}")
 
@@ -45,18 +46,15 @@ def _walk_components() -> Iterator[tuple[SourceFileLoader, loader.ExtensionInfo]
     for module_finder, name, ispkg in module_infos:
         if ispkg:
             continue
-
         finder = cast(FileFinder, module_finder)
         spec = finder.find_spec(name)
         if not spec:
             log.extensions.debug(f"[seruman] Skipping {name}, spec not found")
             continue
-
         if not spec.loader:
             log.extensions.debug(f"[seruman] Skipping {name}, loader not found")
-
+            continue
         source_loader = cast(SourceFileLoader, spec.loader)
-
         yield source_loader, loader.ExtensionInfo(name=name)
 
 
@@ -69,7 +67,12 @@ def create_namespaced_loader(
     namespaced_info = loader.ExtensionInfo(name=namespaced_name)
 
     def namespaced_loader() -> Any:
-        module = source_loader.load_module(info.name)
+        if info.name in sys.modules:
+            module = sys.modules[info.name]
+            log.extensions.debug(f"[seruman] Original module {info.name} already loaded, reusing")
+        else:
+            module = source_loader.load_module(info.name)
+            log.extensions.debug(f"[seruman] Loaded module {info.name}")
 
         if namespace_prefix not in sys.modules:
             parent_module = types.ModuleType(namespace_prefix)
@@ -82,7 +85,6 @@ def create_namespaced_loader(
             setattr(sys.modules[namespace_prefix], "components", components_module)
 
         sys.modules[namespaced_name] = module
-
         component_name = info.name.split(".")[-1]
         setattr(sys.modules[components_namespace], component_name, module)
 
