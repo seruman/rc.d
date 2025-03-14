@@ -3,3 +3,4 @@ vendor/
 !.github/
 .venv/
 envrc/
+__pycache__/

@@ -6,3 +6,4 @@
 --glob=!.venv/
 --glob=!.envrc/
 --glob=!vendor/
+--glob=!__pycache__/
