@@ -29,7 +29,18 @@ c.fonts.default_size = "15pt"
 # c.fonts.completion.entry = "bold default_size default_family"
 c.window.hide_decoration = False
 c.colors.webpage.darkmode.enabled = False
-c.editor.command = ["/usr/local/bin/zed", "--wait", "{file}:{line}:{column0}"]
+c.editor.command = [
+    "open",
+    "-W",
+    "-a",
+    "Ghostty",
+    "-n",
+    "--args",
+    '--command=/opt/homebrew/bin/fish -c \'nvim "{file}" -c "normal {line}G{column0}|"\'',
+    "--config-file=" + os.path.expanduser("~/.config/ghostty/config-qute"),
+    "--config-default-files=false",
+    "--quit-after-last-window-closed=true",
+]
 c.url.start_pages = ["about:blank"]
 c.scrolling.smooth = True
 c.statusbar.show = "always"
@@ -38,73 +49,64 @@ c.url.start_pages = ["about:blank"]
 c.content.autoplay = False
 c.auto_save.session = True
 c.tabs.pinned.frozen = True
+c.tabs.width = "200"
 
-# All keybindings organized by mode
-c.bindings.commands = {
-    "insert": {
-        # Cursor movement
-        "<Ctrl-f>": "fake-key <Right>",
-        "<Ctrl-b>": "fake-key <Left>",
-        "<Ctrl-a>": "fake-key <Home>",
-        "<Ctrl-e>": "fake-key <End>",
-        "<Ctrl-n>": "fake-key <Down>",
-        "<Ctrl-p>": "fake-key <Up>",
-        "<Alt-f>": "fake-key <Ctrl-Right>",
-        "<Alt-b>": "fake-key <Ctrl-Left>",
-        # Page movement
-        "<Alt-v>": "fake-key <PgUp>",
-        "<Ctrl-v>": "fake-key <PgDown>",
-        # Text editing
-        "<Ctrl-w>": "fake-key <Ctrl-backspace>",
-        "<Ctrl-d>": "fake-key <Delete>",
-        "<Alt-d>": "fake-key <Ctrl-Delete>",
-        "<Alt-Backspace>": "fake-key <Ctrl-Backspace>",
-        "<Ctrl-y>": "insert-text {primary}",
-        "<Ctrl-x><Ctrl-e>": "edit-text",
-    },
-    "normal": {
-        # Navigation
-        "\\ff": "cmd-set-text -s :tab-select",
-        "gt": "tab-next",
-        "gT": "tab-prev",
-        "\\nh": "search",
-        "<Ctrl-o>": "back",
-        "<Ctrl-i>": "forward",
-        "<Ctrl-[>": "back",
-        "<Ctrl-]>": "forward",
-        # Tab position toggle
-        "\\tt": "config-cycle tabs.position left top",
-        # Overlay killer
-        ",ko": "jseval (function () { "
-        + '  var i, elements = document.querySelectorAll("body *");'
-        + "  for (i = 0; i < elements.length; i++) {"
-        + "    var pos = getComputedStyle(elements[i]).position;"
-        + '    if (pos === "fixed" || pos == "sticky") {'
-        + "      elements[i].parentNode.removeChild(elements[i]);"
-        + "    }"
-        + "  }})();",
-        # Clipboard access
-        ",ya": " ;; ".join(
-            [
-                "set -u {domain} content.javascript.clipboard access",
-                "message-warning 'Clipboard enabled for 10 seconds'",
-                "cmd-later 10s set content.javascript.clipboard none",
-            ]
-        ),
-        "\\<Ctrl-f>": "spawn --userscript qute-1pass",
-        "\\\\": "clear-messages",
-        "\\<Ctrl-c>": "hint code userscript code_select.py",
-        "\\<Ctrl-x><Ctrl-e>": "edit-text",
-        "\\sr": "spawn --userscript save-to-readwise-reader",
-        "\\<space><space>": f"spawn --userscript sites.py {currentdir}/sites.json",
-    },
-    "command": {
-        "<Ctrl+e>": "edit-command",
-    },
-    "passthrough": {
-        "<Ctrl+Escape>": "mode-leave",
-    },
-}
+DEFAULT_CLIPBOARD_ACCESS = "access-paste"
+c.content.javascript.clipboard = DEFAULT_CLIPBOARD_ACCESS
+
+
+# Insert mode bindings
+config.bind("<Ctrl-f>", "fake-key <Right>", mode="insert")
+config.bind("<Ctrl-b>", "fake-key <Left>", mode="insert")
+config.bind("<Ctrl-a>", "fake-key <Home>", mode="insert")
+config.bind("<Ctrl-e>", "fake-key <End>", mode="insert")
+config.bind("<Ctrl-n>", "fake-key <Down>", mode="insert")
+config.bind("<Ctrl-p>", "fake-key <Up>", mode="insert")
+config.bind("<Alt-f>", "fake-key <Ctrl-Right>", mode="insert")
+config.bind("<Alt-b>", "fake-key <Ctrl-Left>", mode="insert")
+config.bind("<Alt-v>", "fake-key <PgUp>", mode="insert")
+config.bind("<Ctrl-v>", "fake-key <PgDown>", mode="insert")
+config.bind("<Ctrl-w>", "fake-key <Ctrl-backspace>", mode="insert")
+config.bind("<Ctrl-d>", "fake-key <Delete>", mode="insert")
+config.bind("<Alt-d>", "fake-key <Ctrl-Delete>", mode="insert")
+config.bind("<Alt-Backspace>", "fake-key <Ctrl-Backspace>", mode="insert")
+config.bind("<Ctrl-y>", "insert-text {primary}", mode="insert")
+config.bind("<Ctrl-x><Ctrl-e>", "edit-text", mode="insert")
+
+# Normal mode bindings
+config.bind("\\w", "session-save", mode="normal")
+config.bind("\\ff", "cmd-set-text -s :tab-select", mode="normal")
+config.bind("gt", "tab-next", mode="normal")
+config.bind("gT", "tab-prev", mode="normal")
+config.bind("\\nh", "search", mode="normal")
+config.bind("<Ctrl-o>", "back", mode="normal")
+config.bind("<Ctrl-i>", "forward", mode="normal")
+config.bind("<Ctrl-[>", "back", mode="normal")
+config.bind("<Ctrl-]>", "forward", mode="normal")
+config.bind("\\tt", "config-cycle tabs.position left top", mode="normal")
+config.bind(
+    ",ko",
+    'jseval (function () { var i, elements = document.querySelectorAll("body *"); for (i = 0; i < elements.length; i++) { var pos = getComputedStyle(elements[i]).position; if (pos === "fixed" || pos == "sticky") { elements[i].parentNode.removeChild(elements[i]); } }})()',
+    mode="normal",
+)
+
+config.bind(
+    ",ya",
+    f"set -u {{domain}} content.javascript.clipboard access ;; message-warning 'Clipboard enabled for 10 seconds' ;; cmd-later 10s set content.javascript.clipboard {DEFAULT_CLIPBOARD_ACCESS}",
+    mode="normal",
+)
+config.bind("\\<Ctrl-f>", "spawn --userscript qute-1pass", mode="normal")
+config.bind("\\\\", "clear-messages", mode="normal")
+config.bind("\\<Ctrl-c>", "hint code userscript code_select.py", mode="normal")
+config.bind("\\<Ctrl-x><Ctrl-e>", "edit-text", mode="normal")
+config.bind("\\sr", "spawn --userscript save-to-readwise-reader", mode="normal")
+config.bind("\\<space><space>", f"spawn --userscript sites.py {currentdir}/sites.json", mode="normal")
+
+# Command mode bindings
+config.bind("<Ctrl+x><Ctrl-e>", "cmd-edit", mode="command")
+
+# Passthrough mode bindings
+config.bind("<Ctrl+Escape>", "mode-leave", mode="passthrough")
 
 
 c.hints.selectors["code"] = [
