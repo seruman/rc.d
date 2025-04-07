@@ -12,7 +12,7 @@ return {
 				hide = {
 					cursorline = false,
 					focused_win = true,
-					only_win = "count_ignored"
+					only_win = "count_ignored",
 				},
 				window = {
 					zindex = 30,
