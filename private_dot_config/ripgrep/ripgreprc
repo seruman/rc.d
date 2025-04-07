@@ -7,3 +7,4 @@
 --glob=!.envrc/
 --glob=!vendor/
 --glob=!__pycache__/
+--glob=!node_modules/
