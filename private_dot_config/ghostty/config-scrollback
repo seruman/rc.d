@@ -30,4 +30,3 @@ font-thicken=true
 adjust-underline-thickness = -50%
 theme = seruzen
 
-# open -a Ghostty -n --args --command="$HOME/.local/share/bob/nvim-bin/nvim -c 'set nonumber' -c 'set signcolumn=no' -c 'LspStop' -c 'Copilot disable' $input_file" --config-file=$HOME/.config/ghostty/config-scrollback --config-default-files=false

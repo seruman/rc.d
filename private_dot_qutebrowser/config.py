@@ -49,7 +49,7 @@ c.url.start_pages = ["about:blank"]
 c.content.autoplay = False
 c.auto_save.session = True
 c.tabs.pinned.frozen = True
-c.tabs.width = "200"
+c.tabs.width = 200
 
 DEFAULT_CLIPBOARD_ACCESS = "access-paste"
 c.content.javascript.clipboard = DEFAULT_CLIPBOARD_ACCESS
@@ -101,6 +101,8 @@ config.bind("\\<Ctrl-c>", "hint code userscript code_select.py", mode="normal")
 config.bind("\\<Ctrl-x><Ctrl-e>", "edit-text", mode="normal")
 config.bind("\\sr", "spawn --userscript save-to-readwise-reader", mode="normal")
 config.bind("\\<space><space>", f"spawn --userscript sites.py {currentdir}/sites.json", mode="normal")
+config.bind("\\so", "spawn --userscript search-selected.py", mode="normal")
+config.bind(",m", "hint links spawn mpv {hint-url}", mode="normal")
 
 # Command mode bindings
 config.bind("<Ctrl+x><Ctrl-e>", "cmd-edit", mode="command")
@@ -108,6 +110,8 @@ config.bind("<Ctrl+x><Ctrl-e>", "cmd-edit", mode="command")
 # Passthrough mode bindings
 config.bind("<Ctrl+Escape>", "mode-leave", mode="passthrough")
 
+# caret mode bindings
+config.bind("\\so", "spawn --userscript search-selected.py", mode="caret")
 
 c.hints.selectors["code"] = [
     # Selects all code tags whose direct parent is not a pre tag
