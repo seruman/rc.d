@@ -1,7 +1,6 @@
-
 if status is-interactive
     set -g __fish_git_prompt_show_informative_status 1
-    set -g __fish_git_prompt_showdirtystate 'yes'
+    set -g __fish_git_prompt_showdirtystate yes
     set -g __fish_git_prompt_char_stateseparator ' '
     set -g __fish_git_prompt_char_dirtystate "✖"
     set -g __fish_git_prompt_char_cleanstate "✔"
