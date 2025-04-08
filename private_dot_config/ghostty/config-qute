@@ -1,0 +1,32 @@
+window-padding-x = 10
+window-padding-color = background
+window-title-font-family = "Berkeley Mono"
+mouse-hide-while-typing = false
+macos-option-as-alt = left
+# macos-titlebar-style = 
+macos-window-shadow = true
+copy-on-select=true
+scrollback-limit = 200_000_000
+quit-after-last-window-closed = true
+
+window-height = 50
+window-width = 100
+
+cursor-style = block
+cursor-style-blink = false
+cursor-invert-fg-bg = true
+shell-integration=fish
+shell-integration-features = no-cursor
+
+keybind = super+equal=increase_font_size:1
+keybind = super+plus=increase_font_size:1
+keybind = super+minus=decrease_font_size:1
+keybind = super+zero=reset_font_size
+
+font-family = "Berkeley Mono"
+font-size = 14
+font-feature = -calt
+font-thicken=true
+adjust-underline-thickness = -50%
+theme = seruzen
+
