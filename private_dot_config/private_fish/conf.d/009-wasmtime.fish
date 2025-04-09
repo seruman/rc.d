@@ -1,4 +1,5 @@
-if command -sq orb && command -sq orbctl
-    and test -f "$HOME/.orbstack/shell/init.fish"
-    source "$HOME/.orbstack/shell/init.fish"
+set -l wasmtime_home "$HOME/.wasmtime"
+if test -d $WASMTIME_HOME
+    fish_add_path -g $wasmtime_home/bin
+    set -gx WASMTIME_HOME $wasmtime_home
 end
