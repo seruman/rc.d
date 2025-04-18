@@ -12,10 +12,9 @@ abbr -a got 'gotest -v'
 abbr -a gota 'gotest -v ./...'
 abbr -a gotai 'gotest -v ./... -tags=integration'
 abbr -a gotanc 'gotest -v ./... -count=1'
-abbr -a gotaf 'gotest ./... -count=1 -run=(rg \'func (Test.+)\(\' (fd -t f -e go -E vendor .) -NIo --no-heading -r "\$1" | fzf)'
 
 ## gotestsum
-abbr -a gots 'gotestsum'
+abbr -a gots gotestsum
 abbr -a gotsa 'gotestsum -- ./...'
 abbr -a gotsai 'gotestsum -- ./... -tags=integration'
 abbr -a gotsanc 'gotestsum -- ./... -count=1'
