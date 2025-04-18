@@ -5,6 +5,10 @@ return {
 			"NvimTreeToggle",
 			"NvimTreeFindFile",
 		},
+		keys = {
+			{ "<leader>ntt", "<Cmd>NvimTreeToggle<CR>", desc = "Toggle file tree" },
+			{ "<leader>ntff", "<Cmd>NvimTreeFindFile<CR>", desc = "Find file in tree" },
+		},
 		config = function()
 			local nvimtree = require("nvim-tree")
 
@@ -48,9 +52,6 @@ return {
 					},
 				},
 			})
-
-			vim.keymap.set("n", "<leader>ntt", "<Cmd>NvimTreeToggle<CR>", { desc = "Toggle file tree" })
-			vim.keymap.set("n", "<leader>ntff", "<Cmd>NvimTreeFindFile<CR>", { desc = "Find file in tree" })
 
 			vim.api.nvim_create_autocmd({ "BufEnter", "QuitPre" }, {
 				nested = false,
