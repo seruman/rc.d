@@ -72,8 +72,10 @@ config.bind("<Alt-d>", "fake-key <Ctrl-Delete>", mode="insert")
 config.bind("<Alt-Backspace>", "fake-key <Ctrl-Backspace>", mode="insert")
 config.bind("<Ctrl-y>", "insert-text {primary}", mode="insert")
 config.bind("<Ctrl-x><Ctrl-e>", "edit-text", mode="insert")
+config.bind("<Ctrl-x><Ctrl-p>", "spawn --userscript qute-1pass", mode="insert")
 
 # Normal mode bindings
+config.bind("\\q", "tab-close", mode="normal")
 config.bind("\\w", "session-save", mode="normal")
 config.bind("\\ff", "cmd-set-text -s :tab-select", mode="normal")
 config.bind("gt", "tab-next", mode="normal")
@@ -95,7 +97,7 @@ config.bind(
     f"set -u {{domain}} content.javascript.clipboard access ;; message-warning 'Clipboard enabled for 10 seconds' ;; cmd-later 10s set content.javascript.clipboard {DEFAULT_CLIPBOARD_ACCESS}",
     mode="normal",
 )
-config.bind("\\<Ctrl-f>", "spawn --userscript qute-1pass", mode="normal")
+config.bind("\\<Ctrl-p>", "spawn --userscript qute-1pass", mode="normal")
 config.bind("\\\\", "clear-messages", mode="normal")
 config.bind("\\<Ctrl-c>", "hint code userscript code_select.py", mode="normal")
 config.bind("\\<Ctrl-x><Ctrl-e>", "edit-text", mode="normal")
