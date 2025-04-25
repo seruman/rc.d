@@ -93,13 +93,3 @@ vim.api.nvim_create_autocmd("VimResized", {
 		vim.cmd("wincmd =")
 	end,
 })
-
-vim.filetype.add({
-	filename = { [".swcrc"] = "json" },
-	pattern = {
-		["%.env%.[%w_.-]+"] = "dotenv",
-		["%.env"] = "dotenv",
-		["%.envrc"] = "sh",
-		["%.envrc%.?[%w_.-]*"] = "sh",
-	},
-})
