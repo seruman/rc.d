@@ -424,8 +424,8 @@ return {
 				["protobuf-language-server"] = setup_default,
 				["hare-ls"] = setup_default,
 				html = setup_default,
-				htmx = setup_default,
-				templ = setup_default,
+				-- htmx = setup_default,
+				-- templ = setup_default,
 				["fish-lsp"] = setup_default,
 			}
 
