@@ -12,6 +12,7 @@ abbr -a got 'gotest -v'
 abbr -a gota 'gotest -v ./...'
 abbr -a gotai 'gotest -v ./... -tags=integration'
 abbr -a gotanc 'gotest -v ./... -count=1'
+abbr -a gotar --set-cursor='%' 'gotest -v ./... -run "%"'
 
 ## gotestsum
 abbr -a gots gotestsum
@@ -19,6 +20,7 @@ abbr -a gotsa 'gotestsum -- ./...'
 abbr -a gotsai 'gotestsum -- ./... -tags=integration'
 abbr -a gotsanc 'gotestsum -- ./... -count=1'
 abbr -a gotsaf 'gotestsum -- ./... -count=1 -run=(rg \'func (Test.+)\(\' (fd -t f -e go -E vendor .) -NIo --no-heading -r "\$1" | fzf)'
+abbr -a gotsar --set-cursor='%' 'gotestsum -- ./... -run="%"' # run test with name
 
 ## goimports
 abbr -a goil 'goimports -l (fd -t f -e go -E vendor .)'
