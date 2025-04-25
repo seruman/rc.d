@@ -427,6 +427,7 @@ return {
 				-- htmx = setup_default,
 				-- templ = setup_default,
 				["fish-lsp"] = setup_default,
+				biome = setup_default,
 			}
 
 			-- local capabilities = require("cmp_nvim_lsp").default_capabilities({
