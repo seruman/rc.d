@@ -49,7 +49,8 @@ return {
 				"groovy",
 			}
 
-			require("nvim-treesitter.parsers").get_parser_configs().just = {
+			local parser_configs = require("nvim-treesitter.parsers").get_parser_configs()
+			parser_configs.just = {
 				install_info = {
 					url = "https://github.com/IndianBoy42/tree-sitter-just", -- local path or git repo
 					files = { "src/parser.c", "src/scanner.c" },
@@ -57,6 +58,22 @@ return {
 				},
 				maintainers = { "@IndianBoy42" },
 			}
+
+			parser_configs.dotenv = {
+				install_info = {
+					url = "https://github.com/pnx/tree-sitter-dotenv",
+					branch = "main",
+					files = { "src/parser.c", "src/scanner.c" },
+				},
+				filetype = "dotenv",
+			}
+
+			-- TODO
+			vim.filetype.add({
+				pattern = {
+					[".env.*"] = "dotenv",
+				},
+			})
 
 			require("nvim-treesitter.configs").setup({
 				ensure_installed = languages,
