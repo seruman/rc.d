@@ -25,4 +25,4 @@
 [difftool]
     prompt = false
 [merge]
-	conflictstyle = diff3
+    conflictstyle = diff3
