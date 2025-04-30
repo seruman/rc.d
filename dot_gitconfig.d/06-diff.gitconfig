@@ -1,3 +1,7 @@
 [diff "mmdb"]
     textconv = ~/bin/mmdbexport-git
     binary = true
+
+[diff "hex"]
+    textconv = hexdump -v -C
+    binary = true
