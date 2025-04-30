@@ -104,7 +104,7 @@ config.bind("\\<Ctrl-x><Ctrl-e>", "edit-text", mode="normal")
 config.bind("\\sr", "spawn --userscript save-to-readwise-reader", mode="normal")
 config.bind("\\<space><space>", f"spawn --userscript sites.py {currentdir}/sites.json", mode="normal")
 config.bind("\\so", "spawn --userscript search-selected.py", mode="normal")
-config.bind(",m", "hint links spawn mpv {hint-url}", mode="normal")
+config.bind(",m", "hint mpv spawn /opt/homebrew/bin/mpv {hint-url}", mode="normal")
 
 # Command mode bindings
 config.bind("<Ctrl+x><Ctrl-e>", "cmd-edit", mode="command")
@@ -119,6 +119,11 @@ c.hints.selectors["code"] = [
     # Selects all code tags whose direct parent is not a pre tag
     ":not(pre) > code",
     "pre",
+]
+
+c.hints.selectors["mpv"] = [
+    *c.hints.selectors["links"],
+    "video",
 ]
 # Domain-specific clipboard settings
 for pattern in [
