@@ -5,3 +5,7 @@
 [diff "hex"]
     textconv = hexdump -v -C
     binary = true
+
+[diff "lockb"]
+	textconv = bun
+	binary = true
