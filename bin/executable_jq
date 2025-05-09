@@ -1,0 +1,10 @@
+#/usr/bin/env sh
+
+if ! command -v gojq &> /dev/null
+then
+    echo "gojq could not be found"
+    echo "go install github.com/itchyny/gojq/cmd/gojq@latest"
+    exit 1
+fi
+
+gojq $@
