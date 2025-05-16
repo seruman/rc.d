@@ -107,6 +107,7 @@ config.bind("\\sr", "spawn --userscript save-to-readwise-reader", mode="normal")
 config.bind("\\<space><space>", f"spawn --userscript sites.py {currentdir}/sites.json", mode="normal")
 config.bind("\\so", "spawn --userscript search-selected.py", mode="normal")
 config.bind(",m", "hint mpv spawn /opt/homebrew/bin/mpv {hint-url}", mode="normal")
+config.bind("\\<Ctrl-g>p", "spawn --userscript pkggodev.py", mode="normal")
 
 # Command mode bindings
 config.bind("<Ctrl+x><Ctrl-e>", "cmd-edit", mode="command")
