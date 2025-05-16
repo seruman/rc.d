@@ -97,7 +97,9 @@ config.bind(
     f"set -u {{domain}} content.javascript.clipboard access ;; message-warning 'Clipboard enabled for 10 seconds' ;; cmd-later 10s set content.javascript.clipboard {DEFAULT_CLIPBOARD_ACCESS}",
     mode="normal",
 )
-config.bind("\\<Ctrl-p>", "spawn --userscript qute-1pass", mode="normal")
+config.unbind("<Ctrl-x>")
+config.unbind("<Ctrl-a>")
+config.bind("<Ctrl-x><Ctrl-p>", "spawn --userscript qute-1pass", mode="normal")
 config.bind("\\\\", "clear-messages", mode="normal")
 config.bind("\\<Ctrl-c>", "hint code userscript code_select.py", mode="normal")
 config.bind("\\<Ctrl-x><Ctrl-e>", "edit-text", mode="normal")
