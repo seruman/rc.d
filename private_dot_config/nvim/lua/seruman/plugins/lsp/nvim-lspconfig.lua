@@ -211,39 +211,6 @@ return {
 				}
 			end
 
-			local function setup_pylsp()
-				return {
-					settings = {
-						pylsp = {
-							plugins = {
-								flake8 = { enabled = false },
-								yapf = { enabled = false },
-								autopep8 = { enabled = false },
-								pycodestyle = {
-									enabled = true,
-									ignore = { "E501", "E731", "W503", "E203" },
-								},
-								pylint = { enabled = false },
-								pylsp_mypy = {
-									enabled = true,
-									overrides = {
-										"--ignore-missing-imports",
-										true,
-										"--disable-error-code",
-										"annotation-unchecked",
-									},
-								},
-								-- TODO(selman): I do not remember which one of them
-								-- makes it work, got sick of dealing with it.
-								pylsp_black = { enabled = true, line_length = 120, skip_string_normalization = true },
-								black = { enabled = true, line_length = 120, skip_string_normalization = true },
-								rope_autoimport = { enabled = true },
-							},
-						},
-					},
-				}
-			end
-
 			local function setup_pyright()
 				return {
 					settings = {
@@ -403,7 +370,6 @@ return {
 
 			local servers = {
 				gopls = setup_gopls,
-				-- pylsp = setup_pylsp,
 				pyright = setup_pyright,
 				-- TODO: https://github.com/DetachHead/basedpyright/issues/513
 				-- basedpyright = setup_basedpyright,
@@ -422,18 +388,12 @@ return {
 				nim_langserver = setup_default,
 				taplo = setup_default,
 				["protobuf-language-server"] = setup_default,
-				["hare-ls"] = setup_default,
 				html = setup_default,
-				-- htmx = setup_default,
-				-- templ = setup_default,
 				["fish-lsp"] = setup_default,
 				biome = setup_default,
+				jsonnet_ls = setup_default,
 			}
 
-			-- local capabilities = require("cmp_nvim_lsp").default_capabilities({
-			-- 	-- Disable snippets, see nvim-cmp configuration.
-			-- 	snippetSupport = false,
-			-- })
 			local capabilities = require("blink.cmp").get_lsp_capabilities()
 
 			local flags = { debounce_text_changes = 150 }
@@ -446,16 +406,6 @@ return {
 				default_config = {
 					cmd = { "protobuf-language-server" },
 					filetypes = { "proto", "cpp" },
-					root_dir = util.root_pattern(".git"),
-					single_file_support = true,
-					settings = {},
-				},
-			}
-
-			configs["hare-ls"] = {
-				default_config = {
-					cmd = { "hare-ls" },
-					filetypes = { "hare" },
 					root_dir = util.root_pattern(".git"),
 					single_file_support = true,
 					settings = {},
