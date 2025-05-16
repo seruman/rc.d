@@ -47,6 +47,12 @@ js() {
                 input.focus();
                 input.value = "$(javascript_escape "${PASSWORD}")";
                 input.dispatchEvent(new Event('change'));
+                input.dispatchEvent(new KeyboardEvent('keydown', {
+                    key: 'ArrowRight',
+                    keyCode: 39,
+                    which: 39,
+                    bubbles: true
+                }));
                 input.blur();
             }
         }
