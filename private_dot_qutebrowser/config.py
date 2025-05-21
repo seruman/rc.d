@@ -50,6 +50,8 @@ c.content.autoplay = False
 c.auto_save.session = True
 c.tabs.pinned.frozen = True
 c.tabs.width = 200
+c.tabs.title.format = "{audio}{index}: {current_title}"
+c.tabs.title.format_pinned = c.tabs.title.format
 
 DEFAULT_CLIPBOARD_ACCESS = "access-paste"
 c.content.javascript.clipboard = DEFAULT_CLIPBOARD_ACCESS
