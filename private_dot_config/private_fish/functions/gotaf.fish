@@ -3,11 +3,11 @@ function _gotaf_cmd -a pkgs -a tags
         set pkgs ./...
     end
 
-    set -l format "{{.RelativeFileName}}:{{.Range.Start.Line}}:{{.Range.End.Line}}:{{.FullName}}"
+    set -l format "{{.Package}}:{{.FullName}}:{{.RelativeFileName}}:{{.Range.Start.Line}}:{{.Range.End.Line}}"
     set -l lines ( listests --format="$format" -tags=$tags $pkgs | fzf --delimiter : \
         --multi \
-        --preview 'echo $FZF_COLUMNS; bat --style=full --color=always --terminal-width $FZF_COLUMNS --highlight-line {2}:{3} {1}' \
-        --preview-window '70%,~4,+{2}+4/4' \
+        --preview 'echo $FZF_COLUMNS; bat --style=full --color=always --terminal-width $FZF_COLUMNS --highlight-line {4}:{5} {3}' \
+        --preview-window '70%,~4,+{3}+4/4' \
         --height 60%
     )
     if test -z "$lines"
@@ -15,12 +15,17 @@ function _gotaf_cmd -a pkgs -a tags
     end
 
     set -l tests
+    set -l packages
     for line in $lines
-        set -l testname ( echo $line | cut -d : -f 4 )
+        set -l testname ( echo $line | cut -d : -f 2 )
+        set -l pkg ( echo $line | cut -d : -f 1 )
         set tests $tests $testname
+        set packages $packages "./$pkg"
     end
 
-    set -l cmd "gotest -v -tags=\"$tags\" ./... -count=1 -run=\"$(string join '|' $tests)\""
+    set packages ( printf '%s\n' $packages | sort -u )
+
+    set -l cmd "gotest -v -tags=\"$tags\" $(string join ' ' $packages) -count=1 -run=\"$(string join '|' $tests)\""
     echo $cmd
 end
 
