@@ -469,6 +469,11 @@ return {
 							jump1_action = require("fzf-lua.actions").file_vsplit,
 						}))
 					end, opts({ desc = "LSP definitions" }))
+					vim.keymap.set("n", "gT", function()
+						require("fzf-lua").lsp_definitions(fzfopts({
+							jump1_action = require("fzf-lua.actions").file_tabedit,
+						}))
+					end, opts({ desc = "LSP definitions" }))
 					vim.keymap.set("n", "gd", function()
 						require("fzf-lua").lsp_definitions(fzfopts())
 					end, opts({ desc = "LSP definitions" }))
