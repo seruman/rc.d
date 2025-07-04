@@ -55,6 +55,7 @@ vim.keymap.set("n", "N", "Nzzzv", { desc = "Move to previous search match and ce
 vim.keymap.set("n", "*", "*N", { desc = "Highlight without jumping forward" })
 vim.keymap.set("t", "<leader><esc>", "<c-\\><c-n>", { desc = "Switch to normal mode in terminal buffer" })
 vim.keymap.set("n", "<leader>bd", "<cmd>bd<CR>", { desc = "Delete buffer" })
+vim.keymap.set("n", "<leader>!bd", "<cmd>bd!<CR>", { desc = "Delete buffer (force)" })
 vim.keymap.set("n", "<A-j>", "<Cmd>resize -2<CR>", { desc = "Resize split down" })
 vim.keymap.set("n", "<A-k>", "<Cmd>resize +2<CR>", { desc = "Resize split up" })
 vim.keymap.set("n", "<A-l>", "<Cmd>vertical resize -2<CR>", { desc = "Resize split right" })
