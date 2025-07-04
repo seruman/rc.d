@@ -34,8 +34,14 @@ def summarize(qute_pipe: SupportsWrite[str]) -> None:
     qute_pipe.write(f"open -t {target}\n")
 
 
+def open_go_playground(qute_pipe: SupportsWrite[str]) -> None:
+    target = "https://go.dev/play/"
+    qute_pipe.write(f"open -t {target}\n")
+
+
 ACTIONS: dict[str, Action] = {
-    "Summarise": summarize,
+    "Summarise w/ Kagi": summarize,
+    "Open Go Playground": open_go_playground,
 }
 
 
