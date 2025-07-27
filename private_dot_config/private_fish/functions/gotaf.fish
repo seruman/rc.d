@@ -7,7 +7,7 @@ function _gotaf_cmd -a pkgs -a tags
     set -l lines ( listests --format="$format" -tags=$tags $pkgs | fzf --delimiter : \
         --multi \
         --preview 'echo $FZF_COLUMNS; bat --style=full --color=always --terminal-width $FZF_COLUMNS --highlight-line {4}:{5} {3}' \
-        --preview-window '70%,~4,+{3}+4/4' \
+        --preview-window '70%,~4,+{4}+4/4' \
         --height 60%
     )
     if test -z "$lines"
