@@ -68,10 +68,25 @@ return {
 				filetype = "dotenv",
 			}
 
+			parser_configs.txtar = {
+				install_info = {
+					url = "https://github.com/FollowTheProcess/tree-sitter-txtar",
+					branch = "main",
+					files = { "src/parser.c" },
+				},
+				filetype = "txtar",
+			}
+
 			-- TODO
 			vim.filetype.add({
 				pattern = {
 					[".env.*"] = "dotenv",
+				},
+			})
+
+			vim.filetype.add({
+				extension = {
+					txtar = "txtar",
 				},
 			})
 
