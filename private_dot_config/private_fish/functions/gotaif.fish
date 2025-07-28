@@ -1,3 +1,3 @@
-function gotaif -a pkgs -a tags
-    gotaf "$pkgs" integration
+function gotaif
+    gotaf --tags=integration $argv
 end
