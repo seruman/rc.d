@@ -17,7 +17,6 @@ if test -f $pyenv_completion_file
     source $pyenv_completion_file
 end
 
-command pyenv rehash 2>/dev/null
 function pyenv
     set command $argv[1]
     set -e argv[1]
