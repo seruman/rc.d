@@ -3,6 +3,8 @@
     lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
     ap = add --patch
     psuo = !git push --set-upstream origin $(git symbolic-ref --short HEAD)
+    default-branch = !git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@'
+    goreview = "!f() { git diff ${1:-$(git default-branch)} -- . ':(exclude)vendor/'; }; f"
     semtagg = "!f() { \
         tags=$(git semtag -r -ii -fc); \
         if [ -z \"$tags\" ]; then \
@@ -10,4 +12,12 @@
         else \
            echo \"$tags\" | fzf --ansi; \
         fi \
+    }; f"
+    rebase-squashed = "!f() { \
+        case $# in \
+            0) echo 'Usage: git rebase-squashed [target-branch] <original-branch>'; return 1 ;; \
+            1) target=$(git default-branch); original=$1 ;; \
+            *) target=$1; original=$2 ;; \
+        esac; \
+        git rebase --onto \"$target\" $(git merge-base \"$original\" $(git branch --show-current)); \
     }; f"
