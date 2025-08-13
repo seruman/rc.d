@@ -78,3 +78,4 @@ theme = seruzen
 auto-update-channel = tip
 
 # duti -s com.apple.automator.GhosttyEdit public.plain-text all
+keybind = shift+enter=text:\n
