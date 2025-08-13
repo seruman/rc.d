@@ -3,9 +3,11 @@ import os
 from qutebrowser.config.config import ConfigContainer
 from qutebrowser.config.configfiles import ConfigAPI
 from pathlib import Path
-from monkey_patch import load_components
+# TODO: Something causes performance issues, possibly mode_hooks. Disable for
+# now.
+# from monkey_patch import load_components
 
-load_components()
+# load_components()
 
 
 currentdir = Path(__file__).parent
