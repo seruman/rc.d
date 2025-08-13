@@ -6,7 +6,7 @@ end
 
 function format_duration --description 'Format duration ms in human readable way'
     set -l milliseconds $argv[1]
-    
+
     set -l total_seconds (math --scale=0 "$milliseconds / 1000")
     set -l total_minutes (math --scale=0 "$total_seconds / 60")
     set -l total_hours (math --scale=0 "$total_minutes / 60")
@@ -20,15 +20,15 @@ function format_duration --description 'Format duration ms in human readable way
         set -l remaining_seconds (math --scale=0 "$total_seconds % 60")
 
         set -a parts $total_days"d"
-        
+
         if test $remaining_hours -gt 0
             set -a parts $remaining_hours"h"
         end
-        
+
         if test $remaining_minutes -gt 0
             set -a parts $remaining_minutes"m"
         end
-        
+
         if test $remaining_seconds -gt 0
             set -a parts $remaining_seconds"s"
         end
@@ -38,11 +38,11 @@ function format_duration --description 'Format duration ms in human readable way
             set -l remaining_seconds (math --scale=0 "$total_seconds % 60")
 
             set -a parts $total_hours"h"
-            
+
             if test $remaining_minutes -gt 0
                 set -a parts $remaining_minutes"m"
             end
-            
+
             if test $remaining_seconds -gt 0
                 set -a parts $remaining_seconds"s"
             end
@@ -51,7 +51,7 @@ function format_duration --description 'Format duration ms in human readable way
                 set -l remaining_seconds (math --scale=0 "$total_seconds % 60")
 
                 set -a parts $total_minutes"m"
-                
+
                 if test $remaining_seconds -gt 0
                     set -a parts $remaining_seconds"s"
                 end
