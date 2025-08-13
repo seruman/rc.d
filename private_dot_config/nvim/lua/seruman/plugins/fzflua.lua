@@ -136,20 +136,17 @@ return {
 				})
 			end, { desc = "Find NOTEs" })
 
-			vim.api.nvim_create_autocmd("FileType", {
-				pattern = "go",
-				callback = function()
-					vim.keymap.set("n", "<leader>fut", function()
-						require("fzf-lua").fzf_exec("listests --vimgrep", {
-							prompt = "Go Tests> ",
-							file_icons = true,
-							color_icons = true,
-							actions = require("fzf-lua").defaults.actions.files,
-							previewer = "builtin",
-						})
-					end, { buffer = true, desc = "Fuzzy Unit Tests" })
-				end,
-			})
+			local function search_go_tests()
+				return require("fzf-lua").fzf_exec("listests --vimgrep ./...", {
+					prompt = "Go Tests> ",
+					file_icons = true,
+					color_icons = true,
+					actions = require("fzf-lua").defaults.actions.files,
+					previewer = "builtin",
+				})
+			end
+
+			vim.keymap.set("n", "<leader>fut", search_go_tests, { buffer = true, desc = "Fuzzy Unit Tests" })
 		end,
 	},
 }
