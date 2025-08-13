@@ -14,4 +14,20 @@ if status is-interactive
 
     set fish_autosuggestion_enabled 0
     set -g fish_color_search_match normal
+
+    function fish_shpool_session_prompt
+        if not set -q SHPOOL_SESSION_NAME
+            return
+        end
+
+        set_color normal
+        set_color --italic
+        echo -n "shpool:"
+        set_color normal
+        set_color blue
+        echo -n "$SHPOOL_SESSION_NAME"
+        set_color normal
+    end
+
+    set -a fish_right_prompt_items fish_shpool_session_prompt
 end
