@@ -1,9 +1,11 @@
 [alias]
+    stu = status --untracked-files=no
     root = rev-parse --show-toplevel
     lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
     ap = add --patch
     psuo = !git push --set-upstream origin $(git symbolic-ref --short HEAD)
     default-branch = !git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@'
+    cod = !git checkout $(git default-branch)
     goreview = "!f() { git diff ${1:-$(git default-branch)} -- . ':(exclude)vendor/'; }; f"
     semtagg = "!f() { \
         tags=$(git semtag -r -ii -fc); \
