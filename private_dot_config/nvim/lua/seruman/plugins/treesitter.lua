@@ -126,8 +126,8 @@ return {
 							["aB"] = "@block.outer",
 							["aT"] = "@structtag.outer",
 							-- NOTE(selman): collides with `at` for HTML tags.
-							["at"] = "@go.subtest_call.outer",
-							["atn"] = "@go.subtest_call.name.outer",
+							["agstt"] = "@go.subtest_call.outer",
+							["agstn"] = "@go.subtest_call.name.outer",
 						},
 					},
 					move = {
