@@ -2,3 +2,4 @@
     dshow = -c diff.external=difft show --ext-diff
     dtt = -c diff.external=difft diff
     dtts = -c diff.external=difft diff --staged
+    dtreview = "!f() { git -c diff.external=difft diff ${1:-$(git default-branch)} -- . ':(exclude)vendor/'; }; f"
