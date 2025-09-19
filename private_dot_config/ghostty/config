@@ -11,6 +11,7 @@ copy-on-select=true
 scrollback-limit = 200_000_000
 quick-terminal-position = right
 quick-terminal-animation-duration = 0
+quick-terminal-size = 40%
 
 
 cursor-style = block
