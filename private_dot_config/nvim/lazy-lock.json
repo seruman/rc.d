@@ -32,7 +32,7 @@
   "outline.nvim": { "branch": "main", "commit": "321f89ef79f168a78685f70d70c52d0e7b563abb" },
   "playground": { "branch": "master", "commit": "ba48c6a62a280eefb7c85725b0915e021a1a0749" },
   "plenary.nvim": { "branch": "master", "commit": "857c5ac632080dba10aae49dba902ce3abf91b35" },
-  "prr": { "branch": "master", "commit": "f6c69745644e7160c3920e02f1f2f98745f383c6" },
+  "prr": { "branch": "master", "commit": "e5076af2ab6567a0c738a0dcfeceefd3fe0ce9aa" },
   "readline.nvim": { "branch": "main", "commit": "5cb27349bc01cdcdb3d3494e5337d8b3834aef1a" },
   "sg.nvim": { "branch": "master", "commit": "775f22b75a9826eabf69b0094dd1d51d619fe552" },
   "snacks.nvim": { "branch": "main", "commit": "bc0630e43be5699bb94dadc302c0d21615421d93" },
