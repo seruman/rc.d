@@ -146,7 +146,36 @@ return {
 				})
 			end
 
-			vim.keymap.set("n", "<leader>fut", search_go_tests, { buffer = true, desc = "Fuzzy Unit Tests" })
+			local function search_go_tests_in_current_file()
+				local current_file = vim.fn.expand("%:p")
+				if current_file == "" then
+					print("No file is currently open.")
+					return
+				end
+				return require("fzf-lua").fzf_exec("listests --vimgrep " .. current_file, {
+					prompt = "Go Tests in Current File> ",
+					file_icons = true,
+					color_icons = true,
+					actions = require("fzf-lua").defaults.actions.files,
+					previewer = "builtin",
+				})
+			end
+
+			-- register user commands
+			vim.api.nvim_create_user_command("FzfGoTests", search_go_tests, { desc = "Fuzzy Go Tests" })
+			vim.api.nvim_create_user_command(
+				"FzfGoTestsCurrentFile",
+				search_go_tests_in_current_file,
+				{ desc = "Fuzzy Go Tests in Current File" }
+			)
+
+			vim.keymap.set("n", "<leader>fut", search_go_tests, { desc = "Fuzzy Unit Tests" })
+			vim.keymap.set(
+				"n",
+				"<leader>fuc",
+				search_go_tests_in_current_file,
+				{ desc = "Fuzzy Unit Tests in Current File" }
+			)
 		end,
 	},
 }
