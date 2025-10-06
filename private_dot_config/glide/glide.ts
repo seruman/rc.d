@@ -70,3 +70,7 @@ glide.autocmds.create("UrlEnter", /https:\/\/github\.com\/.*\/.*/, () => {
 		});
 	});
 });
+
+glide.keymaps.set("normal", "wi", async () => {
+	await glide.keys.send("<D-A-i>");
+});
