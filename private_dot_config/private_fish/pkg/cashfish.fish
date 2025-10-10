@@ -151,11 +151,7 @@ function _cashfish_cache_key
     end
     set -a key_input $command_parts
 
-    # check if md5sum or md5 is available
-    set -l has_md5sum (type -q md5sum)
-    set -l has_md5 (type -q md5)
-
-    if not test -n "$has_md5sum" -a -n "$has_md5"
+    if not type -q md5sum; and not type -q md5
         echo "cashfish: neither md5sum nor md5 command is available" >&2
         return 1
     end
