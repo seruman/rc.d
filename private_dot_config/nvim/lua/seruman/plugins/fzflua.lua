@@ -161,7 +161,6 @@ return {
 				})
 			end
 
-			-- register user commands
 			vim.api.nvim_create_user_command("FzfGoTests", search_go_tests, { desc = "Fuzzy Go Tests" })
 			vim.api.nvim_create_user_command(
 				"FzfGoTestsCurrentFile",
@@ -169,12 +168,12 @@ return {
 				{ desc = "Fuzzy Go Tests in Current File" }
 			)
 
-			vim.keymap.set("n", "<leader>fut", search_go_tests, { desc = "Fuzzy Unit Tests" })
+			vim.keymap.set("n", "<leader>fut", "<cmd>FzfGoTests<CR>", { desc = "Fuzzy Go Tests", silent = true })
 			vim.keymap.set(
 				"n",
 				"<leader>fuc",
-				search_go_tests_in_current_file,
-				{ desc = "Fuzzy Unit Tests in Current File" }
+				"<cmd>FzfGoTestsCurrentFile<CR>",
+				{ desc = "Fuzzy Go Tests (current file)", silent = true }
 			)
 		end,
 	},
