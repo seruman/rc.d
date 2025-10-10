@@ -30,4 +30,8 @@ if status is-interactive
     end
 
     set -a fish_right_prompt_items fish_shpool_session_prompt
+
 end
+
+set -l script_dir (status dirname)
+source "$script_dir/pkg/cashfish.fish"
