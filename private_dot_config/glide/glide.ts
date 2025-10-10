@@ -22,6 +22,9 @@ glide.keymaps.set("normal", "<S-k>", "tab_prev", {
 	description: "Scroll down",
 });
 
+glide.keymaps.set("normal", "r", "reload", { description: "Reload the page" });
+glide.keymaps.set("normal", "R", "reload_hard", { description: "Reload the page, bypass cache" });
+
 glide.keymaps.set(
 	"normal",
 	"<S-o>",
@@ -73,4 +76,24 @@ glide.autocmds.create("UrlEnter", /https:\/\/github\.com\/.*\/.*/, () => {
 
 glide.keymaps.set("normal", "wi", async () => {
 	await glide.keys.send("<D-A-i>");
+});
+
+glide.keymaps.set("normal", "<Leader>pr", async () => {
+	const cmd = await glide.process.execute("/opt/homebrew/bin/fish", ["-c", "ghwu"]);
+	let stdout = "";
+	for await (const chunk of cmd.stdout) {
+		stdout += chunk;
+	}
+
+	const selection = stdout
+		.split("\n")
+		.map((s) => s.trim())
+		.filter(Boolean);
+
+	if (selection.length === 0) {
+		return;
+	}
+
+	const url = selection[0];
+	await browser.tabs.create({ url, active: true });
 });
