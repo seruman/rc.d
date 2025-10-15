@@ -394,11 +394,6 @@ return {
 				jsonnet_ls = setup_default,
 			}
 
-			local capabilities = require("blink.cmp").get_lsp_capabilities()
-
-			local flags = { debounce_text_changes = 150 }
-			local lspconfig = require("lspconfig")
-
 			local configs = require("lspconfig.configs")
 			local util = require("lspconfig.util")
 
@@ -426,29 +421,32 @@ return {
 				},
 			}
 
+			-- Set global LSP defaults for all servers
+			vim.lsp.config("*", {
+				flags = { debounce_text_changes = 150 },
+			})
+
+			-- Configure each server with server-specific settings
+			-- nvim-lspconfig will provide base configs that get merged automatically
 			for server, setupfn in pairs(servers) do
-				local setupargs = setupfn()
-
-				local _setup_args = vim.tbl_extend("force", {
-					capabilities = capabilities,
-					flags = flags,
-				}, setupargs)
-
-				lspconfig[server].setup(_setup_args)
+				vim.lsp.config(server, setupfn())
 			end
+
+			-- Enable all configured servers
+			vim.lsp.enable(vim.tbl_keys(servers))
+
+			-- Configure diagnostic display globally
+			vim.diagnostic.config({
+				virtual_text = false,
+				signs = true,
+				update_in_insert = false,
+				underline = true,
+			})
 
 			-- Set mappings on LSP attach.
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 				callback = function(ev)
-					vim.lsp.handlers["textDocument/publishDiagnostics"] =
-						vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-							virtual_text = false,
-							signs = true,
-							update_in_insert = false,
-							underline = true,
-						})
-
 					local function fzfopts(o)
 						return vim.tbl_extend("force", {
 							jump1 = true,
