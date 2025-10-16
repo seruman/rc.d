@@ -27,7 +27,7 @@ glide.keymaps.set("normal", "R", "reload_hard", { description: "Reload the page,
 
 glide.keymaps.set(
 	"normal",
-	"<S-o>",
+	"O",
 	async ({ tab_id }) => {
 		await browser.tabs.create({ active: true, openerTabId: tab_id });
 		await glide.keys.send("<D-l>");
@@ -97,3 +97,25 @@ glide.keymaps.set("normal", "<Leader>pr", async () => {
 	const url = selection[0];
 	await browser.tabs.create({ url, active: true });
 });
+
+// Refocus the page when leaving the command mode.
+// https://github.com/glide-browser/glide/discussions/30#discussioncomment-14661338
+glide.autocmds.create("ModeChanged", "command:*", focus_page);
+glide.keymaps.set("normal", "<Esc>", async () => {
+	await glide.keys.send("<Esc>", { skip_mappings: true });
+
+	if (await glide.ctx.is_editing()) {
+		await focus_page();
+	}
+});
+
+async function focus_page() {
+	// HACK: defocus the editable element by focusing the address bar and then
+	// refocusing the page
+	await glide.keys.send("<F6>", { skip_mappings: true });
+	await new Promise((resolve) => setTimeout(resolve, 100));
+	// check insert mode for address bar
+	if (glide.ctx.mode === "insert") {
+		await glide.keys.send("<F6>", { skip_mappings: true });
+	}
+}
