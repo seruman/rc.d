@@ -129,13 +129,11 @@ return {
 				-- Format on save.
 				-- TODO(selman): organizeImports breaks imports some how, could not figure out why.
 
-				local tags = "-tags="
-					.. table.concat({
-						"integration",
-						"selman",
-						"tools",
-						"testmain",
-					}, ",")
+				local tags = "-tags=" .. table.concat({
+					"integration",
+					"selman",
+					"testmain",
+				}, ",")
 
 				return {
 					settings = {
