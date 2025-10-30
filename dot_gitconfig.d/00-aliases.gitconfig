@@ -22,4 +22,5 @@
             *) target=$1; original=$2 ;; \
         esac; \
         git rebase --onto \"$target\" $(git merge-base \"$original\" $(git branch --show-current)); \
-    }; f"
+        }; f"
+    pullt = pull --tags
