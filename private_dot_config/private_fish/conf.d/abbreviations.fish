@@ -39,3 +39,5 @@ abbr -a rgnoi 'rg --no-ignore'
 # unixtime
 abbr -a ute 'unixtime encode'
 abbr -a utd 'unixtime decode'
+
+abbr --position anywhere '$?' '$status'
