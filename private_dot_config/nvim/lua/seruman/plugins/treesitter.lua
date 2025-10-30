@@ -77,19 +77,6 @@ return {
 				filetype = "txtar",
 			}
 
-			-- TODO
-			vim.filetype.add({
-				pattern = {
-					[".env.*"] = "dotenv",
-				},
-			})
-
-			vim.filetype.add({
-				extension = {
-					txtar = "txtar",
-				},
-			})
-
 			require("nvim-treesitter.configs").setup({
 				ensure_installed = languages,
 
