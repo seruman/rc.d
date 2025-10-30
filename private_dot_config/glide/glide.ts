@@ -61,6 +61,8 @@ glide.keymaps.set("normal", "<C-[>", "back", {
 	description: "Go back in history",
 });
 
+glide.keymaps.set("normal", "<leader>ff", "commandline_show tab ", { description: "Open tab switcher" });
+
 glide.keymaps.set(
 	"normal",
 	"u",
