@@ -43,6 +43,7 @@ vim.o.cursorline = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
 vim.o.splitkeep = "screen"
+vim.o.filetype = "on"
 
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
@@ -94,36 +95,3 @@ vim.api.nvim_create_autocmd("VimResized", {
 		vim.cmd("wincmd =")
 	end,
 })
-
-local function setup_qute_tab_edit()
-	local ft_name = "qute-tab-edit"
-
-	vim.filetype.add({
-		extension = {
-			["qute-tab-edit"] = ft_name,
-		},
-		filename = {
-			["qute-tab-edit"] = ft_name,
-		},
-	})
-
-	vim.api.nvim_set_hl(0, "QuteTabIndex", { link = "Number" })
-	vim.api.nvim_set_hl(0, "QuteTabTitle", { fg = "#98c379", bold = true })
-	vim.api.nvim_set_hl(0, "QuteTabURL", { link = "Underlined" })
-
-	-- Create FileType autocmd
-	vim.api.nvim_create_autocmd("FileType", {
-		pattern = ft_name,
-		callback = function()
-			vim.api.nvim_command("syntax clear")
-
-			vim.api.nvim_command("syntax match QuteTabIndex '^\\d\\+:'")
-			vim.api.nvim_command("syntax match QuteTabTitle ':\\s\\+\\zs.\\{-}\\ze\\s\\+(https\\?://.*)'")
-			vim.api.nvim_command("syntax match QuteTabURL '(https\\?://[^)]*)'")
-
-			vim.b.current_syntax = ft_name
-		end,
-	})
-end
-
-setup_qute_tab_edit()
