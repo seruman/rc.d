@@ -7,6 +7,13 @@ glide.prefs.set("browser.uidensity", 1);
 glide.prefs.set("browser.startup.page", 3);
 glide.prefs.set("browser.warnOnQuitShortcut", false);
 
+const plugins = [
+	"https://addons.mozilla.org/firefox/downloads/file/4598854/ublock_origin-1.67.0.xpi",
+	"https://addons.mozilla.org/firefox/downloads/file/4602298/1password_x_password_manager-8.11.15.5.xpi",
+];
+for (const plugin of plugins) {
+	glide.addons.install(plugin);
+}
 glide.g.mapleader = "\\";
 glide.o.hint_size = "16px";
 
