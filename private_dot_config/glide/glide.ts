@@ -14,6 +14,9 @@ const plugins = [
 for (const plugin of plugins) {
 	glide.addons.install(plugin);
 }
+
+glide.unstable.include("glide.work.ts");
+
 glide.g.mapleader = "\\";
 glide.o.hint_size = "16px";
 
@@ -68,42 +71,32 @@ glide.keymaps.set(
 );
 
 glide.autocmds.create("UrlEnter", /https:\/\/github\.com\/.*\/.*/, () => {
-	glide.buf.keymaps.set("normal", "<C-g>p", async ({ tab_id }) => {
-		const path = glide.ctx.url.pathname;
-		const { org, repo } = path.match(/^\/(?<org>[^/]+)\/(?<repo>[^/]+)/)?.groups ?? {};
+	glide.buf.keymaps.set(
+		"normal",
+		"<C-g>p",
+		async ({ tab_id }) => {
+			const path = glide.ctx.url.pathname;
+			const { org, repo } = path.match(/^\/(?<org>[^/]+)\/(?<repo>[^/]+)/)?.groups ?? {};
 
-		const pkggodev_url = `https://pkg.go.dev/github.com/${org}/${repo}`;
-		await browser.tabs.create({
-			url: pkggodev_url,
-			active: true,
-			openerTabId: tab_id,
-		});
-	});
+			const pkggodev_url = `https://pkg.go.dev/github.com/${org}/${repo}`;
+			await browser.tabs.create({
+				url: pkggodev_url,
+				active: true,
+				openerTabId: tab_id,
+			});
+		},
+		{ description: "Open pkg.go.dev for this repo" },
+	);
 });
 
-glide.keymaps.set("normal", "wi", async () => {
-	await glide.keys.send("<D-A-i>");
-});
-
-glide.keymaps.set("normal", "<Leader>pr", async () => {
-	const cmd = await glide.process.execute("/opt/homebrew/bin/fish", ["-c", "ghwu"]);
-	let stdout = "";
-	for await (const chunk of cmd.stdout) {
-		stdout += chunk;
-	}
-
-	const selection = stdout
-		.split("\n")
-		.map((s) => s.trim())
-		.filter(Boolean);
-
-	if (selection.length === 0) {
-		return;
-	}
-
-	const url = selection[0];
-	await browser.tabs.create({ url, active: true });
-});
+glide.keymaps.set(
+	"normal",
+	"wi",
+	async () => {
+		await glide.keys.send("<D-A-i>");
+	},
+	{ description: "Open devtools inspector" },
+);
 
 // Refocus the page when leaving the command mode.
 // https://github.com/glide-browser/glide/discussions/30#discussioncomment-14661338
@@ -126,3 +119,12 @@ async function focus_page() {
 		await glide.keys.send("<F6>", { skip_mappings: true });
 	}
 }
+
+glide.keymaps.set(
+	"normal",
+	"<leader>go",
+	async () => {
+		await glide.keys.send("<D-S-k>");
+	},
+	{ description: "Focus on Okta extension" },
+);
