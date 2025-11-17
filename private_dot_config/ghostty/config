@@ -6,6 +6,7 @@ mouse-hide-while-typing = false
 macos-option-as-alt = left
 macos-titlebar-style = transparent
 macos-window-shadow = true
+scrollbar = never
 unfocused-split-opacity = 0.90
 copy-on-select=true
 scrollback-limit = 200_000_000
