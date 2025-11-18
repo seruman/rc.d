@@ -30,6 +30,7 @@ glide.keymaps.set(
 	},
 	{ description: "Reload Glide config" },
 );
+glide.keymaps.set("normal", "<C-f>", "hint --location=browser-ui");
 glide.keymaps.set("normal", "o", "keys <D-l>", {
 	description: "Focus the address bar",
 });
