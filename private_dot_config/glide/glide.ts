@@ -21,10 +21,6 @@ glide.g.mapleader = "\\";
 glide.o.hint_size = "16px";
 glide.o.hint_chars = "asdfghjkl";
 
-// See; https://github.com/glide-browser/glide/discussions/94#discussioncomment-14856522
-glide.keymaps.set(["insert", "normal"], "<C-d>", "keys <pagedown>");
-glide.keymaps.set(["normal", "insert"], "<C-u>", "keys <pageup>");
-
 glide.keymaps.set("normal", "o", "keys <D-l>", {
 	description: "Focus the address bar",
 });
