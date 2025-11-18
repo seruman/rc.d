@@ -21,6 +21,15 @@ glide.g.mapleader = "\\";
 glide.o.hint_size = "16px";
 glide.o.hint_chars = "asdfghjkl";
 
+glide.keymaps.set(
+	"normal",
+	"<leader><C-r>",
+	async () => {
+		await browser.notifications.create({ type: "basic", title: "Glide", message: "Glide config reloaded" });
+		await glide.excmds.execute("config_reload");
+	},
+	{ description: "Reload Glide config" },
+);
 glide.keymaps.set("normal", "o", "keys <D-l>", {
 	description: "Focus the address bar",
 });
