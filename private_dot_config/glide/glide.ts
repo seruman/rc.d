@@ -350,3 +350,29 @@ glide.keymaps.set(
 );
 
 glide.keymaps.set("normal", "<C-,>", "blur");
+
+// https://github.com/glide-browser/glide/discussions/114#discussioncomment-15009330
+function on_tab_enter(
+	pattern: glide.AutocmdPatterns["UrlEnter"],
+	callback: (args: glide.AutocmdArgs["UrlEnter"]) => void | Promise<void>,
+): void {
+	let last_tab_id: number | undefined;
+	glide.autocmds.create("UrlEnter", pattern, async (props) => {
+		const is_tab_enter = last_tab_id !== props.tab_id;
+		last_tab_id = props.tab_id;
+		// only trigger on tab enter, not URL change within same tab
+		if (is_tab_enter) {
+			await callback(props);
+		}
+	});
+}
+
+// It's annoying to be in insert mode when switching tabs.
+on_tab_enter({}, async ({ url }) => {
+	if (url !== "about:newtab") {
+		// HACK: sleep is needed when switching tabs quickly, otherwise `mode_change normal` may not take effect
+		await new Promise((resolve) => setTimeout(resolve, 50));
+		await glide.excmds.execute("mode_change normal");
+	}
+});
+
