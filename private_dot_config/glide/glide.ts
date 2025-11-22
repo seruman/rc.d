@@ -127,7 +127,7 @@ function github_params(url: URL): GitHubParams | null {
 			return null;
 		}
 
-		return { addr, org, repo, issue: issueQuery };
+		return { addr, org, repo, issue: issue };
 	}
 
 	if (DEFAULT_PATTERN.test(url.href)) {
