@@ -8,9 +8,13 @@ glide.prefs.set("browser.startup.page", 3);
 glide.prefs.set("browser.warnOnQuitShortcut", false);
 
 const plugins = [
+	"https://addons.mozilla.org/firefox/downloads/file/4429158/kagi_search_for_firefox-0.7.6.xpi",
 	"https://addons.mozilla.org/firefox/downloads/file/4598854/ublock_origin-1.67.0.xpi",
 	"https://addons.mozilla.org/firefox/downloads/file/4602298/1password_x_password_manager-8.11.15.5.xpi",
+	"https://addons.mozilla.org/firefox/downloads/file/4579487/readwise_highlighter-0.15.25.xpi",
+	"https://addons.mozilla.org/firefox/downloads/file/4385912/icloud_hide_my_email-1.2.9.xpi",
 ];
+
 for (const plugin of plugins) {
 	glide.addons.install(plugin);
 }
