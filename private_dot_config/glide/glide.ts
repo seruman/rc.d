@@ -376,3 +376,239 @@ on_tab_enter({}, async ({ url }) => {
 	}
 });
 
+const cmd = glide.excmds.create({ name: "tab_edit", description: "Edit tabs in a text editor" }, async () => {
+	const tabs = await browser.tabs.query({ pinned: false });
+
+	const tab_lines = tabs.map((tab) => {
+		const title = tab.title?.replace(/\n/g, " ") || "No Title";
+		const url = tab.url || "about:blank";
+		return `${tab.id}: ${title} (${url})`;
+	});
+
+	const mktempcmd = await glide.process.execute("mktemp", ["-t", "glide_tab_edit.XXXXXX"]);
+
+	let stdout = "";
+	for await (const chunk of mktempcmd.stdout) {
+		stdout += chunk;
+	}
+	const temp_filepath = stdout.trim();
+
+	tab_lines.unshift("// Delete the corresponding lines to close the tabs");
+	tab_lines.unshift("// vim: ft=qute-tab-edit");
+	tab_lines.unshift("");
+	await glide.fs.write(temp_filepath, tab_lines.join("\n"));
+
+	console.log("Temp file created at:", temp_filepath);
+
+	const editcmd = await glide.process.execute("open", [
+		"-W",
+		"-a",
+		"Ghostty",
+		"-n",
+		"--args",
+		`--command=/opt/homebrew/bin/fish -c 'nvim "${temp_filepath}"'`,
+		"--config-file=" + "~/.config/ghostty/config-qute",
+		"--config-default-files=false",
+		"--quit-after-last-window-closed=true",
+	]);
+
+	const cp = await editcmd.wait();
+	if (cp.exit_code !== 0) {
+		throw new Error(`Editor command failed with exit code ${cp.exit_code}`);
+	}
+
+	// read the edited file
+	const edited_content = await glide.fs.read(temp_filepath, "utf8");
+	const edited_lines = edited_content
+		.split("\n")
+		.filter((line) => line.trim().length > 0)
+		.filter((line) => !line.startsWith("//"));
+
+	const tabs_to_keep = edited_lines.map((line) => {
+		const tab_id = line.split(":")[0];
+		return Number(tab_id);
+	});
+
+	const tab_ids_to_close = tabs
+		.filter((tab) => tab.id && !tabs_to_keep.includes(tab.id))
+		.map((tab) => tab.id)
+		.filter((id): id is number => id !== undefined);
+	await browser.tabs.remove(tab_ids_to_close);
+});
+
+declare global {
+	interface ExcmdRegistry {
+		my_excmd: typeof cmd;
+	}
+}
+
+glide.keymaps.set(
+	"insert",
+	"<C-x><C-x>",
+	async () => {
+		const is_editing = await glide.ctx.is_editing();
+		if (!is_editing) {
+			return;
+		}
+
+		const current_tab = await glide.tabs.active();
+		const content = await glide.content.execute(
+			// Runs in page context.
+			() => {
+				const elements = [];
+				function get_frame_offset(frame) {
+					if (frame === null) {
+						// Dummy object with zero offset
+						return {
+							top: 0,
+							right: 0,
+							bottom: 0,
+							left: 0,
+							height: 0,
+							width: 0,
+						};
+					}
+					return frame.frameElement.getBoundingClientRect();
+				}
+
+				function add_offset_rect(base, offset) {
+					return {
+						top: base.top + offset.top,
+						left: base.left + offset.left,
+						bottom: base.bottom + offset.top,
+						right: base.right + offset.left,
+						height: base.height,
+						width: base.width,
+					};
+				}
+
+				function serialize_elem(elem, frame = null) {
+					if (!elem) {
+						return null;
+					}
+
+					const id = elements.length;
+					elements[id] = elem;
+
+					const caret_position = elem.selectionStart;
+
+					// isContentEditable occasionally returns undefined.
+					const is_content_editable = elem.isContentEditable || false;
+
+					const out = {
+						id: id,
+						rects: [], // Gets filled up later
+						caret_position: caret_position,
+						is_content_editable: is_content_editable,
+					};
+
+					// Deal with various fun things which can happen in form elements
+					// https://github.com/qutebrowser/qutebrowser/issues/2569
+					// https://github.com/qutebrowser/qutebrowser/issues/2877
+					// https://stackoverflow.com/q/22942689/2085149
+					if (typeof elem.tagName === "string") {
+						out.tag_name = elem.tagName;
+					} else if (typeof elem.nodeName === "string") {
+						out.tag_name = elem.nodeName;
+					} else {
+						out.tag_name = "";
+					}
+
+					if (typeof elem.className === "string") {
+						out.class_name = elem.className;
+					} else {
+						// e.g. SVG elements
+						out.class_name = "";
+					}
+
+					if (typeof elem.value === "string" || typeof elem.value === "number") {
+						out.value = elem.value;
+					} else {
+						out.value = "";
+					}
+
+					if (typeof elem.outerHTML === "string") {
+						out.outer_xml = elem.outerHTML;
+					} else {
+						out.outer_xml = "";
+					}
+
+					if (typeof elem.textContent === "string") {
+						out.text = elem.textContent;
+					} else if (typeof elem.text === "string") {
+						out.text = elem.text;
+					} // else: don't add the text at all
+
+					const attributes = {};
+					for (let i = 0; i < elem.attributes.length; ++i) {
+						const attr = elem.attributes[i];
+						attributes[attr.name] = attr.value;
+					}
+					out.attributes = attributes;
+
+					const client_rects = elem.getClientRects();
+					const frame_offset_rect = get_frame_offset(frame);
+
+					for (let k = 0; k < client_rects.length; ++k) {
+						const rect = client_rects[k];
+						out.rects.push(add_offset_rect(rect, frame_offset_rect));
+					}
+
+					// console.log(JSON.stringify(out));
+
+					return out;
+				}
+
+				function iframe_same_domain(frame) {
+					try {
+						frame.document; // eslint-disable-line no-unused-expressions
+						return true;
+					} catch (exc) {
+						if (exc instanceof DOMException && exc.name === "SecurityError") {
+							// FIXME:qtwebengine This does not work for cross-origin frames.
+							return false;
+						}
+						throw exc;
+					}
+				}
+
+				function call_if_frame(elem, func) {
+					// Check if elem is a frame, and if so, call func on the window
+					if ("contentWindow" in elem) {
+						const frame = elem.contentWindow;
+						if (iframe_same_domain(frame) && "frameElement" in elem.contentWindow) {
+							return func(frame);
+						}
+					}
+					return null;
+				}
+
+				function find_focused() {
+					const elem = document.activeElement;
+
+					if (!elem || elem === document.body) {
+						// "When there is no selection, the active element is the page's
+						// <body> or null."
+						return null;
+					}
+
+					// Check if we got an iframe, and if so, recurse inside of it
+					const frame_elem = call_if_frame(elem, (frame) => serialize_elem(frame.document.activeElement, frame));
+
+					if (frame_elem !== null) {
+						return frame_elem;
+					}
+					return serialize_elem(elem);
+				}
+
+				return find_focused();
+			},
+			{
+				tab_id: current_tab.id,
+			},
+		);
+
+		console.log("Content to edit:", content);
+	},
+	{ description: "Edit currently focused element in external browser" },
+);
