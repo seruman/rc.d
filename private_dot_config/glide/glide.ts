@@ -106,7 +106,7 @@ glide.keymaps.set(
 	async () => {
 		await glide.keys.send("<d-f>");
 	},
-	{ description: "Search forward" },
+	{ description: "Search" },
 );
 
 type Address = `http://${string}` | `https://${string}`;
@@ -185,7 +185,6 @@ glide.autocmds.create("UrlEnter", /https:\/\/github(.*)\.com/, () => {
 			const { addr, org, repo, issue } = params;
 			const repo_addr = `${addr}/${org}/${repo}`;
 			if (!issue) {
-				console.log("No issue specified, opening issues list", { params }, `${repo_addr}/issues`);
 				return fn({ params, issue_addr: `${repo_addr}/issues` });
 			}
 
@@ -219,7 +218,6 @@ glide.autocmds.create("UrlEnter", /https:\/\/github(.*)\.com/, () => {
 		"<C-g>i",
 		async ({ tab_id }) => {
 			with_issue_url(async ({ issue_addr }) => {
-				console.log(">>>>>>> Navigating to issue:", issue_addr);
 				await browser.tabs.update(tab_id, { url: issue_addr });
 			});
 		},
