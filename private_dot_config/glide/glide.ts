@@ -64,10 +64,23 @@ glide.keymaps.set(
 	"normal",
 	"d",
 	async ({ tab_id }) => {
-		await browser.tabs.remove(tab_id);
+		const tab = await browser.tabs.get(tab_id);
+
+		if (tab.pinned) {
+			browser.notifications.create({
+				type: "basic",
+				title: "Glide",
+				message: "Cannot close a pinned tab",
+			});
+			return;
+		}
+
+		await glide.excmds.execute("tab_close");
 	},
-	{ description: "Close current tab" },
+	{ description: "Close current tab, unless it's pinned" },
 );
+
+glide.keymaps.set("normal", "D", "tab_close", { description: "Close current tab" });
 
 glide.keymaps.set("normal", "<C-]>", "forward", {
 	description: "Go forward in history",
