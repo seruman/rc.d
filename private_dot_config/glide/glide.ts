@@ -39,12 +39,12 @@ glide.keymaps.set("normal", "o", "keys <D-l>", {
 	description: "Focus the address bar",
 });
 
-glide.keymaps.set("normal", "<S-j>", "tab_next", {
-	description: "Scroll down",
+glide.keymaps.set("normal", "J", "tab_next", {
+	description: "Next tab",
 });
 
-glide.keymaps.set("normal", "<S-k>", "tab_prev", {
-	description: "Scroll down",
+glide.keymaps.set("normal", "K", "tab_prev", {
+	description: "Previous tab",
 });
 
 glide.keymaps.set("normal", "r", "reload", { description: "Reload the page" });
