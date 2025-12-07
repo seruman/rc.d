@@ -390,6 +390,7 @@ return {
 				["fish-lsp"] = setup_default,
 				biome = setup_default,
 				jsonnet_ls = setup_default,
+				sourcekit = setup_default,
 			}
 
 			local configs = require("lspconfig.configs")
