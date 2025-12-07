@@ -1,6 +1,6 @@
 window-padding-x = 10
 window-padding-color = background
-window-title-font-family = "Berkeley Mono"
+window-title-font-family = "Departure Mono"
 window-new-tab-position = end
 mouse-hide-while-typing = false
 macos-option-as-alt = left
@@ -71,7 +71,7 @@ keybind = ctrl+k=clear_screen
 keybind = ctrl+b>u=toggle_quick_terminal
 keybind = global:cmd+shift+u=toggle_quick_terminal
 
-font-family = "Berkeley Mono"
+font-family = "Departure Mono"
 font-size = 14
 font-feature = -calt
 font-thicken=true
