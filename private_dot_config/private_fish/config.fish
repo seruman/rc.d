@@ -29,7 +29,21 @@ if status is-interactive
         set_color normal
     end
 
-    set -a fish_right_prompt_items fish_shpool_session_prompt
+    function fish_zmx_session_prompt
+        if not set -q ZMX_SESSION
+            return
+        end
+
+        set_color normal
+        set_color --italic
+        echo -n "zmx:"
+        set_color normal
+        set_color magenta
+        echo -n "$ZMX_SESSION"
+        set_color normal
+    end
+
+    set -a fish_right_prompt_items fish_shpool_session_prompt fish_zmx_session_prompt
 
 end
 
