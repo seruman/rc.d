@@ -1,23 +1,46 @@
 return {
 	{
 		"nvim-treesitter/nvim-treesitter",
-		dependencies = {
-			"nvim-treesitter/nvim-treesitter-textobjects",
-			"nvim-treesitter/playground",
-			"vrischmann/tree-sitter-templ",
-			{
-				"bezhermoso/tree-sitter-ghostty",
-				build = "make nvim_install",
-			},
-		},
+		branch = "main",
+		lazy = false,
+		build = ":TSUpdate",
 		config = function()
-			local languages = {
+			vim.api.nvim_create_autocmd("User", {
+				pattern = "TSUpdate",
+				callback = function()
+					local parsers = require("nvim-treesitter.parsers")
+					parsers.just = {
+						install_info = {
+							url = "https://github.com/IndianBoy42/tree-sitter-just",
+							files = { "src/parser.c", "src/scanner.c" },
+							branch = "main",
+						},
+					}
+					parsers.dotenv = {
+						install_info = {
+							url = "https://github.com/pnx/tree-sitter-dotenv",
+							branch = "main",
+							files = { "src/parser.c", "src/scanner.c" },
+						},
+					}
+					parsers.txtar = {
+						install_info = {
+							url = "https://github.com/FollowTheProcess/tree-sitter-txtar",
+							branch = "main",
+							files = { "src/parser.c" },
+						},
+					}
+				end,
+			})
+
+			require("nvim-treesitter").install({
 				"c",
 				"go",
 				"gomod",
 				"gowork",
 				"lua",
 				"vim",
+				"vimdoc",
 				"bash",
 				"typescript",
 				"tsx",
@@ -47,109 +70,107 @@ return {
 				"templ",
 				"java",
 				"groovy",
-			}
+			})
 
-			local parser_configs = require("nvim-treesitter.parsers").get_parser_configs()
-			parser_configs.just = {
-				install_info = {
-					url = "https://github.com/IndianBoy42/tree-sitter-just", -- local path or git repo
-					files = { "src/parser.c", "src/scanner.c" },
-					branch = "main",
+			-- Enable treesitter highlighting and indentation for all filetypes
+			-- that have a parser installed.
+			vim.api.nvim_create_autocmd("FileType", {
+				group = vim.api.nvim_create_augroup("UserTreesitter", { clear = true }),
+				callback = function(ev)
+					if vim.bo[ev.buf].buftype ~= "" then
+						return
+					end
+
+					local lang = vim.treesitter.language.get_lang(ev.match) or ev.match
+					local ok = pcall(vim.treesitter.language.add, lang)
+					if not ok then
+						return
+					end
+
+					vim.treesitter.start(ev.buf, lang)
+					vim.bo[ev.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+				end,
+			})
+
+			-- NOTE: Incremental selection (<CR>/<BS>/<Tab>) was removed in the
+			-- treesitter main branch rewrite. Use visual mode + textobjects instead.
+		end,
+	},
+	{
+		"nvim-treesitter/nvim-treesitter-textobjects",
+		branch = "main",
+		dependencies = { "nvim-treesitter/nvim-treesitter" },
+		config = function()
+			require("nvim-treesitter-textobjects").setup({
+				select = {
+					lookahead = true,
 				},
-				maintainers = { "@IndianBoy42" },
-			}
-
-			parser_configs.dotenv = {
-				install_info = {
-					url = "https://github.com/pnx/tree-sitter-dotenv",
-					branch = "main",
-					files = { "src/parser.c", "src/scanner.c" },
-				},
-				filetype = "dotenv",
-			}
-
-			parser_configs.txtar = {
-				install_info = {
-					url = "https://github.com/FollowTheProcess/tree-sitter-txtar",
-					branch = "main",
-					files = { "src/parser.c" },
-				},
-				filetype = "txtar",
-			}
-
-			require("nvim-treesitter.configs").setup({
-				ensure_installed = languages,
-
-				highlight = {
-					enable = true,
-					additional_vim_regex_highlighting = false,
-				},
-
-				indent = { enable = true },
-
-				incremental_selection = {
-					enable = true,
-					keymaps = {
-						init_selection = "<CR>", -- maps in normal mode to init the node/scope selection with enter
-						node_incremental = "<CR>", -- increment to the upper named parent
-						node_decremental = "<bs>", -- decrement to the previous node
-						scope_incremental = "<tab>", -- increment to the upper scope (as defined in locals.scm)
-					},
-				},
-
-				textobjects = {
-					select = {
-						enable = true,
-						lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
-						keymaps = {
-							-- You can use the capture groups defined in textobjects.scm
-							["aa"] = "@parameter.outer",
-							["ia"] = "@parameter.inner",
-							["af"] = "@function.outer",
-							["if"] = "@function.inner",
-							["ac"] = "@class.outer",
-							["ic"] = "@class.inner",
-							["iB"] = "@block.inner",
-							["aB"] = "@block.outer",
-							["aT"] = "@structtag.outer",
-							-- NOTE(selman): collides with `at` for HTML tags.
-							["agstt"] = "@go.subtest_call.outer",
-							["agstn"] = "@go.subtest_call.name.outer",
-						},
-					},
-					move = {
-						enable = true,
-						set_jumps = true, -- whether to set jumps in the jumplist
-						goto_next_start = {
-							["]]"] = "@function.outer",
-							["]t"] = "@go.subtest_call.outer",
-						},
-						goto_next_end = {
-							["]["] = "@function.outer",
-						},
-						goto_previous_start = {
-							["[["] = "@function.outer",
-							["[t"] = "@go.subtest_call.outer",
-						},
-						goto_previous_end = {
-							["[]"] = "@function.outer",
-						},
-					},
-					swap = {
-						enable = true,
-						swap_next = {
-							["<leader>a"] = "@parameter.inner",
-						},
-						swap_previous = {
-							["<leader>A"] = "@parameter.inner",
-						},
-					},
-				},
-
-				playground = {
-					enable = true,
+				move = {
+					set_jumps = true,
 				},
 			})
+
+			local select = require("nvim-treesitter-textobjects.select")
+			local move = require("nvim-treesitter-textobjects.move")
+			local swap = require("nvim-treesitter-textobjects.swap")
+
+			local select_maps = {
+				["aa"] = "@parameter.outer",
+				["ia"] = "@parameter.inner",
+				["af"] = "@function.outer",
+				["if"] = "@function.inner",
+				["ac"] = "@class.outer",
+				["ic"] = "@class.inner",
+				["iB"] = "@block.inner",
+				["aB"] = "@block.outer",
+				["aT"] = "@structtag.outer",
+				-- NOTE(selman): collides with `at` for HTML tags.
+				["agstt"] = "@go.subtest_call.outer",
+				["agstn"] = "@go.subtest_call.name.outer",
+			}
+			for key, capture in pairs(select_maps) do
+				vim.keymap.set({ "x", "o" }, key, function()
+					select.select_textobject(capture, "textobjects")
+				end, { desc = "TS select " .. capture })
+			end
+
+			local move_maps = {
+				goto_next_start = {
+					["]]"] = "@function.outer",
+					["]t"] = "@go.subtest_call.outer",
+				},
+				goto_next_end = {
+					["]["] = "@function.outer",
+				},
+				goto_previous_start = {
+					["[["] = "@function.outer",
+					["[t"] = "@go.subtest_call.outer",
+				},
+				goto_previous_end = {
+					["[]"] = "@function.outer",
+				},
+			}
+			for method, maps in pairs(move_maps) do
+				for key, capture in pairs(maps) do
+					vim.keymap.set({ "n", "x", "o" }, key, function()
+						move[method](capture, "textobjects")
+					end, { desc = "TS " .. method .. " " .. capture })
+				end
+			end
+
+			vim.keymap.set("n", "<leader>a", function()
+				swap.swap_next("@parameter.inner")
+			end, { desc = "TS swap next parameter" })
+			vim.keymap.set("n", "<leader>A", function()
+				swap.swap_previous("@parameter.inner")
+			end, { desc = "TS swap previous parameter" })
 		end,
+	},
+	{
+		"vrischmann/tree-sitter-templ",
+	},
+	{
+		"bezhermoso/tree-sitter-ghostty",
+		build = "make nvim_install",
 	},
 }
