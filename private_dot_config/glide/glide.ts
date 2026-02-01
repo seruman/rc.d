@@ -135,4 +135,27 @@ glide.keymaps.set(
 	{ description: "Focus on Okta extension" },
 );
 
+glide.keymaps.set("command", "<C-j>", "commandline_focus_next");
+glide.keymaps.set("command", "<C-k>", "commandline_focus_back");
+
+glide.keymaps.set(
+	"normal",
+	"<C-p>",
+	async ({ tab_id }) => {
+		const tab = await browser.tabs.get(tab_id);
+		await browser.tabs.update(tab_id, { pinned: !tab.pinned });
+	},
+	{ description: "Toggle pin for current tab" },
+);
+
+glide.keymaps.set(
+	"normal",
+	"ym",
+	async ({ tab_id }) => {
+		const tab = await browser.tabs.get(tab_id);
+		await navigator.clipboard.writeText(`[${tab.title}](${tab.url})`);
+	},
+	{ description: "Yank markdown link" },
+);
+
 glide.keymaps.set("normal", "<C-,>", "blur");

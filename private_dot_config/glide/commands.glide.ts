@@ -146,3 +146,26 @@ declare global {
 		tabo: typeof cmd_tabo;
 	}
 }
+
+const REDDIT_EXCLUDED_PATHS =
+	/^\/(media|mod|poll|settings|topics|community-points|appeals?|notifications|message\/compose\/|r\/[a-zA-Z0-9_]+\/s\/)/;
+
+browser.webRequest.onBeforeRequest.addListener(
+	(details) => {
+		const url = new URL(details.url);
+		if (url.hostname === "old.reddit.com" || url.hostname === "sh.reddit.com") {
+			return {};
+		}
+		if (REDDIT_EXCLUDED_PATHS.test(url.pathname)) {
+			return {};
+		}
+		if (url.pathname.startsWith("/gallery/")) {
+			const id = url.pathname.replace("/gallery/", "");
+			return { redirectUrl: `https://old.reddit.com/comments/${id}` };
+		}
+		url.hostname = "old.reddit.com";
+		return { redirectUrl: url.toString() };
+	},
+	{ urls: ["*://*.reddit.com/*"] },
+	["blocking"],
+);
