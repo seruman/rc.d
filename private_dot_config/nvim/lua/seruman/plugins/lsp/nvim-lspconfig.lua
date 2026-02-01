@@ -4,8 +4,6 @@ return {
 		dependencies = {
 			{ "saghen/blink.cmp" },
 			{ "j-hui/fidget.nvim", config = true },
-			{ "ibhagwan/fzf-lua" },
-			{ "mfussenegger/nvim-jdtls" },
 		},
 		config = function()
 			vim.lsp.enable({
@@ -69,6 +67,7 @@ return {
 					end, opts({ desc = "LSP definitions (new tab)" }))
 
 					vim.keymap.set("n", "K", vim.lsp.buf.hover, opts({ desc = "LSP hover" }))
+					-- TODO: <C-k> in insert mode collides with blink.cmp's select_and_accept
 					vim.keymap.set(
 						{ "n", "i" },
 						"<C-k>",
