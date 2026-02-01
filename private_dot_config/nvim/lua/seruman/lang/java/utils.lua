@@ -53,7 +53,12 @@ function M.find_java_home()
 		return vim.fn.fnamemodify(java_path, ":h:h")
 	end
 
-	return "/usr/lib/jvm/java-17-openjdk"
+	local result = vim.system({ "/usr/libexec/java_home" }, { text = true }):wait()
+	if result.code == 0 then
+		return vim.trim(result.stdout)
+	end
+
+	return nil
 end
 
 function M.detect_project_java_version(root_dir)
@@ -169,28 +174,17 @@ function M.get_java_runtimes(java_home, project_java_version)
 	local runtimes = {}
 	local versions = M.get_sdkman_java_versions()
 
-	local java_mapping = {
-		[8] = "JavaSE-1.8",
-		[9] = "JavaSE-9",
-		[10] = "JavaSE-10",
-		[11] = "JavaSE-11",
-		[12] = "JavaSE-12",
-		[13] = "JavaSE-13",
-		[14] = "JavaSE-14",
-		[15] = "JavaSE-15",
-		[16] = "JavaSE-16",
-		[17] = "JavaSE-17",
-		[18] = "JavaSE-18",
-		[19] = "JavaSE-19",
-		[20] = "JavaSE-20",
-		[21] = "JavaSE-21",
-		[22] = "JavaSE-22",
-	}
+	local function java_runtime_name(major)
+		if major == 8 then return "JavaSE-1.8" end
+		if major >= 9 then return string.format("JavaSE-%d", major) end
+		return nil
+	end
 
 	for _, version in ipairs(versions) do
-		if java_mapping[version.major] then
+		local name = java_runtime_name(version.major)
+		if name then
 			table.insert(runtimes, {
-				name = java_mapping[version.major],
+				name = name,
 				path = version.path,
 				default = (version.major == project_java_version)
 					or (project_java_version == nil and version.is_default)
@@ -199,7 +193,6 @@ function M.get_java_runtimes(java_home, project_java_version)
 		end
 	end
 
-	-- Add system JAVA_HOME if not already covered by SDKMAN versions
 	if vim.env.JAVA_HOME and vim.fn.isdirectory(vim.env.JAVA_HOME) == 1 then
 		local result = vim.system({ vim.env.JAVA_HOME .. "/bin/java", "-version" }, { text = true }):wait()
 		if result.code == 0 then
@@ -208,18 +201,19 @@ function M.get_java_runtimes(java_home, project_java_version)
 			local major = output:match('version%s+"(%d+)')
 			if major then
 				major = tonumber(major)
+				local name = java_runtime_name(major)
 
 				local has_version = false
 				for _, runtime in ipairs(runtimes) do
-					if runtime.name == java_mapping[major] then
+					if runtime.name == name then
 						has_version = true
 						break
 					end
 				end
 
-				if not has_version and java_mapping[major] then
+				if not has_version and name then
 					table.insert(runtimes, {
-						name = java_mapping[major],
+						name = name,
 						path = vim.env.JAVA_HOME,
 						default = major == project_java_version and #runtimes == 0,
 					})

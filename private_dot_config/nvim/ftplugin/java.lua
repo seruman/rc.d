@@ -15,6 +15,10 @@ if not root_dir then
 end
 
 local java_home = utils.find_java_home()
+if not java_home then
+	vim.notify("jdtls: no Java installation found, skipping", vim.log.levels.WARN)
+	return
+end
 local java_bin = java_home .. "/bin/java"
 local lombok_path = utils.ensure_lombok(workspace_dir)
 local project_java_version = utils.detect_project_java_version(root_dir)
