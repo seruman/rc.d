@@ -3,19 +3,11 @@ return {
 		"nvim-lualine/lualine.nvim",
 		dependencies = {
 			"SmiteshP/nvim-navic",
-			"kyazdani42/nvim-web-devicons",
+			"nvim-tree/nvim-web-devicons",
 		},
 		opts = function()
-			local function strsplit(s, delimiter)
-				local result = {}
-				for match in (s .. delimiter):gmatch("(.-)" .. delimiter) do
-					table.insert(result, match)
-				end
-				return result
-			end
-
 			local function format_mode(mode)
-				local parts = strsplit(mode, "-")
+				local parts = vim.split(mode, "-", { plain = true })
 				local m = ""
 				for _, v in pairs(parts) do
 					m = m .. v:sub(1, 1)

@@ -4,7 +4,6 @@ return {
 		dependencies = {
 			"folke/trouble.nvim",
 		},
-		-- Load no matter what.
 		lazy = false,
 		config = function()
 			local fzflua = require("fzf-lua")
@@ -28,7 +27,7 @@ return {
 				fzf_opts = {
 					["--no-scrollbar"] = true,
 				},
-				hls = { title = "PMenuSel" },
+				hls = { title = "PmenuSel" },
 				grep = { RIPGREP_CONFIG_PATH = vim.env.RIPGREP_CONFIG_PATH },
 				defaults = {
 					actions = {
@@ -44,7 +43,7 @@ return {
 					preview = {
 						vertical = "up:60%",
 						layout = "flex",
-						wrap = "wrap",
+						wrap = true,
 						title = false,
 						scrollbar = "float",
 						delay = 50,
@@ -90,7 +89,7 @@ return {
 			end, { desc = "Buffers" })
 			vim.keymap.set("n", "<leader>frb", function()
 				require("fzf-lua").lgrep_curbuf()
-			end, { desc = "Buffers" })
+			end, { desc = "Grep current buffer" })
 			vim.keymap.set("n", "<leader>frg", function()
 				require("fzf-lua").live_grep_native()
 			end, { desc = "Live grep" })
@@ -112,8 +111,8 @@ return {
 			end, { desc = "Complete line (all buffers)" })
 
 			vim.keymap.set("i", "<c-x><c-l>b", function()
-				require("fzf-lua").complete_line()
-			end, { desc = "Complete line (all buffers)" })
+				require("fzf-lua").complete_bline()
+			end, { desc = "Complete line (current buffer)" })
 
 			vim.keymap.set("n", "<leader>ft", function()
 				local fzf = require("fzf-lua")
@@ -149,7 +148,7 @@ return {
 			local function search_go_tests_in_current_file()
 				local current_file = vim.fn.expand("%:p")
 				if current_file == "" then
-					print("No file is currently open.")
+					vim.notify("No file is currently open.", vim.log.levels.WARN)
 					return
 				end
 				return require("fzf-lua").fzf_exec("listests --vimgrep " .. current_file, {

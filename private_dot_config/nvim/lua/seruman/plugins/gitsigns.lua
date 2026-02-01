@@ -1,9 +1,6 @@
 return {
 	{
 		"lewis6991/gitsigns.nvim",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-		},
 		opts = {
 			on_attach = function(bufnr)
 				local gs = package.loaded.gitsigns
@@ -13,7 +10,6 @@ return {
 					vim.keymap.set(mode, l, r, opts)
 				end
 
-				-- -- Navigation
 				map("n", "]h", function()
 					if vim.wo.diff then
 						return "]h"
@@ -24,17 +20,16 @@ return {
 					return "<Ignore>"
 				end, { expr = true, desc = "Next Hunk" })
 
-				map("n", "[c", function()
-					if vim.wo.diff then
-						return "[c"
-					end
+				map("n", "[h", function()
+				if vim.wo.diff then
+					return "[h"
+				end
 					vim.schedule(function()
 						gs.prev_hunk()
 					end)
 					return "<Ignore>"
 				end, { expr = true, desc = "Prev Hunk" })
-				--
-				-- Actions
+
 				map("n", "<leader>hs", gs.stage_hunk, { desc = "Stage Hunk" })
 				map("n", "<leader>hr", gs.reset_hunk, { desc = "Reset Hunk" })
 				map("v", "<leader>hs", function()
@@ -57,7 +52,6 @@ return {
 				-- end)
 				-- map("n", "<leader>td", gs.toggle_deleted)
 
-				-- Text object
 				map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
 			end,
 		},

@@ -6,7 +6,6 @@ return {
 		priority = 1000,
 		opts = {},
 		config = function()
-			vim.o.termguicolors = true
 			vim.o.background = "light"
 			vim.g.seruzen = { darken_cursor_line = 5 }
 			vim.cmd("colorscheme seruzen")

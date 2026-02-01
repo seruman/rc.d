@@ -25,9 +25,8 @@ return {
 					group_empty = true,
 					add_trailing = true,
 					highlight_git = true,
-					indent_markers = {
-						-- Display indent markers when folders are open
-						enable = true,
+				indent_markers = {
+					enable = true,
 					},
 					icons = {
 						show = {
@@ -40,7 +39,7 @@ return {
 					change_dir = { enable = false },
 					expand_all = { exclude = { "node_modules", ".git", "vendor", "target" } },
 					open_file = {
-						resize_window = false, -- don't resize window when opening file
+						resize_window = false,
 					},
 				},
 				filters = {
