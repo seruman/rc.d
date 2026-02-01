@@ -39,7 +39,7 @@ local base_specs = generator.generate(palette, bg, generator.get_global_config(c
 local specs = lush.extends({ base_specs }).with(function()
 	return {
 		MatchParen({ gui = "bold" }),
-		CmpItemKind({ fg = palette.bg, bg = palette.fg }),
+		BlinkCmpKind({ fg = palette.bg, bg = palette.fg }),
 	}
 end)
 

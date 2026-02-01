@@ -68,19 +68,16 @@ require("lazy").setup({
 })
 
 local AugroupCursorLine = vim.api.nvim_create_augroup("CursorLine", { clear = true })
-vim.api.nvim_create_autocmd({ "VimEnter", "WinEnter", "BufWinEnter" }, {
+vim.api.nvim_create_autocmd("WinEnter", {
 	group = AugroupCursorLine,
-	pattern = "*",
 	callback = function()
-		vim.opt_local.cursorline = true
+		vim.wo.cursorline = true
 	end,
 })
-
-vim.api.nvim_create_autocmd({ "WinLeave", "BufLeave" }, {
+vim.api.nvim_create_autocmd("WinLeave", {
 	group = AugroupCursorLine,
-	pattern = "*",
 	callback = function()
-		vim.opt_local.cursorline = false
+		vim.wo.cursorline = false
 	end,
 })
 
