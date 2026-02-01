@@ -18,7 +18,9 @@ vim.o.splitkeep = "screen"
 vim.o.timeout = true
 vim.o.timeoutlen = 300
 
--- Disable netrw (using nvim-tree/oil instead)
+vim.o.background = "light"
+vim.cmd("colorscheme seruzen")
+
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
