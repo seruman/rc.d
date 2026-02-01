@@ -1,37 +1,9 @@
--- Set up plugin mananager; lazy.nvim.
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-	vim.fn.system({
-		"git",
-		"clone",
-		"--filter=blob:none",
-		"https://github.com/folke/lazy.nvim.git",
-		"--branch=stable", -- latest stable release
-		lazypath,
-	})
-end
-vim.opt.rtp:prepend(lazypath)
-
-require("lazy").setup({
-	spec = {
-		{ import = "seruman/plugins" },
-		{ import = "seruman/plugins.lsp" },
-	},
-	change_detection = {
-		enabled = false,
-		notify = false,
-	},
-})
-
-vim.cmd("syntax on")
-vim.o.hidden = true
+-- Options (set before lazy.nvim so plugins see correct state at load time)
 vim.o.tabstop = 4
 vim.o.shiftwidth = 4
 vim.o.expandtab = true
 vim.o.number = true
-vim.o.backspace = "indent,eol,start"
 vim.o.showtabline = 2
-vim.o.encoding = "utf-8"
 vim.o.laststatus = 3
 vim.o.mouse = "a"
 vim.o.clipboard = "unnamed"
@@ -43,8 +15,10 @@ vim.o.cursorline = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
 vim.o.splitkeep = "screen"
-vim.o.filetype = "on"
+vim.o.timeout = true
+vim.o.timeoutlen = 300
 
+-- Disable netrw (using nvim-tree/oil instead)
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
@@ -62,15 +36,36 @@ vim.keymap.set("n", "<A-k>", "<Cmd>resize +2<CR>", { desc = "Resize split up" })
 vim.keymap.set("n", "<A-l>", "<Cmd>vertical resize -2<CR>", { desc = "Resize split right" })
 vim.keymap.set("n", "<A-h>", "<Cmd>vertical resize +2<CR>", { desc = "Resize split left" })
 vim.keymap.set("n", "gs", "<Cmd>vertical wincmd f<CR>", { desc = "Open file under cursor in vertical split" })
-vim.keymap.set("n", "vy", "^vg_y", { desc = "Yank to end of line" })
-vim.keymap.set("n", "vv", "^vg_", { desc = "Visually select to end of line" })
-vim.keymap.set("n", "vs", ":vsplit<CR>", { desc = "Vertical split" })
 
 local yank_current_filepath = function()
 	local fpath = vim.fn.expand("%")
 	vim.fn.setreg("+", fpath)
 end
-vim.keymap.set("n", "<leader><C-g>p", yank_current_filepath, { desc = "Yank current file path to unnamed register" })
+vim.keymap.set("n", "<leader><C-g>p", yank_current_filepath, { desc = "Yank current file path to clipboard" })
+
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.uv.fs_stat(lazypath) then
+	vim.fn.system({
+		"git",
+		"clone",
+		"--filter=blob:none",
+		"https://github.com/folke/lazy.nvim.git",
+		"--branch=stable",
+		lazypath,
+	})
+end
+vim.opt.rtp:prepend(lazypath)
+
+require("lazy").setup({
+	spec = {
+		{ import = "seruman/plugins" },
+		{ import = "seruman/plugins.lsp" },
+	},
+	change_detection = {
+		enabled = false,
+		notify = false,
+	},
+})
 
 local AugroupCursorLine = vim.api.nvim_create_augroup("CursorLine", { clear = true })
 vim.api.nvim_create_autocmd({ "VimEnter", "WinEnter", "BufWinEnter" }, {
@@ -90,8 +85,8 @@ vim.api.nvim_create_autocmd({ "WinLeave", "BufLeave" }, {
 })
 
 vim.api.nvim_create_autocmd("VimResized", {
-	pattern = "*",
+	group = vim.api.nvim_create_augroup("UserVimResized", { clear = true }),
 	callback = function()
-		vim.cmd("wincmd =")
+		vim.cmd.wincmd("=")
 	end,
 })

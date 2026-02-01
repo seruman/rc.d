@@ -1,5 +1,3 @@
-print("Loaded filetype.lua")
-
 vim.filetype.add({
 	pattern = {
 		[vim.fn.expand("~") .. "/.config/massren/temp/.*"] = "massren",
