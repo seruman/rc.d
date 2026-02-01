@@ -58,6 +58,11 @@ function github_open(path_fn: (params: GitHubParams) => string, new_tab: boolean
 const repo_path = (p: GitHubParams) => `${p.addr}/${p.org}/${p.repo}`;
 const issues_path = (p: GitHubParams) => (p.issue ? `${repo_path(p)}/issues/${p.issue}` : `${repo_path(p)}/issues`);
 const pulls_path = (p: GitHubParams) => `${repo_path(p)}/pulls`;
+const actions_path = (p: GitHubParams) => `${repo_path(p)}/actions`;
+const discussions_path = (p: GitHubParams) => `${repo_path(p)}/discussions`;
+const commits_path = (p: GitHubParams) => `${repo_path(p)}/commits`;
+const branches_path = (p: GitHubParams) => `${repo_path(p)}/branches`;
+const tags_path = (p: GitHubParams) => `${repo_path(p)}/tags`;
 const godoc_path = (p: GitHubParams) => `https://pkg.go.dev/github.com/${p.org}/${p.repo}`;
 
 glide.autocmds.create("UrlEnter", /https:\/\/github(.*)\.com/, () => {
@@ -78,6 +83,36 @@ glide.autocmds.create("UrlEnter", /https:\/\/github(.*)\.com/, () => {
 	});
 	glide.buf.keymaps.set("normal", "<C-g>P", github_open(pulls_path, true), {
 		description: "Open GitHub PRs in a new tab",
+	});
+	glide.buf.keymaps.set("normal", "<C-g>a", github_open(actions_path, false), {
+		description: "Open GitHub Actions in current tab",
+	});
+	glide.buf.keymaps.set("normal", "<C-g>A", github_open(actions_path, true), {
+		description: "Open GitHub Actions in a new tab",
+	});
+	glide.buf.keymaps.set("normal", "<C-g>d", github_open(discussions_path, false), {
+		description: "Open GitHub Discussions in current tab",
+	});
+	glide.buf.keymaps.set("normal", "<C-g>D", github_open(discussions_path, true), {
+		description: "Open GitHub Discussions in a new tab",
+	});
+	glide.buf.keymaps.set("normal", "<C-g>c", github_open(commits_path, false), {
+		description: "Open GitHub commits in current tab",
+	});
+	glide.buf.keymaps.set("normal", "<C-g>C", github_open(commits_path, true), {
+		description: "Open GitHub commits in a new tab",
+	});
+	glide.buf.keymaps.set("normal", "<C-g>b", github_open(branches_path, false), {
+		description: "Open GitHub branches in current tab",
+	});
+	glide.buf.keymaps.set("normal", "<C-g>B", github_open(branches_path, true), {
+		description: "Open GitHub branches in a new tab",
+	});
+	glide.buf.keymaps.set("normal", "<C-g>t", github_open(tags_path, false), {
+		description: "Open GitHub tags in current tab",
+	});
+	glide.buf.keymaps.set("normal", "<C-g>T", github_open(tags_path, true), {
+		description: "Open GitHub tags in a new tab",
 	});
 });
 
