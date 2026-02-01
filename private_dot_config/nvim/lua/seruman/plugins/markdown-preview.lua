@@ -1,3 +1,3 @@
 return {
-	{ "iamcco/markdown-preview.nvim", build = ":call mkdp#util#install()" },
+	{ "iamcco/markdown-preview.nvim", build = ":call mkdp#util#install()", cmd = "MarkdownPreview" },
 }

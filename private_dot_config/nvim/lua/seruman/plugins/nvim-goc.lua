@@ -1,7 +1,7 @@
 return {
 	{
 		"rafaelsq/nvim-goc.lua",
-		dependencies = {},
+		ft = "go",
 		config = function()
 			local goc = require("nvim-goc")
 			goc.setup({ verticalSplit = false })

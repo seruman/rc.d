@@ -1,10 +1,7 @@
 return {
 	{
 		"ibhagwan/fzf-lua",
-		dependencies = {
-			"folke/trouble.nvim",
-		},
-		lazy = false,
+		event = "VeryLazy",
 		config = function()
 			local fzflua = require("fzf-lua")
 
@@ -151,7 +148,7 @@ return {
 					vim.notify("No file is currently open.", vim.log.levels.WARN)
 					return
 				end
-				return require("fzf-lua").fzf_exec("listests --vimgrep " .. current_file, {
+				return require("fzf-lua").fzf_exec("listests --vimgrep " .. vim.fn.shellescape(current_file), {
 					prompt = "Go Tests in Current File> ",
 					file_icons = true,
 					color_icons = true,
