@@ -159,7 +159,7 @@ function _cashfish_cache_key
     set -l hash (string join \n -- $key_input | md5sum | string split -f1 ' ')
     or set hash (string join \n -- $key_input | md5 | string trim)
 
-    # Paranoieea
+    # Paranoia
     if test -z "$hash"
         echo "cashfish: failed to generate cache key" >&2
         return 1
