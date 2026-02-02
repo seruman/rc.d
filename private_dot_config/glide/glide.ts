@@ -159,4 +159,64 @@ glide.keymaps.set(
 	{ description: "Yank markdown link" },
 );
 
+glide.keymaps.set(
+	"normal",
+	"F",
+	async ({ tab_id }) => {
+		glide.hints.show({
+			selector: "[href]",
+			async action({ content }) {
+				const href = await content.execute((target) => (target as HTMLAnchorElement).href);
+				await browser.tabs.create({ url: href, active: false, openerTabId: tab_id });
+			},
+		});
+	},
+	{ description: "Open link in a new background tab" },
+);
+
+glide.keymaps.set(
+	"normal",
+	"<leader>tt",
+	() => {
+		const v = glide.o.native_tabs;
+		if (["autohide", "show"].includes(v)) {
+			glide.o.native_tabs = "hide";
+			return;
+		}
+		glide.o.native_tabs = "show";
+	},
+	{ description: "Toggle tab bar" },
+);
+
+glide.keymaps.set("normal", "<leader>h", async () => {
+	const entries = await browser.history.search({
+		text: "",
+		endTime: Date.now(),
+		startTime: Date.now() - 7 * 24 * 60 * 60 * 1000, // last 7 days
+		maxResults: 10000,
+	});
+
+	glide.commandline.show({
+		title: "history",
+		options: entries.map((entry) => ({
+			label: `${entry.title} - ${entry.url}`,
+			async execute() {
+				const tab = await glide.tabs.get_first({
+					url: entry.url,
+				});
+				if (tab) {
+					await browser.tabs.update(tab.id, {
+						active: true,
+					});
+				} else {
+					await browser.tabs.create({
+						active: true,
+						url: entry.url,
+					});
+				}
+			},
+		})),
+	});
+});
+
 glide.keymaps.set("normal", "<C-,>", "blur");
