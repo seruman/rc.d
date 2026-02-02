@@ -7,7 +7,7 @@ function git --wraps=git
     end
 
     if contains -- checkout $argv; or contains -- switch $argv
-        if command -q git rev-parse --git-dir >/dev/null 2>&1
+        if command git rev-parse --git-dir >/dev/null 2>&1
             command git show-ref --quiet refs/heads/master
             set --local master_exists (test $status -eq 0; and echo 1; or echo 0)
         else
