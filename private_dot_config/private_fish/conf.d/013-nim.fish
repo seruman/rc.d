@@ -1,4 +1,4 @@
-set -l zim_dir "$HOME/.nimble/bin"
-if test -d $zim_dir
-    fish_add_path -g $zim_dir
+set -l nimble_dir "$HOME/.nimble/bin"
+if test -d $nimble_dir
+    fish_add_path -g $nimble_dir
 end
