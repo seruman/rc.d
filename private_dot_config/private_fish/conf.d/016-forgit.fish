@@ -1,4 +1,4 @@
-status is-interactive; or exit
+status is-interactive; or return
 
 if not command -sq git-forgit
     return
