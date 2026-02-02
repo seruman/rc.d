@@ -10,9 +10,9 @@ scrollbar = never
 unfocused-split-opacity = 0.90
 copy-on-select=true
 scrollback-limit = 200_000_000
-quick-terminal-position = right
+quick-terminal-position = left
 quick-terminal-animation-duration = 0
-quick-terminal-size = 50%
+quick-terminal-size = 50%,95%
 
 
 cursor-style = block
@@ -20,8 +20,6 @@ cursor-style-blink = false
 cursor-invert-fg-bg = true
 shell-integration=fish
 shell-integration-features = no-cursor
-
-
 
 keybind = ctrl+b>n=new_window
 keybind = ctrl+b>c=new_tab
@@ -61,8 +59,6 @@ keybind = ctrl+b>,=prompt_surface_title
 
 keybind = ctrl+b>ctrl+b=text:\x02
 
-keybind = ctrl+b>[=write_screen_file:open
-
 keybind = ctrl+b>ctrl+n=jump_to_prompt:1
 keybind = ctrl+b>ctrl+p=jump_to_prompt:-1
 
@@ -71,7 +67,9 @@ keybind = ctrl+k=clear_screen
 keybind = ctrl+b>u=toggle_quick_terminal
 keybind = global:cmd+shift+u=toggle_quick_terminal
 
+
 font-family = "Departure Mono"
+# font-family = "Berkeley Mono"
 font-size = 14
 font-feature = -calt
 font-thicken=true
@@ -81,3 +79,46 @@ auto-update-channel = tip
 
 # duti -s com.apple.automator.GhosttyEdit public.plain-text all
 keybind = shift+enter=text:\n
+
+
+keybind = ctrl+b>[=activate_key_table:scrollmode
+
+keybind = scrollmode/
+keybind = scrollmode/j=scroll_page_lines:1
+keybind = scrollmode/k=scroll_page_lines:-1
+
+keybind = scrollmode/ctrl+d=scroll_page_down
+keybind = scrollmode/ctrl+u=scroll_page_up
+keybind = scrollmode/ctrl+f=scroll_page_down
+keybind = scrollmode/ctrl+b=scroll_page_up
+keybind = scrollmode/shift+j=scroll_page_down
+keybind = scrollmode/shift+k=scroll_page_up
+
+keybind = scrollmode/g>g=scroll_to_top
+keybind = scrollmode/shift+g=scroll_to_bottom
+
+keybind = scrollmode/slash=start_search
+keybind = scrollmode/n=navigate_search:next
+
+keybind = scrollmode/v=activate_key_table:selectmode
+
+keybind = scrollmode/shift+semicolon=toggle_command_palette
+
+keybind = scrollmode/escape=deactivate_key_table
+keybind = scrollmode/q=deactivate_key_table
+keybind = scrollmode/i=deactivate_key_table
+
+keybind = scrollmode/catch_all=ignore
+
+keybind = selectmode/h=adjust_selection:left
+keybind = selectmode/l=adjust_selection:right
+keybind = selectmode/j=adjust_selection:down
+keybind = selectmode/k=adjust_selection:up
+keybind = selectmode/0=adjust_selection:beginning_of_line
+keybind = selectmode/shift+4=adjust_selection:end_of_line
+keybind = selectmode/g>g=adjust_selection:home
+keybind = selectmode/shift+g=adjust_selection:end
+
+keybind = selectmode/y=copy_to_clipboard
+keybind = selectmode/escape=deactivate_key_table
+keybind = selectmode/catch_all=ignore
