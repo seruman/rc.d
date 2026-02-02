@@ -15,6 +15,6 @@ if command -sq brew
 
     source $brew_cache
 
-    set -xU HOMEBREW_NO_ANALYTICS 1
-    set -xU HOMEBREW_NO_AUTO_UPDATE 1
+    set -gx HOMEBREW_NO_ANALYTICS 1
+    set -gx HOMEBREW_NO_AUTO_UPDATE 1
 end
