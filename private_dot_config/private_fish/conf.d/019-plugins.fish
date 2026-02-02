@@ -17,7 +17,7 @@ for plugin in $plugins_dir/*
         set -g fish_complete_path $fish_complete_path $plugin/completions
     end
 
-    if test -d $plugins/conf.d
+    if test -d $plugin/conf.d
         for conf in $plugin/conf.d/*
             source $conf
         end
