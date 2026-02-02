@@ -13,6 +13,7 @@ const plugins = [
 	"https://addons.mozilla.org/firefox/downloads/file/4602298/1password_x_password_manager-8.11.15.5.xpi",
 	"https://addons.mozilla.org/firefox/downloads/file/4579487/readwise_highlighter-0.15.25.xpi",
 	"https://addons.mozilla.org/firefox/downloads/file/4385912/icloud_hide_my_email-1.2.9.xpi",
+	"https://addons.mozilla.org/firefox/downloads/file/4409277/prometheus_formatter-3.2.0.xpi",
 ];
 
 for (const plugin of plugins) {
