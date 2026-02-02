@@ -1,8 +1,8 @@
 glide.prefs.set("toolkit.legacyUserProfileCustomizations.stylesheets", true);
 glide.prefs.set("devtools.debugger.prompt-connection", false);
 glide.prefs.set("media.videocontrols.picture-in-picture.audio-toggle.enabled", true);
-glide.prefs.set("browser.tabs.insertAfterCurrent", false);
-glide.prefs.set("browser.tabs.insertRelatedAfterCurrent", false);
+glide.prefs.set("browser.tabs.insertAfterCurrent", true);
+glide.prefs.set("browser.tabs.insertRelatedAfterCurrent", true);
 glide.prefs.set("browser.uidensity", 1);
 glide.prefs.set("browser.startup.page", 3);
 glide.prefs.set("browser.warnOnQuitShortcut", false);
