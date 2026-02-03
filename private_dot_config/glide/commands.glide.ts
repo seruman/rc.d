@@ -35,7 +35,7 @@ async function focus_page() {
 	}
 }
 
-glide.autocmds.create("ModeChanged", "command:*", focus_page);
+glide.autocmds.create("CommandLineExit", focus_page);
 glide.keymaps.set("normal", "<Esc>", async () => {
 	await glide.keys.send("<Esc>", { skip_mappings: true });
 
