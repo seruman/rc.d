@@ -1,19 +1,12 @@
-for p in /opt/homebrew/bin /opt/homebrew/sbin
-    test -d $p; and fish_add_path -g $p
+set -l brew_path
+if test -x /opt/homebrew/bin/brew
+    set brew_path /opt/homebrew/bin/brew
+else if test -x /usr/local/bin/brew
+    set brew_path /usr/local/bin/brew
 end
 
-if command -sq brew
-    set -l brew_cache $XDG_CACHE_HOME/fish/homebrew.fish
-
-    # Create cache directory
-    mkdir -p (dirname "$brew_cache")
-
-    # Cache brew shellenv output if not exists
-    if not test -f $brew_cache
-        brew shellenv > $brew_cache
-    end
-
-    source $brew_cache
+if test -n "$brew_path"
+    cashfish --ttl=48h -- $brew_path shellenv | source
 
     set -gx HOMEBREW_NO_ANALYTICS 1
     set -gx HOMEBREW_NO_AUTO_UPDATE 1

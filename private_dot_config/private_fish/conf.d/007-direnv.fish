@@ -1,3 +1,3 @@
 if command -sq direnv
-    direnv hook fish | source
+    cashfish --ttl=168h -- direnv hook fish | source
 end

@@ -6,8 +6,8 @@ set -gx PYENV_ROOT $HOME/.pyenv
 fish_add_path -g $PYENV_ROOT/bin
 
 set -l pyenv_completion_file
-if command -sq brew
-    set pyenv_completion_file (brew --prefix pyenv)/completions/pyenv.fish
+if set -q HOMEBREW_PREFIX
+    set pyenv_completion_file $HOMEBREW_PREFIX/opt/pyenv/completions/pyenv.fish
 end
 
 fish_add_path -g $PYENV_ROOT/shims

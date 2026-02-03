@@ -43,9 +43,12 @@ if status is-interactive
         set_color normal
     end
 
-    set -a fish_right_prompt_items fish_shpool_session_prompt fish_zmx_session_prompt
+    if not contains -- fish_shpool_session_prompt $fish_right_prompt_items
+        set -a fish_right_prompt_items fish_shpool_session_prompt
+    end
+
+    if not contains -- fish_zmx_session_prompt $fish_right_prompt_items
+        set -a fish_right_prompt_items fish_zmx_session_prompt
+    end
 
 end
-
-set -l script_dir (status dirname)
-source "$script_dir/pkg/cashfish.fish"

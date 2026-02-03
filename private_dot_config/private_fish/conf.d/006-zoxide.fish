@@ -1,3 +1,3 @@
 if command -sq zoxide
-    zoxide init fish --cmd j | source
+    cashfish --ttl=168h -- zoxide init fish --cmd j | source
 end

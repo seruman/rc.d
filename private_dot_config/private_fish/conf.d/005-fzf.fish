@@ -5,6 +5,6 @@ if command -sq fzf
 
     # Source fzf key bindings only in interactive sessions
     if status is-interactive
-        fzf --fish | source
+        cashfish --ttl=168h -- fzf --fish | source
     end
 end
