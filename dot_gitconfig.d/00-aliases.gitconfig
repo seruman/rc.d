@@ -24,3 +24,19 @@
         git rebase --onto \"$target\" $(git merge-base \"$original\" $(git branch --show-current)); \
         }; f"
     pullt = pull --tags
+    gone = "!f() { \
+        default=$(git default-branch); \
+        git branch --format='%(refname:short)' | grep -v \"$default\" | \
+        xargs -P8 -I{} sh -c \
+            'git diff --quiet \"$1\"...\"$2\" 2>/dev/null && echo \"$2\"' _ \"$default\" {}; \
+    }; f"
+    prune-gone = "!f() { \
+        git fetch -p && \
+        branches=$(git gone | fzf --multi \
+            --header='Select branches to delete (TAB to multi-select)'); \
+        [ -z \"$branches\" ] && return 0; \
+        echo \"$branches\" | xargs git branch -D; \
+    }; f"
+    randomname = "!echo $(LC_ALL=C tr -dc a-z </dev/urandom | head -c4)"
+    save = "!f() { git stash push -m \"${1:-$(git randomname)}\"; }; f"
+    new = "!f() { git fetch origin && git checkout -b \"${1:-$(git randomname)}\" origin/$(git default-branch); }; f"
