@@ -62,17 +62,19 @@ const cmd_tab_edit = glide.excmds.create({ name: "tab_edit", description: "Edit 
 	await glide.fs.write(temp_filepath, tab_lines.join("\n"));
 
 	console.log("Temp file created at:", temp_filepath);
-
+	// --args --width-percent 70 --height-percent 60 --center
 	await glide.process.execute("open", [
 		"-W",
 		"-a",
-		"Ghostty",
+		"Nvimify.app",
 		"-n",
+		`${temp_filepath}`,
 		"--args",
-		`--command=/opt/homebrew/bin/fish -c 'nvim "${temp_filepath}"'`,
-		"--config-file=" + "~/.config/ghostty/config-qute",
-		"--config-default-files=false",
-		"--quit-after-last-window-closed=true",
+		"--width-percent",
+		"50",
+		"--height-percent",
+		"60",
+		"--center",
 	]);
 
 	// read the edited file

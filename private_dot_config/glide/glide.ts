@@ -141,7 +141,7 @@ glide.keymaps.set("command", "<C-k>", "commandline_focus_back");
 
 glide.keymaps.set(
 	"normal",
-	"<C-p>",
+	"<C-;>",
 	async ({ tab_id }) => {
 		const tab = await browser.tabs.get(tab_id);
 		await browser.tabs.update(tab_id, { pinned: !tab.pinned });
