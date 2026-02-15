@@ -43,12 +43,30 @@ if status is-interactive
         set_color normal
     end
 
+    function fish_hauntty_session_prompt
+        if not set -q HAUNTTY_SESSION
+            return
+        end
+
+        set_color normal
+        set_color --italic
+        echo -n "hauntty:"
+        set_color normal
+        set_color cyan
+        echo -n "$HAUNTTY_SESSION"
+        set_color normal
+    end
+
     if not contains -- fish_shpool_session_prompt $fish_right_prompt_items
         set -a fish_right_prompt_items fish_shpool_session_prompt
     end
 
     if not contains -- fish_zmx_session_prompt $fish_right_prompt_items
         set -a fish_right_prompt_items fish_zmx_session_prompt
+    end
+
+    if not contains -- fish_hauntty_session_prompt $fish_right_prompt_items
+        set -a fish_right_prompt_items fish_hauntty_session_prompt
     end
 
 end
