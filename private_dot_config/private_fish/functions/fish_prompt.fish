@@ -74,6 +74,15 @@ function prompt_char --argument char --argument-names color --description 'Outpu
     echo -n (set_color $color)$char(set_color normal)
 end
 
+function fish_hauntty_prompt
+    if set -q HAUNTTY_SESSION
+        set_color --italic --dim
+        echo -n "$HAUNTTY_SESSION>"
+        set_color normal
+        echo -n " "
+    end
+end
+
 function fish_prompt --description 'Two-line prompt'
     set -l last_status $status
     set -l prompt_color
@@ -86,7 +95,8 @@ function fish_prompt --description 'Two-line prompt'
     set -l pwd_part (set_color blue)(prompt_pwd -d 200)(set_color normal)
     set -l vcs_part (fish_vcs_prompt)
     set -l duration_part (fish_duration_prompt)
+    set -l session_part (fish_hauntty_prompt)
     set -l venv_part (fish_venv_prompt)
     set -l prompt_part (prompt_char ";" $prompt_color)
-    echo -s \n$pwd_part $vcs_part $duration_part \n $venv_part $prompt_part " "
+    echo -s \n$session_part $pwd_part $vcs_part $duration_part \n $venv_part $prompt_part " "
 end
