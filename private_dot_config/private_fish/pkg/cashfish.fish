@@ -76,7 +76,7 @@ function cashfish -d "Cache command outputs with TTL"
     end
 
     if set -q _flag_force
-        _cashfish_execute_and_cache $cache_path $command_args
+        _cashfish_execute_and_cache $cache_path "$ttl" "$ttl_seconds" "$scope" -- $command_args
         return $status
     end
 
@@ -88,7 +88,7 @@ function cashfish -d "Cache command outputs with TTL"
             return $status
 
         case miss expired
-            _cashfish_execute_and_cache $cache_path $command_args
+            _cashfish_execute_and_cache $cache_path "$ttl" "$ttl_seconds" "$scope" -- $command_args
             return $status
     end
 end
@@ -243,8 +243,16 @@ function _cashfish_replay_cache -a cache_path
 end
 
 # Execute command and cache results if successful
-function _cashfish_execute_and_cache -a cache_path
-    set -l command_parts $argv[2..-1]
+function _cashfish_execute_and_cache -a cache_path ttl_raw ttl_seconds scope
+    set -l command_parts $argv[5..-1]
+    if test (count $command_parts) -gt 0; and string match -q -- "--" $command_parts[1]
+        set command_parts $command_parts[2..-1]
+    end
+
+    if test (count $command_parts) -eq 0
+        echo "cashfish: command is required" >&2
+        return 1
+    end
 
     # Create temporary files for output capture
     set -l temp_dir (mktemp -d)
@@ -272,6 +280,20 @@ function _cashfish_execute_and_cache -a cache_path
         cp "$stderr_file" "$cache_path/stderr"
         echo $exit_code >"$cache_path/exit_code"
         date +%s >"$cache_path/timestamp"
+
+        set -l command_line (string join ' ' -- (string escape -- $command_parts))
+        if test -n "$command_line"
+            printf '%s\n' "$command_line" >"$cache_path/command"
+        end
+        if test -n "$scope"
+            printf '%s\n' "$scope" >"$cache_path/scope"
+        end
+        if test -n "$ttl_raw"
+            printf '%s\n' "$ttl_raw" >"$cache_path/ttl"
+        end
+        if test -n "$ttl_seconds"
+            printf '%s\n' "$ttl_seconds" >"$cache_path/ttl_seconds"
+        end
     else
         # Clean up any existing cache on failure.
         set -l cache_dir (_cashfish_cache_dir)
