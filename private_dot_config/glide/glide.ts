@@ -100,22 +100,54 @@ glide.keymaps.set("normal", "<C-]>", "forward", { description: "Go forward in hi
 glide.keymaps.set("normal", "<C-[>", "back", { description: "Go back in history" });
 glide.keymaps.set("normal", "<leader>ff", "commandline_show tab ", { description: "Open tab switcher" });
 
+glide.keymaps.set("normal", "u", "tab_reopen", { description: "Reopen recently closed tab" });
+
+glide.keymaps.set("normal", "/", () => glide.findbar.open({ highlight_all: true, query: "" }), { description: "Search" });
+
 glide.keymaps.set(
-	"normal",
-	"u",
+	"insert",
+	"<CR>",
 	async () => {
-		await browser.sessions.restore();
+		if (glide.findbar.is_focused()) {
+			await glide.keys.send("<CR>", { skip_mappings: true });
+			await glide.excmds.execute("mode_change normal");
+		} else {
+			await glide.keys.send("<CR>", { skip_mappings: true });
+		}
 	},
-	{ description: "Open recently closed tab" },
+	{ description: "Submit and exit to normal mode if in findbar" },
 );
 
 glide.keymaps.set(
 	"normal",
-	"/",
+	"n",
 	async () => {
-		await glide.keys.send("<d-f>");
+		if (glide.findbar.is_open()) {
+			await glide.findbar.next_match();
+		}
 	},
-	{ description: "Search" },
+	{ description: "Next search match" },
+);
+
+glide.keymaps.set(
+	"normal",
+	"N",
+	async () => {
+		if (glide.findbar.is_open()) {
+			await glide.findbar.previous_match();
+		}
+	},
+	{ description: "Previous search match" },
+);
+
+glide.keymaps.set(
+	"normal",
+	"<leader>nh",
+	async () => {
+		await glide.findbar.close();
+		await browser.find.removeHighlighting();
+	},
+	{ description: "Close findbar and clear highlights" },
 );
 
 glide.keymaps.set(
