@@ -102,43 +102,38 @@ glide.keymaps.set("normal", "<leader>ff", "commandline_show tab ", { description
 
 glide.keymaps.set("normal", "u", "tab_reopen", { description: "Reopen recently closed tab" });
 
-glide.keymaps.set("normal", "/", () => glide.findbar.open({ highlight_all: true, query: "" }), { description: "Search" });
+glide.keymaps.set("normal", "/", () => glide.findbar.open({ highlight_all: true, query: "" }), {
+	description: "Search",
+});
 
 glide.keymaps.set(
 	"insert",
 	"<CR>",
 	async () => {
+		await glide.keys.send("<CR>", { skip_mappings: true });
 		if (glide.findbar.is_focused()) {
-			await glide.keys.send("<CR>", { skip_mappings: true });
 			await glide.excmds.execute("mode_change normal");
-		} else {
-			await glide.keys.send("<CR>", { skip_mappings: true });
 		}
 	},
 	{ description: "Submit and exit to normal mode if in findbar" },
 );
 
 glide.keymaps.set(
-	"normal",
-	"n",
+	"insert",
+	"<Esc>",
 	async () => {
-		if (glide.findbar.is_open()) {
-			await glide.findbar.next_match();
+		if (glide.findbar.is_focused()) {
+			await glide.findbar.close();
+			await glide.excmds.execute("mode_change normal");
+			return;
 		}
+		await glide.keys.send("<Esc>", { skip_mappings: true });
 	},
-	{ description: "Next search match" },
+	{ description: "Close findbar or exit insert mode" },
 );
 
-glide.keymaps.set(
-	"normal",
-	"N",
-	async () => {
-		if (glide.findbar.is_open()) {
-			await glide.findbar.previous_match();
-		}
-	},
-	{ description: "Previous search match" },
-);
+glide.keymaps.set("normal", "n", () => glide.findbar.next_match(), { description: "Next search match" });
+glide.keymaps.set("normal", "N", () => glide.findbar.previous_match(), { description: "Previous search match" });
 
 glide.keymaps.set(
 	"normal",
