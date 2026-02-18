@@ -80,6 +80,20 @@ function fish_hauntty_prompt
         echo -n "$HAUNTTY_SESSION>"
         set_color normal
         echo -n " "
+    else if command -sq ht
+        set -l n (ht list 2>/dev/null | tail -n +2 | count)
+        if test $n -gt 0
+            set_color --dim
+            echo -n "["
+            echo -n "ht:"
+            set_color --dim blue
+            echo -n "$n"
+            set_color normal
+            set_color --dim
+            echo -n "]"
+            set_color normal
+            echo -n " "
+        end
     end
 end
 
