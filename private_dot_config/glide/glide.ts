@@ -124,10 +124,9 @@ glide.keymaps.set(
 	async () => {
 		if (glide.findbar.is_focused()) {
 			await glide.findbar.close();
-			await glide.excmds.execute("mode_change normal");
 			return;
 		}
-		await glide.keys.send("<Esc>", { skip_mappings: true });
+		await glide.excmds.execute("mode_change normal");
 	},
 	{ description: "Close findbar or exit insert mode" },
 );
