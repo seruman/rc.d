@@ -9,7 +9,7 @@ return {
 			vim.lsp.enable({
 				"gopls",
 				"lua_ls",
-				"pyright",
+				"ty",
 				"ruff",
 				"rust_analyzer",
 				"yamlls",
