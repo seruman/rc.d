@@ -68,8 +68,8 @@ keybind = ctrl+b>u=toggle_quick_terminal
 keybind = global:cmd+shift+u=toggle_quick_terminal
 
 
-font-family = "Departure Mono"
-# font-family = "Berkeley Mono"
+# font-family = "Departure Mono"
+font-family = "Berkeley Mono"
 font-size = 14
 font-feature = -calt
 font-thicken=true
