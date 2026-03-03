@@ -3,5 +3,5 @@ if not status is-interactive
 end
 
 if command -sq ht
-    cashfish --ttl=168h -- ht completion fish | source
+    cashfish --ttl=168h -- ht completion -c fish | source
 end
