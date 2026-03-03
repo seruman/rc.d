@@ -48,6 +48,59 @@ glide.keymaps.set(
 );
 
 glide.keymaps.set("normal", "<C-f>", "hint --location=browser-ui");
+glide.keymaps.set("normal", ";", "commandline_show", { description: "Open command line" });
+
+async function ensure_toolbar_visible(): Promise<void> {
+	if (glide.styles.has("hide-toolbox")) {
+		glide.styles.remove("hide-toolbox");
+		await new Promise((resolve) => setTimeout(resolve, 40));
+	}
+}
+
+function with_toolbar_visible(action: (props: glide.KeymapCallbackProps) => void | Promise<void>): glide.KeymapCallback {
+	return async (props) => {
+		await ensure_toolbar_visible();
+		await action(props);
+	};
+}
+
+async function focus_native_urlbar(opts?: { open_in_new_tab?: boolean; respect_pinned?: boolean }) {
+	await ensure_toolbar_visible();
+
+	const open_in_new_tab = opts?.open_in_new_tab ?? false;
+	const respect_pinned = opts?.respect_pinned ?? false;
+
+	let target_new_tab = open_in_new_tab;
+	if (!target_new_tab && respect_pinned) {
+		const tab = await glide.tabs.active();
+		target_new_tab = tab.pinned;
+	}
+
+	glide.prefs.set("browser.urlbar.openintab", target_new_tab);
+	await glide.keys.send("<D-l>", { skip_mappings: true });
+	if (glide.ctx.mode !== "insert") {
+		await new Promise((resolve) => setTimeout(resolve, 30));
+		await glide.keys.send("<D-l>", { skip_mappings: true });
+	}
+}
+
+glide.keymaps.set(
+	"normal",
+	"go",
+	async () => {
+		await focus_native_urlbar({ open_in_new_tab: false, respect_pinned: true });
+	},
+	{ description: "Edit current URL" },
+);
+
+glide.keymaps.set(
+	"normal",
+	"gO",
+	async () => {
+		await focus_native_urlbar({ open_in_new_tab: true });
+	},
+	{ description: "Edit current URL in new tab" },
+);
 
 // Reset urlbar.openintab when leaving insert mode so normal navigation stays in current tab.
 glide.autocmds.create("ModeChanged", "insert:*", async () => {
