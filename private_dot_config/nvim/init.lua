@@ -44,7 +44,14 @@ local yank_current_filepath = function()
 	local fpath = vim.fn.expand("%")
 	vim.fn.setreg("+", fpath)
 end
+
+local yank_current_absolute_filepath = function()
+	local fpath = vim.fn.expand("%:p")
+	vim.fn.setreg("+", fpath)
+end
+
 vim.keymap.set("n", "<leader><C-g>p", yank_current_filepath, { desc = "Yank current file path to clipboard" })
+vim.keymap.set("n", "<leader><C-g>P", yank_current_absolute_filepath, { desc = "Yank current absolute file path to clipboard" })
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.uv.fs_stat(lazypath) then
