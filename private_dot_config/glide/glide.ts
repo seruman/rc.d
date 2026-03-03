@@ -111,12 +111,7 @@ glide.keymaps.set(
 	"normal",
 	"o",
 	async () => {
-		glide.prefs.set("browser.urlbar.openintab", false);
-		const tab = await glide.tabs.active();
-		if (tab.pinned) {
-			glide.prefs.set("browser.urlbar.openintab", true);
-		}
-		await glide.keys.send("<D-l>");
+		await focus_native_urlbar({ open_in_new_tab: false, respect_pinned: true });
 	},
 	{ description: "Focus the address bar" },
 );
@@ -125,8 +120,7 @@ glide.keymaps.set(
 	"normal",
 	"O",
 	async () => {
-		glide.prefs.set("browser.urlbar.openintab", true);
-		await glide.keys.send("<D-l>");
+		await focus_native_urlbar({ open_in_new_tab: true });
 	},
 	{ description: "Focus the address bar (open in new tab)" },
 );
@@ -209,18 +203,18 @@ glide.keymaps.set(
 glide.keymaps.set(
 	"normal",
 	"wi",
-	async () => {
-		await glide.keys.send("<D-A-i>");
-	},
+	with_toolbar_visible(async () => {
+		await glide.keys.send("<D-A-i>", { skip_mappings: true });
+	}),
 	{ description: "Open devtools inspector" },
 );
 
 glide.keymaps.set(
 	"normal",
 	"<leader>go",
-	async () => {
-		await glide.keys.send("<D-S-k>");
-	},
+	with_toolbar_visible(async () => {
+		await glide.keys.send("<D-S-k>", { skip_mappings: true });
+	}),
 	{ description: "Focus on Okta extension" },
 );
 
@@ -274,6 +268,37 @@ glide.keymaps.set(
 		glide.o.native_tabs = "show";
 	},
 	{ description: "Toggle tab bar" },
+);
+
+glide.keymaps.set(
+	"normal",
+	"<leader>tr",
+	() => {
+		const id = "hide-toolbox";
+		if (!glide.styles.has(id)) {
+			glide.styles.add(
+				`
+					#navigator-toolbox {
+						visibility: collapse !important;
+						opacity: 0 !important;
+						height: 0 !important;
+						max-height: 0 !important;
+						min-height: 0 !important;
+						margin: 0 !important;
+						padding: 0 !important;
+						border: 0 !important;
+						overflow: clip !important;
+						pointer-events: none !important;
+					}
+				`,
+				{ id },
+			);
+			return;
+		}
+
+		glide.styles.remove(id);
+	},
+	{ description: "Toggle top toolbar" },
 );
 
 glide.keymaps.set("normal", "<leader>h", async () => {
