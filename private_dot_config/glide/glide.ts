@@ -6,6 +6,11 @@ glide.prefs.set("browser.tabs.insertRelatedAfterCurrent", true);
 glide.prefs.set("browser.uidensity", 1);
 glide.prefs.set("browser.startup.page", 3);
 glide.prefs.set("browser.warnOnQuitShortcut", false);
+glide.prefs.clear("ui.textScaleFactor");
+glide.prefs.clear("layout.css.devPixelsPerPx");
+glide.prefs.clear("browser.zoom.full");
+
+glide.include("ui.glide.ts");
 
 const plugins = [
 	"https://addons.mozilla.org/firefox/downloads/file/4429158/kagi_search_for_firefox-0.7.6.xpi",
@@ -23,6 +28,10 @@ for (const plugin of plugins) {
 glide.include("glide.work.ts");
 glide.include("github.glide.ts");
 glide.include("commands.glide.ts");
+
+glide.autocmds.create("ConfigLoaded", async () => {
+	await glide.excmds.execute("mode_change normal");
+});
 
 glide.g.mapleader = "\\";
 glide.o.hint_size = "16px";
