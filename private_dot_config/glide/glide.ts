@@ -57,7 +57,9 @@ async function ensure_toolbar_visible(): Promise<void> {
 	}
 }
 
-function with_toolbar_visible(action: (props: glide.KeymapCallbackProps) => void | Promise<void>): glide.KeymapCallback {
+function with_toolbar_visible(
+	action: (props: glide.KeymapCallbackProps) => void | Promise<void>,
+): glide.KeymapCallback {
 	return async (props) => {
 		await ensure_toolbar_visible();
 		await action(props);
@@ -237,6 +239,11 @@ glide.keymaps.set(
 	async ({ tab_id }) => {
 		const tab = await browser.tabs.get(tab_id);
 		await navigator.clipboard.writeText(`[${tab.title}](${tab.url})`);
+		await browser.notifications.create({
+			type: "basic",
+			title: "Glide",
+			message: "Markdown link copied to clipboard",
+		});
 	},
 	{ description: "Yank markdown link" },
 );
