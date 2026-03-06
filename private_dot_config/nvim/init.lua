@@ -77,6 +77,8 @@ require("lazy").setup({
 	},
 })
 
+require("seruman.commands.gist").setup()
+
 local AugroupCursorLine = vim.api.nvim_create_augroup("CursorLine", { clear = true })
 vim.api.nvim_create_autocmd("WinEnter", {
 	group = AugroupCursorLine,
