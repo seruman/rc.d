@@ -265,6 +265,69 @@ glide.keymaps.set(
 
 glide.keymaps.set(
 	"normal",
+	",m",
+	() => {
+		const mpvPath = "/opt/homebrew/bin/mpv";
+		const mpvArgs = ["--autofit-larger=960x540"];
+
+		glide.hints.show({
+			selector: "a[href], area[href], link[href], [role='link'][href], video",
+			async action({ content }) {
+				const url = await content.execute((target) => {
+					if (target instanceof HTMLVideoElement) {
+						return target.currentSrc || target.src || target.querySelector("source")?.src || null;
+					}
+
+					if (
+						target instanceof HTMLAnchorElement ||
+						target instanceof HTMLAreaElement ||
+						target instanceof HTMLLinkElement
+					) {
+						return target.href;
+					}
+
+					if (target.matches("[role='link'][href]")) {
+						return target.getAttribute("href");
+					}
+
+					return null;
+				});
+
+				if (!url) {
+					await browser.notifications.create({
+						type: "basic",
+						title: "Glide",
+						message: "No playable URL found for hinted element",
+					});
+					return;
+				}
+
+				if (url.startsWith("blob:")) {
+					await browser.notifications.create({
+						type: "basic",
+						title: "Glide",
+						message: "Hinted video uses a blob URL; hint the page link instead",
+					});
+					return;
+				}
+
+				try {
+					await glide.process.spawn(mpvPath, [...mpvArgs, url]);
+				} catch (error) {
+					await browser.notifications.create({
+						type: "basic",
+						title: "Glide",
+						message: error instanceof Error ? error.message : `Failed to launch mpv: ${String(error)}`,
+					});
+				}
+			},
+		});
+	},
+	{ description: "Hint a link or video and open it in mpv" },
+);
+
+glide.keymaps.set(
+	"normal",
 	"<leader>tt",
 	() => {
 		const v = glide.o.native_tabs;
