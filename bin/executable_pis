@@ -1,0 +1,148 @@
+#!/usr/bin/env bun
+
+import { getAgentDir, SessionManager, type SessionInfo } from "@mariozechner/pi-coding-agent";
+import { join as joinPath, basename } from "path";
+
+interface TreeNode {
+  name: string;
+  children: Map<string, TreeNode>;
+  session?: SessionInfo;
+}
+
+function homeDir(): string {
+  return process.env.HOME || "";
+}
+
+function shortenHome(s: string): string {
+  const home = homeDir();
+  if (!home) {
+    return s;
+  }
+  if (s === home) {
+    return "~";
+  }
+  if (s.startsWith(home + "/")) {
+    return "~" + s.slice(home.length);
+  }
+  return s;
+}
+
+function trunc(s: string, n: number): string {
+  if (s.length <= n) {
+    return s;
+  }
+  return `${s.slice(0, n - 1)}…`;
+}
+
+function padRight(s: string, width: number): string {
+  if (s.length >= width) {
+    return s;
+  }
+  return s + " ".repeat(width - s.length);
+}
+
+function displayName(s: SessionInfo): string {
+  const raw = s.name || s.firstMessage || "";
+  return raw.replace(/[\n\r\t]+/g, " ").trim();
+}
+
+function buildTree(rootDir: string, sessions: SessionInfo[]): TreeNode {
+  const root: TreeNode = { name: rootDir, children: new Map() };
+
+  for (const s of sessions) {
+    const cwdParts = (shortenHome(s.cwd) || "(unknown-cwd)").split("/").filter(Boolean);
+    const parts = cwdParts.length > 0 ? cwdParts : ["(unknown-cwd)"];
+    let node = root;
+
+    for (const part of parts) {
+      let next = node.children.get(part);
+      if (!next) {
+        next = { name: part, children: new Map() };
+        node.children.set(part, next);
+      }
+      node = next;
+    }
+
+    const leafName = basename(s.path);
+    let leaf = node.children.get(leafName);
+    if (!leaf) {
+      leaf = { name: leafName, children: new Map() };
+      node.children.set(leafName, leaf);
+    }
+    leaf.session = s;
+  }
+
+  return root;
+}
+
+function printTreeNode(node: TreeNode, prefix: string, isLast: boolean): void {
+  const branch = isLast ? "└── " : "├── ";
+
+  if (node.session) {
+    const name = displayName(node.session);
+    const label = `${node.name} [${node.session.messageCount} msg]${name ? ` ${trunc(name, 32)}` : ""}`;
+    console.log(`${prefix}${branch}${label}`);
+    return;
+  }
+
+  console.log(`${prefix}${branch}${node.name}`);
+
+  const entries = Array.from(node.children.values()).sort((a, b) => a.name.localeCompare(b.name));
+  const nextPrefix = `${prefix}${isLast ? "    " : "│   "}`;
+
+  entries.forEach((child, idx) => {
+    printTreeNode(child, nextPrefix, idx === entries.length - 1);
+  });
+}
+
+function printTree(rootDir: string, sessions: SessionInfo[]): void {
+  const tree = buildTree(rootDir, sessions);
+  console.log(rootDir);
+
+  const children = Array.from(tree.children.values()).sort((a, b) => a.name.localeCompare(b.name));
+  children.forEach((child, idx) => {
+    printTreeNode(child, "", idx === children.length - 1);
+  });
+}
+
+async function main() {
+  const args = new Set(process.argv.slice(2));
+  const treeMode = args.has("--tree") || args.has("-t");
+
+  const sessions = await SessionManager.listAll();
+
+  if (sessions.length === 0) {
+    console.log("No sessions found");
+    return;
+  }
+
+  sessions.sort((a, b) => +b.modified - +a.modified);
+
+  if (treeMode) {
+    const sessionsDir = shortenHome(joinPath(getAgentDir(), "sessions"));
+    printTree(sessionsDir, sessions);
+    return;
+  }
+
+  console.log(`${sessions.length} session(s)\n`);
+  console.log(
+    [padRight("modified", 20), padRight("messages", 8), padRight("id", 36), padRight("name", 40), "cwd"].join(
+      "  ",
+    ),
+  );
+
+  for (const s of sessions) {
+    const modified = s.modified.toISOString().replace("T", " ").slice(0, 19);
+    console.log(
+      [
+        padRight(modified, 20),
+        padRight(String(s.messageCount), 8),
+        padRight(s.id, 36),
+        padRight(trunc(displayName(s) || "-", 40), 40),
+        shortenHome(s.cwd) || "-",
+      ].join("  "),
+    );
+  }
+}
+
+await main();
