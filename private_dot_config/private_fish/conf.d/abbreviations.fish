@@ -1,3 +1,5 @@
+status is-interactive; or return
+
 # git
 #abbr -a gr 'git root'
 # cd into git root aka cd (git root)

@@ -18,8 +18,8 @@ for plugin in $plugins_dir/*
     end
 
     if test -d $plugin/conf.d
-        for conf in $plugin/conf.d/*
-            source $conf
+        for conf in $plugin/conf.d/*.fish
+            test -f $conf; and source $conf
         end
     end
 end
