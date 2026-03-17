@@ -4,11 +4,13 @@ type GitHubParams = {
 	org: string;
 	repo: string;
 	issue?: string;
+	pr?: string;
 };
 
 function github_params(url: URL): GitHubParams | null {
 	const PROJECTS_URL_PATTERN = /https:\/\/github(.*)\.com\/orgs\/(.+)\/projects\/(\d+)/;
 	const DEFAULT_PATTERN = /https:\/\/github(.*)\.com\/(.+)\/(.+)/;
+	const ISSUE_OR_PR_NUMBER_PATTERN = /^\d+$/;
 
 	const addr = `${url.protocol}//${url.host}` as Address;
 
@@ -20,7 +22,7 @@ function github_params(url: URL): GitHubParams | null {
 		if (!issueQuery) return null;
 
 		const [org, repo, issue] = issueQuery.split("|");
-		if (!org || !repo || !issue) return null;
+		if (!org || !repo || !issue || !ISSUE_OR_PR_NUMBER_PATTERN.test(issue)) return null;
 
 		return { addr, org, repo, issue };
 	}
@@ -35,6 +37,15 @@ function github_params(url: URL): GitHubParams | null {
 		const org = path[0];
 		const repo = path[1];
 		if (!org || !repo) return null;
+
+		const resource = path[2];
+		const id = path[3];
+		if (resource === "issues" && id && ISSUE_OR_PR_NUMBER_PATTERN.test(id)) {
+			return { addr, org, repo, issue: id };
+		}
+		if (resource === "pull" && id && ISSUE_OR_PR_NUMBER_PATTERN.test(id)) {
+			return { addr, org, repo, pr: id };
+		}
 
 		return { addr, org, repo };
 	}
@@ -55,9 +66,30 @@ function github_open(path_fn: (params: GitHubParams) => string, new_tab: boolean
 	};
 }
 
+function github_yank_issue() {
+	return async () => {
+		const params = github_params(glide.ctx.url);
+		if (!params?.issue) {
+			await browser.notifications.create({
+				type: "basic",
+				title: "Glide",
+				message: "No GitHub issue found on this page",
+			});
+			return;
+		}
+
+		await navigator.clipboard.writeText(issues_path(params));
+		await browser.notifications.create({
+			type: "basic",
+			title: "Glide",
+			message: "GitHub issue URL copied to clipboard",
+		});
+	};
+}
+
 const repo_path = (p: GitHubParams) => `${p.addr}/${p.org}/${p.repo}`;
 const issues_path = (p: GitHubParams) => (p.issue ? `${repo_path(p)}/issues/${p.issue}` : `${repo_path(p)}/issues`);
-const pulls_path = (p: GitHubParams) => `${repo_path(p)}/pulls`;
+const pulls_path = (p: GitHubParams) => (p.pr ? `${repo_path(p)}/pull/${p.pr}` : `${repo_path(p)}/pulls`);
 const actions_path = (p: GitHubParams) => `${repo_path(p)}/actions`;
 const discussions_path = (p: GitHubParams) => `${repo_path(p)}/discussions`;
 const commits_path = (p: GitHubParams) => `${repo_path(p)}/commits`;
@@ -71,6 +103,9 @@ glide.autocmds.create("UrlEnter", /https:\/\/github(.*)\.com/, () => {
 	});
 	glide.buf.keymaps.set("normal", "<C-g>I", github_open(issues_path, true), {
 		description: "Open GitHub issues in a new tab",
+	});
+	glide.buf.keymaps.set("normal", "<C-g>yi", github_yank_issue(), {
+		description: "Copy the resolved GitHub issue URL to the clipboard",
 	});
 	glide.buf.keymaps.set("normal", "<C-g>r", github_open(repo_path, false), {
 		description: "Open GitHub repo root in current tab",
