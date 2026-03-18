@@ -1,13 +1,20 @@
 #!/usr/bin/env bun
 
-import { getAgentDir, SessionManager, type SessionInfo } from "@mariozechner/pi-coding-agent";
-import { join as joinPath, basename } from "path";
+import { SessionManager, type SessionInfo } from "@mariozechner/pi-coding-agent";
+import { basename } from "path";
 
-interface TreeNode {
-  name: string;
-  children: Map<string, TreeNode>;
-  session?: SessionInfo;
-}
+const isTTY = !!process.stdout.isTTY;
+
+const c = {
+  reset: isTTY ? "\x1b[0m" : "",
+  bold: isTTY ? "\x1b[1m" : "",
+  dim: isTTY ? "\x1b[2m" : "",
+  cyan: isTTY ? "\x1b[36m" : "",
+  yellow: isTTY ? "\x1b[33m" : "",
+  green: isTTY ? "\x1b[32m" : "",
+  magenta: isTTY ? "\x1b[35m" : "",
+  blue: isTTY ? "\x1b[34m" : "",
+};
 
 function homeDir(): string {
   return process.env.HOME || "";
@@ -15,29 +22,19 @@ function homeDir(): string {
 
 function shortenHome(s: string): string {
   const home = homeDir();
-  if (!home) {
-    return s;
-  }
-  if (s === home) {
-    return "~";
-  }
-  if (s.startsWith(home + "/")) {
-    return "~" + s.slice(home.length);
-  }
+  if (!home) return s;
+  if (s === home) return "~";
+  if (s.startsWith(home + "/")) return "~" + s.slice(home.length);
   return s;
 }
 
 function trunc(s: string, n: number): string {
-  if (s.length <= n) {
-    return s;
-  }
+  if (s.length <= n) return s;
   return `${s.slice(0, n - 1)}…`;
 }
 
 function padRight(s: string, width: number): string {
-  if (s.length >= width) {
-    return s;
-  }
+  if (s.length >= width) return s;
   return s + " ".repeat(width - s.length);
 }
 
@@ -46,63 +43,40 @@ function displayName(s: SessionInfo): string {
   return raw.replace(/[\n\r\t]+/g, " ").trim();
 }
 
-function buildTree(rootDir: string, sessions: SessionInfo[]): TreeNode {
-  const root: TreeNode = { name: rootDir, children: new Map() };
+function termWidth(): number {
+  return process.stdout.columns || 120;
+}
 
+function printTree(sessions: SessionInfo[]): void {
+  const byCwd = new Map<string, SessionInfo[]>();
   for (const s of sessions) {
-    const cwdParts = (shortenHome(s.cwd) || "(unknown-cwd)").split("/").filter(Boolean);
-    const parts = cwdParts.length > 0 ? cwdParts : ["(unknown-cwd)"];
-    let node = root;
-
-    for (const part of parts) {
-      let next = node.children.get(part);
-      if (!next) {
-        next = { name: part, children: new Map() };
-        node.children.set(part, next);
-      }
-      node = next;
+    const cwd = shortenHome(s.cwd) || "(unknown)";
+    let list = byCwd.get(cwd);
+    if (!list) {
+      list = [];
+      byCwd.set(cwd, list);
     }
-
-    const leafName = basename(s.path);
-    let leaf = node.children.get(leafName);
-    if (!leaf) {
-      leaf = { name: leafName, children: new Map() };
-      node.children.set(leafName, leaf);
-    }
-    leaf.session = s;
+    list.push(s);
   }
 
-  return root;
-}
-
-function printTreeNode(node: TreeNode, prefix: string, isLast: boolean): void {
-  const branch = isLast ? "└── " : "├── ";
-
-  if (node.session) {
-    const name = displayName(node.session);
-    const label = `${node.name} [${node.session.messageCount} msg]${name ? ` ${trunc(name, 32)}` : ""}`;
-    console.log(`${prefix}${branch}${label}`);
-    return;
+  const cwds = Array.from(byCwd.keys()).sort();
+  for (const cwd of cwds) {
+    const list = byCwd.get(cwd)!;
+    list.sort((a, b) => +b.modified - +a.modified);
+    console.log(`${c.bold}${c.blue}${cwd}${c.reset}`);
+    list.forEach((s, idx) => {
+      const connector = idx === list.length - 1 ? "└── " : "├── ";
+      const name = displayName(s);
+      const leafName = basename(s.path);
+      const msgTag = `${c.yellow}x${s.messageCount}${c.reset}`;
+      const prefixLen = 1 + 4; // space + connector
+      const fixedLen = prefixLen + leafName.length + 1 + `x${s.messageCount}`.length;
+      const nameBudget = Math.max(40, termWidth() - fixedLen - 1);
+      const nameStr = name ? ` ${trunc(name, nameBudget)}` : "";
+      console.log(` ${c.dim}${connector}${leafName}${c.reset} ${msgTag}${nameStr}`);
+    });
+    console.log();
   }
-
-  console.log(`${prefix}${branch}${node.name}`);
-
-  const entries = Array.from(node.children.values()).sort((a, b) => a.name.localeCompare(b.name));
-  const nextPrefix = `${prefix}${isLast ? "    " : "│   "}`;
-
-  entries.forEach((child, idx) => {
-    printTreeNode(child, nextPrefix, idx === entries.length - 1);
-  });
-}
-
-function printTree(rootDir: string, sessions: SessionInfo[]): void {
-  const tree = buildTree(rootDir, sessions);
-  console.log(rootDir);
-
-  const children = Array.from(tree.children.values()).sort((a, b) => a.name.localeCompare(b.name));
-  children.forEach((child, idx) => {
-    printTreeNode(child, "", idx === children.length - 1);
-  });
 }
 
 async function main() {
@@ -119,8 +93,7 @@ async function main() {
   sessions.sort((a, b) => +b.modified - +a.modified);
 
   if (treeMode) {
-    const sessionsDir = shortenHome(joinPath(getAgentDir(), "sessions"));
-    printTree(sessionsDir, sessions);
+    printTree(sessions);
     return;
   }
 
