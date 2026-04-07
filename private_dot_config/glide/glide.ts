@@ -171,6 +171,12 @@ async function focus_native_urlbar(opts?: { open_in_new_tab?: boolean; respect_p
 	}
 }
 
+async function move_current_tab_by(tab_id: number, delta: number): Promise<void> {
+	const tab = await browser.tabs.get(tab_id);
+	const target_index = Math.max(0, tab.index + delta);
+	await browser.tabs.move(tab_id, { index: target_index });
+}
+
 glide.keymaps.set(
 	"normal",
 	"go",
@@ -214,6 +220,18 @@ glide.keymaps.set(
 
 glide.keymaps.set("normal", "J", "tab_next", { description: "Next tab" });
 glide.keymaps.set("normal", "K", "tab_prev", { description: "Previous tab" });
+glide.keymaps.set(
+	"normal",
+	"<C-j>",
+	({ tab_id }) => move_current_tab_by(tab_id, 1),
+	{ description: "Move current tab down" },
+);
+glide.keymaps.set(
+	"normal",
+	"<C-k>",
+	({ tab_id }) => move_current_tab_by(tab_id, -1),
+	{ description: "Move current tab up" },
+);
 glide.keymaps.set("normal", "r", "reload", { description: "Reload the page" });
 glide.keymaps.set("normal", "R", "reload_hard", { description: "Reload the page, bypass cache" });
 
