@@ -51,10 +51,11 @@ glide.keymaps.set("normal", "<C-f>", "hint --location=browser-ui");
 glide.keymaps.set("normal", ";", "commandline_show", { description: "Open command line" });
 
 async function ensure_toolbar_visible(): Promise<void> {
-	if (glide.styles.has("hide-toolbox")) {
-		glide.styles.remove("hide-toolbox");
-		await new Promise((resolve) => setTimeout(resolve, 40));
+	if (!glide.styles.has("hide-toolbox")) {
+		return;
 	}
+	glide.styles.remove("hide-toolbox");
+	await new Promise((resolve) => setTimeout(resolve, 40));
 }
 
 function with_toolbar_visible(
@@ -449,37 +450,6 @@ glide.keymaps.set(
 		glide.o.native_tabs = "show";
 	},
 	{ description: "Toggle tab bar" },
-);
-
-glide.keymaps.set(
-	"normal",
-	"<leader>tr",
-	() => {
-		const id = "hide-toolbox";
-		if (!glide.styles.has(id)) {
-			glide.styles.add(
-				`
-					#navigator-toolbox {
-						visibility: collapse !important;
-						opacity: 0 !important;
-						height: 0 !important;
-						max-height: 0 !important;
-						min-height: 0 !important;
-						margin: 0 !important;
-						padding: 0 !important;
-						border: 0 !important;
-						overflow: clip !important;
-						pointer-events: none !important;
-					}
-				`,
-				{ id },
-			);
-			return;
-		}
-
-		glide.styles.remove(id);
-	},
-	{ description: "Toggle top toolbar" },
 );
 
 glide.keymaps.set("normal", "<leader>h", async () => {

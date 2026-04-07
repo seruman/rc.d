@@ -79,23 +79,13 @@ glide.styles.add(
 			border-inline-width: 0 !important;
 		}
 
+
 		#browser {
 			position: relative !important;
 			margin-top: -1px !important;
 			padding-top: 1px !important;
 		}
 
-		#browser::before {
-			content: "";
-			position: absolute;
-			top: 0;
-			left: 0;
-			right: 0;
-			height: 2px;
-			pointer-events: none;
-			z-index: 2147483647;
-			background: var(--glide-mode-ui-bg) !important;
-		}
 		#sidebar-splitter {
 			border: none !important;
 			background: transparent !important;
@@ -106,3 +96,407 @@ glide.styles.add(
 	{ id: "glide-custom-mode-indicator", overwrite: true },
 );
 
+const GLIDE_UI_STYLES = {
+	AUTOHIDE_MAIN_TOOLBAR_STYLE: `
+	:root {
+		--uc-navbar-transform: -40px;
+		--uc-autohide-toolbar-delay: 0.6s;
+		--uc-autohide-toolbar-duration: 180ms;
+		--uc-toolbar-hover-zone-height: 12px;
+		--uc-toolbar-mode-strip-height: 4px;
+	}
+
+	:root[uidensity='compact'] {
+		--uc-navbar-transform: -34px;
+	}
+
+	#navigator-toolbox > div {
+		display: contents;
+	}
+
+	#navigator-toolbox::before {
+		content: '';
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: var(--uc-toolbar-hover-zone-height);
+		background: linear-gradient(
+			to bottom,
+			var(--glide-current-mode-color, var(--glide-fallback-mode)) 0,
+			var(--glide-current-mode-color, var(--glide-fallback-mode)) var(--uc-toolbar-mode-strip-height),
+			transparent var(--uc-toolbar-mode-strip-height),
+			transparent 100%
+		);
+		box-shadow: 0 0 10px -6px var(--glide-current-mode-color, var(--glide-fallback-mode));
+		z-index: 1;
+		pointer-events: auto;
+	}
+
+	#TabsToolbar,
+	#nav-bar,
+	#PersonalToolbar {
+		position: relative;
+		z-index: 2;
+	}
+
+	#navigator-toolbox:is(:hover, :focus-within) #TabsToolbar {
+		z-index: 10002;
+		transform: none !important;
+		opacity: 1 !important;
+	}
+
+	#navigator-toolbox:is(:hover, :focus-within) :is(#nav-bar, #PersonalToolbar) {
+		z-index: 10001;
+	}
+
+	#navigator-toolbox:is(:hover, :focus-within) :is(#PanelUI-button, #PanelUI-menu-button) {
+		position: relative;
+		z-index: 10003;
+	}
+
+	:root
+		:where(
+			#nav-bar,
+			#PersonalToolbar,
+			#tab-notification-deck,
+			.global-notificationbox,
+			#notifications-toolbar
+		) {
+		transform: translateY(var(--uc-navbar-transform));
+	}
+
+	:root:is([customizing], [chromehidden*='toolbar'])
+		:where(
+			#nav-bar,
+			#PersonalToolbar,
+			#tab-notification-deck,
+			.global-notificationbox,
+			#notifications-toolbar
+		) {
+		transform: none !important;
+		opacity: 1 !important;
+	}
+
+	#nav-bar:not([customizing]) {
+		opacity: 0;
+		transition:
+			transform var(--uc-autohide-toolbar-duration) ease var(--uc-autohide-toolbar-delay),
+			opacity var(--uc-autohide-toolbar-duration) ease var(--uc-autohide-toolbar-delay) !important;
+		position: relative;
+		z-index: 2;
+	}
+
+	#navigator-toolbox,
+	#sidebar-box,
+	#sidebar-main,
+	#sidebar-splitter,
+	#tabbrowser-tabbox {
+		z-index: auto !important;
+	}
+
+	#navigator-toolbox:focus-within > :is(#nav-bar, #PersonalToolbar) {
+		transform: translateY(0);
+		opacity: 1;
+		transition-duration:
+			var(--uc-autohide-toolbar-duration),
+			var(--uc-autohide-toolbar-duration) !important;
+		transition-delay: 0s !important;
+	}
+
+	.browser-titlebar:hover ~ :is(#nav-bar, #PersonalToolbar),
+	#TabsToolbar:hover ~ :is(#nav-bar, #PersonalToolbar),
+	#navigator-toolbox:hover :is(#nav-bar, #PersonalToolbar),
+	#nav-bar:hover,
+	#nav-bar:hover + #PersonalToolbar {
+		transform: translateY(0);
+		opacity: 1;
+		transition-duration:
+			var(--uc-autohide-toolbar-duration),
+			var(--uc-autohide-toolbar-duration) !important;
+		transition-delay: 0s !important;
+	}
+
+	:root #urlbar[popover] {
+		opacity: 0;
+		pointer-events: none;
+		transition:
+			transform var(--uc-autohide-toolbar-duration) ease var(--uc-autohide-toolbar-delay),
+			opacity var(--uc-autohide-toolbar-duration) ease var(--uc-autohide-toolbar-delay);
+		transform: translateY(var(--uc-navbar-transform));
+	}
+
+	#mainPopupSet:has(
+		> [panelopen]:not(
+			#ask-chat-shortcuts,
+			#selection-shortcut-action-panel,
+			#chat-shortcuts-options-panel,
+			#tab-preview-panel
+		)
+	)
+		~ #navigator-toolbox #urlbar[popover],
+	#navigator-toolbox:hover #urlbar[popover],
+	#TabsToolbar:hover ~ #nav-bar #urlbar[popover],
+	.browser-titlebar:is(:hover, :focus-within) ~ #nav-bar #urlbar[popover],
+	#nav-bar:is(:hover, :focus-within) #urlbar[popover],
+	#urlbar-container > #urlbar[popover]:is([focused], [open]) {
+		opacity: 1;
+		pointer-events: auto;
+		transition-delay: 0ms;
+		transform: translateY(0);
+	}
+
+	:where(:root) #urlbar-container > #urlbar[popover]:is([focused], [open]) {
+		transition-duration: 100ms;
+	}
+
+	#mainPopupSet:has(
+		> [panelopen]:not(
+			#ask-chat-shortcuts,
+			#selection-shortcut-action-panel,
+			#chat-shortcuts-options-panel,
+			#tab-preview-panel
+		)
+	)
+		~ #navigator-toolbox > :is(#nav-bar, #PersonalToolbar) {
+		transition-delay: 33ms !important;
+		transform: translateY(0);
+		opacity: 1;
+	}
+
+	#nav-bar.browser-titlebar {
+		background: inherit;
+	}
+
+	#toolbar-menubar:not([autohide='true'], [autohide='']) ~ #nav-bar.browser-titlebar {
+		background-position-y: -28px;
+		border-top: none !important;
+	}
+
+	#PersonalToolbar {
+		transition: transform var(--uc-autohide-toolbar-duration) ease var(--uc-autohide-toolbar-delay) !important;
+		position: relative;
+		z-index: 1;
+	}
+
+	#browser {
+		position: relative !important;
+	}
+
+	#browser::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: var(--uc-toolbar-mode-strip-height);
+		pointer-events: none;
+		z-index: 2147483647;
+		opacity: 1;
+		transition: opacity 120ms linear;
+		background: var(--glide-current-mode-color, var(--glide-fallback-mode)) !important;
+		box-shadow: 0 0 12px -2px var(--glide-current-mode-color, var(--glide-fallback-mode));
+	}
+
+	#navigator-toolbox:is(:hover, :focus-within) ~ #browser::before {
+		opacity: 0;
+	}
+
+	#sidebar-box:not([hidden]),
+	#sidebar-main,
+	sidebar-main {
+		padding-top: var(--uc-toolbar-mode-strip-height) !important;
+		box-sizing: border-box !important;
+	}
+
+	#navigator-toolbox:is(:hover, :focus-within) ~ #browser :is(#sidebar-box, #sidebar-main, sidebar-main) {
+		padding-top: 0 !important;
+	}
+
+	:root:not([chromehidden~='toolbar']) > body > #browser,
+	:root:not([chromehidden~='toolbar']) #browser {
+		margin-top: var(--uc-navbar-transform) !important;
+	}
+
+	@media -moz-pref('browser.fullscreen.autohide') {
+		:root[sizemode='fullscreen'] > body > #browser,
+		:root[sizemode='fullscreen'] #browser {
+			margin-top: revert !important;
+		}
+	}
+
+	@media -moz-pref('userchrome.autohide-main-toolbar.tabs-on-bottom-patch.enabled') {
+		#nav-bar {
+			margin-bottom: var(--uc-navbar-transform);
+		}
+
+		#TabsToolbar:not([customizing]) {
+			transition: transform var(--uc-autohide-toolbar-duration) ease var(--uc-autohide-toolbar-delay) !important;
+			position: relative;
+			z-index: 1;
+			background: inherit !important;
+		}
+
+		#mainPopupSet:has(
+			> [panelopen]:not(
+				#ask-chat-shortcuts,
+				#selection-shortcut-action-panel,
+				#chat-shortcuts-options-panel,
+				#tab-preview-panel
+			)
+		)
+			~ #navigator-toolbox > #TabsToolbar,
+		#navigator-toolbox:is(:hover, :focus-within) > #TabsToolbar {
+			transform: translateY(calc(var(--uc-navbar-transform) * -1)) !important;
+			transition-duration:
+				var(--uc-autohide-toolbar-duration),
+				var(--uc-autohide-toolbar-duration) !important;
+			transition-delay: 0s !important;
+		}
+
+		:root[sizemode] > body > #browser,
+		:root[sizemode] #browser {
+			margin-top: revert !important;
+		}
+	}
+
+	`,
+	OVERLAY_VERTICAL_TABS_STYLE: `
+	@media -moz-pref("sidebar.verticalTabs") {
+		:root {
+			--uc-vtabs-collapsed-width: 8px;
+			--uc-vtabs-expanded-width: 270px;
+			--uc-vtabs-delay: 160ms;
+			--uc-vtabs-duration: 190ms;
+			--uc-vtabs-easing: cubic-bezier(0.22, 0.9, 0.2, 1);
+		}
+
+		#sidebar-main {
+			overflow: visible !important;
+			background: inherit !important;
+			min-width: var(--uc-vtabs-collapsed-width) !important;
+			width: var(--uc-vtabs-collapsed-width) !important;
+			max-width: var(--uc-vtabs-collapsed-width) !important;
+			z-index: var(--browser-area-z-index-toolbox-while-animating, 4) !important;
+		}
+
+		#sidebar-main::before {
+			content: "";
+			position: absolute;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			width: var(--uc-vtabs-collapsed-width);
+			pointer-events: none;
+			z-index: 10005;
+			background: linear-gradient(
+				to right,
+				var(--glide-current-mode-color, var(--glide-fallback-mode)) 0,
+				var(--glide-current-mode-color, var(--glide-fallback-mode)) 2px,
+				transparent 2px,
+				transparent 100%
+			);
+			box-shadow: 0 0 10px -6px var(--glide-current-mode-color, var(--glide-fallback-mode));
+		}
+
+		#sidebar-main > sidebar-main {
+			background: inherit !important;
+			overflow: hidden !important;
+			min-width: var(--uc-vtabs-collapsed-width) !important;
+			will-change: min-width, transform;
+			backface-visibility: hidden;
+			transition:
+				min-width var(--uc-vtabs-duration) var(--uc-vtabs-easing) var(--uc-vtabs-delay),
+				transform var(--uc-vtabs-duration) var(--uc-vtabs-easing) var(--uc-vtabs-delay) !important;
+			border-inline: 0.01px solid var(--chrome-content-separator-color);
+			border-inline-width: 0 0.01px;
+		}
+
+		#sidebar-main:hover > sidebar-main,
+		#sidebar-main:focus-within > sidebar-main,
+		#sidebar-main > sidebar-main:hover,
+		#sidebar-main > sidebar-main:focus-within,
+		:where(#navigator-toolbox[movingtab] + #browser > #sidebar-main) > sidebar-main {
+			min-width: var(--uc-vtabs-expanded-width) !important;
+			transition-delay: 0ms !important;
+		}
+
+		#sidebar-main:hover::before,
+		#sidebar-main:focus-within::before {
+			opacity: 0;
+		}
+
+		#sidebar-main > sidebar-main:is([sidebar-positionend], [positionend]) {
+			transition-property: min-width, transform !important;
+			border-inline-width: 0.01px 0;
+		}
+
+		#sidebar-main:hover > sidebar-main:is([sidebar-positionend], [positionend]),
+		#sidebar-main:focus-within > sidebar-main:is([sidebar-positionend], [positionend]),
+		#sidebar-main > sidebar-main:is([sidebar-positionend], [positionend]):hover,
+		#sidebar-main > sidebar-main:is([sidebar-positionend], [positionend]):focus-within {
+			transform: translateX(calc(var(--uc-vtabs-collapsed-width) - 100%));
+		}
+
+		#sidebar-wrapper,
+		#sidebar-splitter {
+			background: inherit !important;
+		}
+
+		#sidebar-splitter {
+			width: 0 !important;
+			min-width: 0 !important;
+			opacity: 0 !important;
+			border: 0 !important;
+		}
+	}
+
+	`,
+} as const;
+
+const AUTOHIDE_MAIN_TOOLBAR_STYLE_ID = "autohide-main-toolbar";
+const OVERLAY_VERTICAL_TABS_STYLE_ID = "overlay-vertical-tabs";
+
+glide.styles.add(GLIDE_UI_STYLES.AUTOHIDE_MAIN_TOOLBAR_STYLE, {
+	id: AUTOHIDE_MAIN_TOOLBAR_STYLE_ID,
+	overwrite: true,
+});
+
+glide.styles.add(GLIDE_UI_STYLES.OVERLAY_VERTICAL_TABS_STYLE, {
+	id: OVERLAY_VERTICAL_TABS_STYLE_ID,
+	overwrite: true,
+});
+
+glide.keymaps.set(
+	"normal",
+	"<leader>tr",
+	() => {
+		const enabled = !glide.styles.has(AUTOHIDE_MAIN_TOOLBAR_STYLE_ID);
+		if (enabled) {
+			glide.styles.add(GLIDE_UI_STYLES.AUTOHIDE_MAIN_TOOLBAR_STYLE, {
+				id: AUTOHIDE_MAIN_TOOLBAR_STYLE_ID,
+				overwrite: true,
+			});
+		} else {
+			glide.styles.remove(AUTOHIDE_MAIN_TOOLBAR_STYLE_ID);
+		}
+	},
+	{ description: "Toggle top toolbar autohide" },
+);
+
+glide.keymaps.set(
+	"normal",
+	"<leader>ts",
+	() => {
+		const enabled = !glide.styles.has(OVERLAY_VERTICAL_TABS_STYLE_ID);
+		if (enabled) {
+			glide.styles.add(GLIDE_UI_STYLES.OVERLAY_VERTICAL_TABS_STYLE, {
+				id: OVERLAY_VERTICAL_TABS_STYLE_ID,
+				overwrite: true,
+			});
+		} else {
+			glide.styles.remove(OVERLAY_VERTICAL_TABS_STYLE_ID);
+		}
+	},
+	{ description: "Toggle overlay vertical tabs autohide" },
+);
