@@ -66,6 +66,96 @@ function github_open(path_fn: (params: GitHubParams) => string, new_tab: boolean
 	};
 }
 
+function github_menu() {
+	return async ({ tab_id }: { tab_id: number }) => {
+		const params = github_params(glide.ctx.url);
+		if (!params) {
+			await browser.notifications.create({
+				type: "basic",
+				title: "Glide",
+				message: "No GitHub repo found on this page",
+			});
+			return;
+		}
+
+		const open = async (path_fn: (params: GitHubParams) => string, new_tab: boolean) => {
+			const url = path_fn(params);
+			if (new_tab) {
+				await browser.tabs.create({ url, active: true, openerTabId: tab_id });
+				return;
+			}
+			await browser.tabs.update(tab_id, { url });
+		};
+
+		const copy = async (value: string, message: string) => {
+			await navigator.clipboard.writeText(value);
+			await browser.notifications.create({
+				type: "basic",
+				title: "Glide",
+				message,
+			});
+		};
+
+		await glide.commandline.show({
+			title: `github ${params.org}/${params.repo}`,
+			options: [
+				{
+					label: "copy ssh url",
+					execute: () => copy(repo_git_ssh_path(params), "Git SSH URL copied to clipboard"),
+				},
+				{
+					label: "copy repo name",
+					execute: () => copy(repo_name_path(params), "GitHub repo name copied to clipboard"),
+				},
+				{
+					label: "open repo",
+					execute: () => open(repo_path, false),
+				},
+				{
+					label: "open issues",
+					execute: () => open(issues_path, false),
+				},
+				{
+					label: "open prs",
+					execute: () => open(pulls_path, false),
+				},
+				{
+					label: "open actions",
+					execute: () => open(actions_path, false),
+				},
+				{
+					label: "open discussions",
+					execute: () => open(discussions_path, false),
+				},
+				{
+					label: "open commits",
+					execute: () => open(commits_path, false),
+				},
+				{
+					label: "open branches",
+					execute: () => open(branches_path, false),
+				},
+				{
+					label: "open tags",
+					execute: () => open(tags_path, false),
+				},
+				{
+					label: "open repo in new tab",
+					execute: () => open(repo_path, true),
+				},
+				{
+					label: "open issues in new tab",
+					execute: () => open(issues_path, true),
+				},
+				{
+					label: "open prs in new tab",
+					execute: () => open(pulls_path, true),
+				},
+			],
+		});
+	};
+}
+
 function github_yank_issue() {
 	return async () => {
 		const params = github_params(glide.ctx.url);
@@ -87,7 +177,51 @@ function github_yank_issue() {
 	};
 }
 
+function github_yank_git_ssh_url() {
+	return async () => {
+		const params = github_params(glide.ctx.url);
+		if (!params) {
+			await browser.notifications.create({
+				type: "basic",
+				title: "Glide",
+				message: "No GitHub repo found on this page",
+			});
+			return;
+		}
+
+		await navigator.clipboard.writeText(repo_git_ssh_path(params));
+		await browser.notifications.create({
+			type: "basic",
+			title: "Glide",
+			message: "Git SSH URL copied to clipboard",
+		});
+	};
+}
+
+function github_yank_repo_name() {
+	return async () => {
+		const params = github_params(glide.ctx.url);
+		if (!params) {
+			await browser.notifications.create({
+				type: "basic",
+				title: "Glide",
+				message: "No GitHub repo found on this page",
+			});
+			return;
+		}
+
+		await navigator.clipboard.writeText(repo_name_path(params));
+		await browser.notifications.create({
+			type: "basic",
+			title: "Glide",
+			message: "GitHub repo name copied to clipboard",
+		});
+	};
+}
+
 const repo_path = (p: GitHubParams) => `${p.addr}/${p.org}/${p.repo}`;
+const repo_name_path = (p: GitHubParams) => `${p.org}/${p.repo}`;
+const repo_git_ssh_path = (p: GitHubParams) => `git@${new URL(p.addr).host}:${p.org}/${p.repo}.git`;
 const issues_path = (p: GitHubParams) => (p.issue ? `${repo_path(p)}/issues/${p.issue}` : `${repo_path(p)}/issues`);
 const pulls_path = (p: GitHubParams) => (p.pr ? `${repo_path(p)}/pull/${p.pr}` : `${repo_path(p)}/pulls`);
 const actions_path = (p: GitHubParams) => `${repo_path(p)}/actions`;
@@ -98,6 +232,9 @@ const tags_path = (p: GitHubParams) => `${repo_path(p)}/tags`;
 const godoc_path = (p: GitHubParams) => `https://pkg.go.dev/github.com/${p.org}/${p.repo}`;
 
 glide.autocmds.create("UrlEnter", /https:\/\/github(.*)\.com/, () => {
+	glide.buf.keymaps.set("normal", "<C-g>m", github_menu(), {
+		description: "Open the GitHub repo menu",
+	});
 	glide.buf.keymaps.set("normal", "<C-g>i", github_open(issues_path, false), {
 		description: "Open GitHub issues in current tab",
 	});
@@ -106,6 +243,12 @@ glide.autocmds.create("UrlEnter", /https:\/\/github(.*)\.com/, () => {
 	});
 	glide.buf.keymaps.set("normal", "<C-g>yi", github_yank_issue(), {
 		description: "Copy the resolved GitHub issue URL to the clipboard",
+	});
+	glide.buf.keymaps.set("normal", "<C-g>ys", github_yank_git_ssh_url(), {
+		description: "Copy the Git SSH URL for this repo to the clipboard",
+	});
+	glide.buf.keymaps.set("normal", "<C-g>yn", github_yank_repo_name(), {
+		description: "Copy the GitHub repo name to the clipboard",
 	});
 	glide.buf.keymaps.set("normal", "<C-g>r", github_open(repo_path, false), {
 		description: "Open GitHub repo root in current tab",
