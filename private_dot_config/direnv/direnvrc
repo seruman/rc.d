@@ -1,0 +1,29 @@
+# vi: ft=bash
+
+use_sdk() {
+    [[ -s "${SDKMAN_DIR}/bin/sdkman-init.sh" ]] && source "${SDKMAN_DIR}/bin/sdkman-init.sh"
+
+    while (("$#" >= 2)); do
+        local candidate=$1
+        local candidate_version=$2
+        SDK_OFFLINE_MODE=true sdk use $candidate $candidate_version
+
+        shift 2
+    done
+}
+
+layout_uv() {
+    if [[ -d ".venv" ]]; then
+        VIRTUAL_ENV="$(pwd)/.venv"
+    fi
+
+    if [[ -z $VIRTUAL_ENV || ! -d $VIRTUAL_ENV ]]; then
+        log_status "No uv project exists. Executing \`uv init\` to create one."
+        uv venv
+        VIRTUAL_ENV="$(pwd)/.venv"
+    fi
+
+    PATH_add "$VIRTUAL_ENV/bin"
+    export UV_ACTIVE=1 # or VENV_ACTIVE=1
+    export VIRTUAL_ENV
+}

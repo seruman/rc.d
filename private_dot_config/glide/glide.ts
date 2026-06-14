@@ -9,6 +9,7 @@ glide.prefs.set("browser.warnOnQuitShortcut", false);
 glide.prefs.clear("ui.textScaleFactor");
 glide.prefs.clear("layout.css.devPixelsPerPx");
 glide.prefs.clear("browser.zoom.full");
+glide.prefs.set("xpinstall.signatures.required", false);
 
 glide.include("ui.glide.ts");
 
@@ -19,6 +20,7 @@ const plugins = [
 	"https://addons.mozilla.org/firefox/downloads/file/4579487/readwise_highlighter-0.15.25.xpi",
 	"https://addons.mozilla.org/firefox/downloads/file/4385912/icloud_hide_my_email-1.2.9.xpi",
 	"https://addons.mozilla.org/firefox/downloads/file/4409277/prometheus_formatter-3.2.0.xpi",
+	"https://addons.mozilla.org/firefox/downloads/file/4720796/kagi_translate-0.1.8.xpi",
 ];
 
 for (const plugin of plugins) {
@@ -28,6 +30,7 @@ for (const plugin of plugins) {
 glide.include("glide.work.ts");
 glide.include("github.glide.ts");
 glide.include("commands.glide.ts");
+glide.include("gnarly-text-edit.ts");
 
 glide.autocmds.create("ConfigLoaded", async () => {
 	await glide.excmds.execute("mode_change normal");
@@ -50,26 +53,7 @@ glide.keymaps.set(
 glide.keymaps.set("normal", "<C-f>", "hint --location=browser-ui");
 glide.keymaps.set("normal", ";", "commandline_show", { description: "Open command line" });
 
-async function ensure_toolbar_visible(): Promise<void> {
-	if (!glide.styles.has("hide-toolbox")) {
-		return;
-	}
-	glide.styles.remove("hide-toolbox");
-	await new Promise((resolve) => setTimeout(resolve, 40));
-}
-
-function with_toolbar_visible(
-	action: (props: glide.KeymapCallbackProps) => void | Promise<void>,
-): glide.KeymapCallback {
-	return async (props) => {
-		await ensure_toolbar_visible();
-		await action(props);
-	};
-}
-
 async function focus_native_urlbar(opts?: { open_in_new_tab?: boolean; respect_pinned?: boolean }) {
-	await ensure_toolbar_visible();
-
 	const open_in_new_tab = opts?.open_in_new_tab ?? false;
 	const respect_pinned = opts?.respect_pinned ?? false;
 
@@ -218,18 +202,18 @@ glide.keymaps.set(
 glide.keymaps.set(
 	"normal",
 	"wi",
-	with_toolbar_visible(async () => {
+	async () => {
 		await glide.keys.send("<D-A-i>", { skip_mappings: true });
-	}),
+	},
 	{ description: "Open devtools inspector" },
 );
 
 glide.keymaps.set(
 	"normal",
 	"<leader>go",
-	with_toolbar_visible(async () => {
+	async () => {
 		await glide.keys.send("<D-S-k>", { skip_mappings: true });
-	}),
+	},
 	{ description: "Focus on Okta extension" },
 );
 
@@ -343,12 +327,7 @@ glide.keymaps.set(
 	"normal",
 	"<leader>tt",
 	() => {
-		const v = glide.o.native_tabs;
-		if (["autohide", "show"].includes(v)) {
-			glide.o.native_tabs = "hide";
-			return;
-		}
-		glide.o.native_tabs = "show";
+		glide.o.native_tabs = glide.o.native_tabs === "hide" ? "show" : "hide";
 	},
 	{ description: "Toggle tab bar" },
 );

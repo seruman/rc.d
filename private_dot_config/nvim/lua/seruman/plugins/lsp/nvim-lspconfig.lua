@@ -29,6 +29,7 @@ return {
 				"biome",
 				"jsonnet_ls",
 				"sourcekit",
+				"roslyn_ls",
 			})
 
 			vim.diagnostic.config({

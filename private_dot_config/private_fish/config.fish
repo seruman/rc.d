@@ -52,3 +52,4 @@ if status is-interactive
     end
 
 end
+

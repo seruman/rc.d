@@ -17,31 +17,20 @@ glide.styles.add(
 			--glide-fallback-mode: #c7cbd4;
 		}
 
-		#navigator-toolbox,
-		#sidebar-box,
-		#sidebar-main,
-		sidebar-main {
+		#navigator-toolbox {
 			background: var(--glide-mode-ui-bg) !important;
 			box-shadow: 0 0 0 1px color-mix(in srgb, var(--glide-current-mode-color) 65%, transparent) inset,
 				0 0 18px -10px var(--glide-current-mode-color) inset !important;
 			transition: background-color 80ms linear, box-shadow 80ms linear;
 		}
 
-		#navigator-toolbox,
-		#navigator-toolbox *,
-		#sidebar-box,
-		#sidebar-box *,
-		#sidebar-main,
-		#sidebar-main *,
-		#urlbar,
-		#urlbar-input,
-		.findbar-textbox {
+		:root,
+		body,
+		* {
 			font-family: "Berkeley Mono", monospace !important;
 		}
 
 		#navigator-toolbox,
-		#sidebar-box,
-		#sidebar-main,
 		#urlbar,
 		#urlbar-input,
 		.tab-label,
@@ -52,9 +41,6 @@ glide.styles.add(
 
 		#navigator-toolbox,
 		#nav-bar,
-		#sidebar-box,
-		#sidebar-main,
-		sidebar-main,
 		#browser,
 		#appcontent,
 		#tabbrowser-tabbox,
@@ -64,40 +50,22 @@ glide.styles.add(
 		}
 
 		#navigator-toolbox::before,
-		#navigator-toolbox::after,
-		#sidebar-box::before,
-		#sidebar-box::after,
-		#sidebar-main::before,
-		#sidebar-main::after {
+		#navigator-toolbox::after {
 			border: none !important;
 			box-shadow: none !important;
 			background: transparent !important;
 		}
-
-		sidebar-main {
-			border-inline: none !important;
-			border-inline-width: 0 !important;
-		}
-
 
 		#browser {
 			position: relative !important;
 			margin-top: -1px !important;
 			padding-top: 1px !important;
 		}
-
-		#sidebar-splitter {
-			border: none !important;
-			background: transparent !important;
-			width: 0 !important;
-			min-width: 0 !important;
-		}
 	`,
 	{ id: "glide-custom-mode-indicator", overwrite: true },
 );
 
-const GLIDE_UI_STYLES = {
-	AUTOHIDE_MAIN_TOOLBAR_STYLE: `
+const AUTOHIDE_MAIN_TOOLBAR_STYLE = `
 	:root {
 		--uc-navbar-transform: -40px;
 		--uc-autohide-toolbar-delay: 0.6s;
@@ -188,9 +156,6 @@ const GLIDE_UI_STYLES = {
 	}
 
 	#navigator-toolbox,
-	#sidebar-box,
-	#sidebar-main,
-	#sidebar-splitter,
 	#tabbrowser-tabbox {
 		z-index: auto !important;
 	}
@@ -302,17 +267,6 @@ const GLIDE_UI_STYLES = {
 		opacity: 0;
 	}
 
-	#sidebar-box:not([hidden]),
-	#sidebar-main,
-	sidebar-main {
-		padding-top: var(--uc-toolbar-mode-strip-height) !important;
-		box-sizing: border-box !important;
-	}
-
-	#navigator-toolbox:is(:hover, :focus-within) ~ #browser :is(#sidebar-box, #sidebar-main, sidebar-main) {
-		padding-top: 0 !important;
-	}
-
 	:root:not([chromehidden~='toolbar']) > body > #browser,
 	:root:not([chromehidden~='toolbar']) #browser {
 		margin-top: var(--uc-navbar-transform) !important;
@@ -359,111 +313,12 @@ const GLIDE_UI_STYLES = {
 			margin-top: revert !important;
 		}
 	}
-
-	`,
-	OVERLAY_VERTICAL_TABS_STYLE: `
-	@media -moz-pref("sidebar.verticalTabs") {
-		:root {
-			--uc-vtabs-collapsed-width: 8px;
-			--uc-vtabs-expanded-width: 270px;
-			--uc-vtabs-delay: 160ms;
-			--uc-vtabs-duration: 190ms;
-			--uc-vtabs-easing: cubic-bezier(0.22, 0.9, 0.2, 1);
-		}
-
-		#sidebar-main {
-			overflow: visible !important;
-			background: inherit !important;
-			min-width: var(--uc-vtabs-collapsed-width) !important;
-			width: var(--uc-vtabs-collapsed-width) !important;
-			max-width: var(--uc-vtabs-collapsed-width) !important;
-			z-index: var(--browser-area-z-index-toolbox-while-animating, 4) !important;
-		}
-
-		#sidebar-main::before {
-			content: "";
-			position: absolute;
-			top: 0;
-			left: 0;
-			bottom: 0;
-			width: var(--uc-vtabs-collapsed-width);
-			pointer-events: none;
-			z-index: 10005;
-			background: linear-gradient(
-				to right,
-				var(--glide-current-mode-color, var(--glide-fallback-mode)) 0,
-				var(--glide-current-mode-color, var(--glide-fallback-mode)) 2px,
-				transparent 2px,
-				transparent 100%
-			);
-			box-shadow: 0 0 10px -6px var(--glide-current-mode-color, var(--glide-fallback-mode));
-		}
-
-		#sidebar-main > sidebar-main {
-			background: inherit !important;
-			overflow: hidden !important;
-			min-width: var(--uc-vtabs-collapsed-width) !important;
-			will-change: min-width, transform;
-			backface-visibility: hidden;
-			transition:
-				min-width var(--uc-vtabs-duration) var(--uc-vtabs-easing) var(--uc-vtabs-delay),
-				transform var(--uc-vtabs-duration) var(--uc-vtabs-easing) var(--uc-vtabs-delay) !important;
-			border-inline: 0.01px solid var(--chrome-content-separator-color);
-			border-inline-width: 0 0.01px;
-		}
-
-		#sidebar-main:hover > sidebar-main,
-		#sidebar-main:focus-within > sidebar-main,
-		#sidebar-main > sidebar-main:hover,
-		#sidebar-main > sidebar-main:focus-within,
-		:where(#navigator-toolbox[movingtab] + #browser > #sidebar-main) > sidebar-main {
-			min-width: var(--uc-vtabs-expanded-width) !important;
-			transition-delay: 0ms !important;
-		}
-
-		#sidebar-main:hover::before,
-		#sidebar-main:focus-within::before {
-			opacity: 0;
-		}
-
-		#sidebar-main > sidebar-main:is([sidebar-positionend], [positionend]) {
-			transition-property: min-width, transform !important;
-			border-inline-width: 0.01px 0;
-		}
-
-		#sidebar-main:hover > sidebar-main:is([sidebar-positionend], [positionend]),
-		#sidebar-main:focus-within > sidebar-main:is([sidebar-positionend], [positionend]),
-		#sidebar-main > sidebar-main:is([sidebar-positionend], [positionend]):hover,
-		#sidebar-main > sidebar-main:is([sidebar-positionend], [positionend]):focus-within {
-			transform: translateX(calc(var(--uc-vtabs-collapsed-width) - 100%));
-		}
-
-		#sidebar-wrapper,
-		#sidebar-splitter {
-			background: inherit !important;
-		}
-
-		#sidebar-splitter {
-			width: 0 !important;
-			min-width: 0 !important;
-			opacity: 0 !important;
-			border: 0 !important;
-		}
-	}
-
-	`,
-} as const;
+`;
 
 const AUTOHIDE_MAIN_TOOLBAR_STYLE_ID = "autohide-main-toolbar";
-const OVERLAY_VERTICAL_TABS_STYLE_ID = "overlay-vertical-tabs";
 
-glide.styles.add(GLIDE_UI_STYLES.AUTOHIDE_MAIN_TOOLBAR_STYLE, {
+glide.styles.add(AUTOHIDE_MAIN_TOOLBAR_STYLE, {
 	id: AUTOHIDE_MAIN_TOOLBAR_STYLE_ID,
-	overwrite: true,
-});
-
-glide.styles.add(GLIDE_UI_STYLES.OVERLAY_VERTICAL_TABS_STYLE, {
-	id: OVERLAY_VERTICAL_TABS_STYLE_ID,
 	overwrite: true,
 });
 
@@ -473,7 +328,7 @@ glide.keymaps.set(
 	() => {
 		const enabled = !glide.styles.has(AUTOHIDE_MAIN_TOOLBAR_STYLE_ID);
 		if (enabled) {
-			glide.styles.add(GLIDE_UI_STYLES.AUTOHIDE_MAIN_TOOLBAR_STYLE, {
+			glide.styles.add(AUTOHIDE_MAIN_TOOLBAR_STYLE, {
 				id: AUTOHIDE_MAIN_TOOLBAR_STYLE_ID,
 				overwrite: true,
 			});
@@ -482,21 +337,4 @@ glide.keymaps.set(
 		}
 	},
 	{ description: "Toggle top toolbar autohide" },
-);
-
-glide.keymaps.set(
-	"normal",
-	"<leader>ts",
-	() => {
-		const enabled = !glide.styles.has(OVERLAY_VERTICAL_TABS_STYLE_ID);
-		if (enabled) {
-			glide.styles.add(GLIDE_UI_STYLES.OVERLAY_VERTICAL_TABS_STYLE, {
-				id: OVERLAY_VERTICAL_TABS_STYLE_ID,
-				overwrite: true,
-			});
-		} else {
-			glide.styles.remove(OVERLAY_VERTICAL_TABS_STYLE_ID);
-		}
-	},
-	{ description: "Toggle overlay vertical tabs autohide" },
 );
